@@ -1,0 +1,44 @@
+# Host-network deployment, for hosts where a firewall manager (CSF) has removed
+# Docker's iptables chains: bridge networks there have no egress and cannot be created.
+# Both services bind loopback only; a TLS reverse proxy fronts the app.
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-vpet}
+      POSTGRES_USER: ${POSTGRES_USER:-vpet}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+      PGPORT: ${POSTGRES_PORT:?set POSTGRES_PORT}
+    command: ["postgres", "-c", "listen_addresses=127.0.0.1"]
+    volumes:
+      - vpet-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p $${PGPORT} -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  app:
+    image: vpet-app:prod
+    build: .
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-vpet}:${POSTGRES_PASSWORD}@127.0.0.1:${POSTGRES_PORT}/${POSTGRES_DB:-vpet}?sslmode=disable
+      PUBLIC_URL: ${PUBLIC_URL:?set PUBLIC_URL}
+      TRANSFER_SECRET: ${TRANSFER_SECRET:?set TRANSFER_SECRET}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      LISTEN_ADDR: 127.0.0.1:${VPET_PORT:-8080}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:${VPET_PORT:-8080}/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  vpet-db:

@@ -1,0 +1,9 @@
+.git
+.env
+webapp/node_modules
+webapp/dist
+*.log
+.env.*
+!.env.example
+.smoke-*
+snapshots

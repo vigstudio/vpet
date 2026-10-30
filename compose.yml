@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-vpet}
+      POSTGRES_USER: ${POSTGRES_USER:-vpet}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+    volumes:
+      - vpet-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-vpet}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-vpet}?sslmode=disable
+      PUBLIC_URL: ${PUBLIC_URL:?set PUBLIC_URL}
+      TRANSFER_SECRET: ${TRANSFER_SECRET:?set TRANSFER_SECRET}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      LISTEN_ADDR: :8080
+    ports:
+      # Loopback by default: a TLS reverse proxy fronts the app in production.
+      - "${VPET_BIND:-127.0.0.1}:${VPET_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  vpet-db:

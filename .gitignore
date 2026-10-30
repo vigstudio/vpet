@@ -1,0 +1,23 @@
+# Secrets. .env.example is the template that is safe to publish.
+.env
+.env.*
+!.env.example
+
+# Operational notes: these name the production host, its paths and its accounts, which do not
+# belong in a public repository. Keep them next to the checkout, not inside it.
+CLAUDE.md
+DEPLOY-*.md
+
+# Migration snapshots hold every player's game state.
+snapshots/
+*.snapshot.json
+
+# Build output. The web bundle is produced by the Docker build.
+webapp/node_modules/
+webapp/dist/
+cmd/vpet/static/main.js
+
+# Local test scaffolding
+compose.uitest.yml
+.smoke-*
+*.log
