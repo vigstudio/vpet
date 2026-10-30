@@ -13,7 +13,7 @@ import (
 const (
 	shardPerCrush = 1  // shards from one ordinary piece of junk gear
 	gemShards     = 6  // shards that fuse into a tier-1 gem
-	gemUpCost     = 3  // gems of one tier that fuse into the next
+	gemUpCost     = 2  // gems of one tier that fuse into the next
 	socketCost    = 25 // gold to seat a gem, a small sink on every attempt
 	maxSockets    = 3  // sockets per gear piece
 )

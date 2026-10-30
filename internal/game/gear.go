@@ -23,11 +23,15 @@ func fuseCostOf(id string) int { return fuseBase * (1 << tierOf(id)) }
 
 func enhanceCost(id string, next int) (coin, shards int) {
 	tier := tierOf(id) + 1
-	return 10 * tier * next * next, (tier*next + 1) / 2
+	return 8 * tier * next, (tier*next + 1) / 2
 }
 
 func enhancedStat(base float64, level int) float64 {
-	return math.Round(base * 0.04 * float64(min(max(level, 0), maxEnhanceLevel)))
+	lv := float64(min(max(level, 0), maxEnhanceLevel))
+	if base <= 0 {
+		return 0
+	}
+	return math.Round((base*0.06+0.2)*lv*10) / 10
 }
 
 func enhancedGear(id string, level int) gearDef {

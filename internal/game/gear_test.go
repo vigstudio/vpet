@@ -310,3 +310,31 @@ func sumInventory(inv map[string]int) int {
 	}
 	return total
 }
+
+func TestEveryEnhancementLevelChangesAStat(t *testing.T) {
+	for id, base := range gearByID {
+		previous := enhancedGear(id, 0)
+		for level := 1; level <= maxEnhanceLevel; level++ {
+			got := enhancedGear(id, level)
+			if got.Atk == previous.Atk && got.Def == previous.Def && got.HP == previous.HP {
+				t.Fatalf("%s +%d changed no stat: %+v", id, level, got)
+			}
+			previous = got
+		}
+		if got := enhancedGear(id, maxEnhanceLevel); got.Atk <= base.Atk && got.Def <= base.Def && got.HP <= base.HP {
+			t.Fatalf("%s +%d did not improve its base stats", id, maxEnhanceLevel)
+		}
+	}
+}
+
+func TestEnhancementCostGrowsLinearly(t *testing.T) {
+	for id := range gearByID {
+		first, _ := enhanceCost(id, 1)
+		for level := 2; level <= maxEnhanceLevel; level++ {
+			got, _ := enhanceCost(id, level)
+			if got != first*level {
+				t.Fatalf("%s +%d costs %d, want linear %d", id, level, got, first*level)
+			}
+		}
+	}
+}

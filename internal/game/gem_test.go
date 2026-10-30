@@ -61,6 +61,15 @@ func TestCrushOnlyAcceptsJunkAndPaysShards(t *testing.T) {
 	}
 }
 
+func TestGemFusionUsesTwoForOneProgression(t *testing.T) {
+	if gemUpCost != 2 {
+		t.Fatalf("gem fusion costs %d copies, want 2", gemUpCost)
+	}
+	if total := 1; total<<(gemMaxTier-1) != 8 {
+		t.Fatalf("tier four should cost 8 tier-one gems, got %d", total<<(gemMaxTier-1))
+	}
+}
+
 func TestGemForgeLadder(t *testing.T) {
 	st := huntPet(t)
 	if _, err := forgeGem(st, "gem_atk", 1); err == nil {

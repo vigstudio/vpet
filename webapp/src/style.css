@@ -372,7 +372,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 /* the hunting trip, acted out: a drawn region the pet walks across beat by beat */
 .vpet-scene { text-align: center; }
 .vpet-scene__stage { position: relative; aspect-ratio: 16 / 9; max-height: max(120px, calc(100dvh - 450px)); width: auto; margin-left: auto; margin-right: auto; margin-bottom: 10px; border: 2px solid rgba(var(--center-channel-color-rgb, 63, 67, 80), .2); border-radius: 10px; overflow: hidden; }
-.vpet-scene__bg { position: absolute; inset: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; image-rendering: pixelated; }
+.vpet-scene__bg { position: absolute; inset: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; background-size: contain; background-repeat: no-repeat; background-position: center; image-rendering: pixelated; }
 .vpet-scene__ground { display: grid; }
 /* tiles overlap by a hair so rounding never leaves a seam between rows */
 .vpet-scene__tile { aspect-ratio: 1; background-repeat: no-repeat; transform: scale(1.03); }
@@ -447,7 +447,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .vpet-setmenu { position: absolute; top: 28px; right: 0; z-index: 2; display: grid; gap: 8px; min-width: 190px; padding: 10px 12px; border: 1px solid rgba(185, 139, 60, .4); border-radius: 8px; background: var(--center-channel-bg, #fff); box-shadow: 0 8px 20px rgba(0, 0, 0, .22); }
 
 /* the town: Kenney "Tiny Town" art (CC0), one building per feature */
-.vpet-city__map { position: relative; aspect-ratio: 30 / 19; width: min(100%, calc((100dvh - 240px) * 30 / 19)); margin: 0 auto; border: 2px solid rgba(var(--center-channel-color-rgb, 63, 67, 80), .2); border-radius: 10px; background-size: 100% 100%; image-rendering: pixelated; overflow: hidden; }
+.vpet-city__map { position: relative; aspect-ratio: 16 / 9; width: min(100%, calc((100dvh - 240px) * 16 / 9)); margin: 0 auto; border: 2px solid rgba(var(--center-channel-color-rgb, 63, 67, 80), .2); border-radius: 10px; background-size: contain; background-repeat: no-repeat; background-position: center; image-rendering: pixelated; overflow: hidden; }
 .vpet-house { position: absolute; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -82%); padding: 0; border: 0; background: none; cursor: pointer; }
 .vpet-house__art { display: block; width: 72px; height: 72px; background-size: 800% 100%; background-repeat: no-repeat; image-rendering: pixelated; transition: transform .15s; }
 .vpet-house small { margin-top: 2px; padding: 1px 6px; border-radius: 8px; background: rgba(255, 255, 255, .85); font-size: 11px; font-weight: 700; white-space: nowrap; }
@@ -921,8 +921,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 @media (prefers-reduced-motion:reduce) { .vpet-worn.is-set, .enhance-10 { animation:none; } }
 
 /* Scenic realms: pre-rendered CC0 fantasy models; accessible DOM locations above the art. */
-.vpet-realm { position:relative; width:100%; aspect-ratio:16/9; max-height:calc(100dvh - 250px); min-height:240px; overflow:hidden; border-radius:14px; background-size:cover; background-position:center; border:1px solid #b1d8dc; isolation:isolate; }
-.vpet-city .vpet-city__map { aspect-ratio:16/9; height:auto; min-height:300px; max-height:calc(100dvh - 215px); background-size:cover; border:1px solid #b1d8dc; }
+.vpet-realm { position:relative; width:100%; aspect-ratio:16/9; max-height:calc(100dvh - 250px); min-height:170px; overflow:hidden; border-radius:14px; background-size:contain; background-repeat:no-repeat; background-position:center; background-color:#bfe4f2; border:1px solid #b1d8dc; isolation:isolate; }
+.vpet-city .vpet-city__map { aspect-ratio:16/9; width:min(100%, calc((100dvh - 215px) * 16 / 9)); height:auto; min-height:200px; max-height:calc(100dvh - 215px); margin-inline:auto; background-size:contain; background-repeat:no-repeat; background-position:center; background-color:#bfe4f2; border:1px solid #b1d8dc; }
 .vpet-realm__heading { position:absolute; z-index:3; top:16px; left:20px; display:flex; flex-direction:column; color:#fff6d7; text-shadow:0 2px 2px #233a4d,1px 0 #233a4d,-1px 0 #233a4d,0 -1px #233a4d; pointer-events:none; }
 .vpet-realm__heading b { font-size:24px; font-weight:800; }
 .vpet-realm__heading small { font-size:13px; font-weight:600; }
@@ -937,7 +937,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .vpet-chapters button { min-width:0; display:flex; flex-direction:column; gap:4px; padding:10px; border:1px solid var(--game-line); border-radius:8px; color:inherit; background:var(--game-surface); cursor:pointer; text-align:left; }
 .vpet-chapters button[aria-pressed='true'] { border-color:var(--game-accent); background:var(--game-soft); }
 .vpet-chapters small { font-size:11px; opacity:.75; }
-.vpet-hunt__landscape { max-height:calc(100dvh - 425px); min-height:250px; }
+.vpet-hunt__landscape { min-height:0; }
 .vpet-route { position:absolute; width:100%; height:100%; inset:0; pointer-events:none; }
 .vpet-route polyline { fill:none; stroke:#fff2ba; stroke-width:.6; stroke-dasharray:1 1; filter:drop-shadow(0 1px 1px #514132); }
 .vpet-stage { position:absolute; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:3px; width:15%; padding:5px; border:0; border-radius:12px; background:transparent; cursor:pointer; }
@@ -964,7 +964,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .vpet-boss__layout { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(280px,.8fr); gap:14px; min-height:0; }
 .vpet-boss__fight, .vpet-boss__ranking { min-width:0; border:1px solid var(--game-line); border-radius:12px; background:var(--game-surface); }
 .vpet-boss__fight { padding:10px; }
-.vpet-boss .vpet-realm { min-height:260px; max-height:340px; }
+.vpet-boss .vpet-realm { min-height:0; max-height:none; }
 .vpet-boss__beast { position:absolute; left:50%; top:45%; transform:translate(-50%,-35%); filter:drop-shadow(0 0 18px #f2ad5e); }
 .vpet-boss__stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin:8px 0; }
 .vpet-boss__stats > span { display:flex; flex-direction:column; gap:2px; padding:8px 10px; border-radius:8px; background:var(--game-soft); }
@@ -1064,13 +1064,16 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
  .vpet-party-create__footer .vpet-btn { width:100%; }
 }
 
-/* Artwork and hotspots share exactly one coordinate system at every viewport. */
-.vpet-realm, .vpet-city .vpet-city__map { background-size:100% 100%; }
-.vpet-world__illustrated { background-size:100% 100%; background-position:center; }
+/* Artwork and hotspots share exactly one coordinate system at every viewport: hotspots are
+   positioned in percent, so the picture has to keep its own 16:9 shape rather than being
+   stretched to whatever box the layout hands it. `contain` keeps the whole scene visible and
+   undistorted; the frame letterboxes with the sky colour instead of cropping the island. */
+.vpet-realm, .vpet-city .vpet-city__map { background-size:contain; background-repeat:no-repeat; background-position:center; }
+.vpet-world__illustrated { background-size:contain; background-repeat:no-repeat; background-position:center; }
 .vpet-world__illustrated .vpet-region { background:transparent; }
 .vpet-world__illustrated .vpet-region.is-picked { background:#fff4b51f; }
 @media(max-width:700px) {
- .vpet-city .vpet-city__map { min-height:300px; background-size:100% 100%; }
+ .vpet-city .vpet-city__map { min-height:0; max-height:42dvh; }
  .vpet-city .vpet-city__pet canvas { width:40px; height:50px; }
 }
 
@@ -1197,8 +1200,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 /* Adventure and hunt only overflowed by their footnotes and map height. */
 .vpet-campaign .vpet-muted:last-child, .vpet-hunt .vpet-quest__brief { margin:4px 0 0; font-size:11px; }
 @media (max-height:820px) {
-  .vpet-campaign .vpet-campaign__map { min-height:180px; }
-  .vpet-hunt .vpet-hunt__landscape { max-height:calc(100dvh - 470px); min-height:170px; }
+  .vpet-campaign .vpet-campaign__map { min-height:0; }
+  .vpet-hunt .vpet-hunt__landscape { min-height:0; }
   .vpet-hunt-regions .vpet-quest-card { min-height:66px; }
 }
 
@@ -1236,16 +1239,29 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .vpet-panel__body > .vpet-hunt,
 .vpet-panel__body > .vpet-world { flex:1 1 auto; min-height:0; display:flex; flex-direction:column; }
 .vpet-campaign > *, .vpet-hunt > *, .vpet-world > * { flex:0 0 auto; }
-.vpet-campaign > .vpet-realm,
+/* The artwork owns the frame ratio. Shrinking a flex item changes only its height and was
+   distorting every map; cap the width instead, then let aspect-ratio derive the height. */
+.vpet-campaign > .vpet-realm {
+  flex:0 0 auto;
+  width:min(100%, calc((100dvh - 390px) * 16 / 9));
+  min-height:0;
+  max-height:none;
+  margin-inline:auto;
+}
 .vpet-hunt > .vpet-realm,
 .vpet-world > .vpet-world__board {
-  flex:1 1 auto;
-  min-height:150px;
+  flex:0 0 auto;
+  width:min(100%, calc((100dvh - 450px) * 16 / 9));
+  min-height:0;
   max-height:none;
-  height:auto;
-  aspect-ratio:auto;
+  margin-inline:auto;
 }
-.vpet-boss > .vpet-realm { flex:1 1 auto; min-height:140px; max-height:none; height:auto; aspect-ratio:auto; }
+.vpet-boss .vpet-realm {
+  width:min(100%, calc(340px * 16 / 9));
+  min-height:0;
+  max-height:none;
+  margin-inline:auto;
+}
 .vpet-campaign > section.vpet-boss,
 .vpet-campaign > section.vpet-parties { flex:1 1 auto; min-height:0; display:flex; flex-direction:column; }
 .vpet-parties > * { flex:0 0 auto; }
