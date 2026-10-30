@@ -65,8 +65,8 @@ func TestGemFusionUsesTwoForOneProgression(t *testing.T) {
 	if gemUpCost != 2 {
 		t.Fatalf("gem fusion costs %d copies, want 2", gemUpCost)
 	}
-	if total := 1; total<<(gemMaxTier-1) != 8 {
-		t.Fatalf("tier four should cost 8 tier-one gems, got %d", total<<(gemMaxTier-1))
+	if total := 1 << (gemMaxTier - 1); total != 8 {
+		t.Fatalf("tier four should cost 8 tier-one gems, got %d", total)
 	}
 }
 

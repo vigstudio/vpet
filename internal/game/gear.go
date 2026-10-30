@@ -31,7 +31,8 @@ func enhancedStat(base float64, level int) float64 {
 	if base <= 0 {
 		return 0
 	}
-	return math.Round((base*0.06+0.2)*lv*10) / 10
+	step := math.Max(0.2, math.Round(base*0.06*10)/10)
+	return math.Round(step*lv*10) / 10
 }
 
 func enhancedGear(id string, level int) gearDef {
