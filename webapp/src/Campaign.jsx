@@ -176,11 +176,14 @@ function Boss({state,sel,busy,act,now}) {
           <button type='button' className='vpet-btn' disabled={busy || b.hp>0 || !b.mine || b.claimed} onClick={()=>act(()=>api.bossClaim())}>{b.claimed?t('campaign.claimed'):t('campaign.claim')}</button>
         </div>
         <small className='vpet-boss__cost'>{t('boss.cost')}</small>
+        {/* Thresholds come from the server: they scale with the turnout, so printing fixed
+            numbers here would be wrong the moment another player joins. */}
         <div className='vpet-boss__pay'>
-          {[[0,1],[8000,2],[20000,3],[40000,4]].map(([dmg,crates])=>(
-            <span key={dmg} className={(b.mine||0)>=dmg?'is-reached':''}>{t('boss.tier', dmg.toLocaleString(dateLocale()), crates)}</span>
+          {(b.tiers || [0,0,0,0]).map((dmg,i)=>(
+            <span key={i} className={(b.mine||0)>=dmg?'is-reached':''}>{t('boss.tier', dmg.toLocaleString(dateLocale()), i+1)}</span>
           ))}
         </div>
+        <p className='vpet-boss__gold'>{t('boss.payNow', (b.gold || 0).toLocaleString(dateLocale()))}</p>
         <details className='vpet-campaign__rules'><summary>{tr('Luật Boss thế giới', 'World Boss rules', 'ワールドボスルール')}</summary><p className='vpet-muted'>{t('boss.note')}</p></details>
       </div>
       <aside className='vpet-boss__ranking' aria-label={tr('Bảng sát thương', 'Damage leaderboard', 'ダメージランキング')}>

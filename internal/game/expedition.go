@@ -60,6 +60,8 @@ type bossView struct {
 	Claimed  bool         `json:"claimed"`
 	Fighters int          `json:"fighters"`
 	Share    int          `json:"share"` // this user's percent of the damage done so far
+	Tiers    [4]int       `json:"tiers"` // damage needed for 1..4 crates, at today's turnout
+	Gold     int          `json:"gold"`  // what the player would be paid right now
 	Top      []bossMember `json:"top"`
 }
 
@@ -84,6 +86,15 @@ func (p *Engine) bossFor(user string, now int64) *bossView {
 	}
 	v := &bossView{Name: b.Name, Day: b.Day, HP: b.HP, MaxHP: b.maxHP(), Mine: b.Damage[user], Next: b.Last[user] + bossCooldown.Milliseconds(),
 		Claimed: b.Claimed[user], Fighters: len(b.Damage), Top: []bossMember{}}
+	// Crate thresholds move with the turnout, so the screen has to be told them rather than
+	// printing fixed numbers that stopped being true the moment the pool grew.
+	fighters := max(1, len(b.Damage))
+	pool := max(1, b.maxHP()-b.HP)
+	average := float64(pool) / float64(fighters)
+	for i, weight := range [4]float64{0, 0.6, 1.5, 2.5} {
+		v.Tiers[i] = int(average * weight)
+	}
+	v.Gold = bossGold(b.Damage[user], pool, fighters)
 	if total := b.maxHP() - b.HP; total > 0 {
 		v.Share = b.Damage[user] * 100 / total
 	}
@@ -106,31 +117,38 @@ const (
 	bossGoldCap   = 150 // one blind box: worth the day, never a second economy
 )
 
-// bossGold converts a share of the pool into coins. Damage is read as a fraction of what the
-// boss actually had, so a quiet day and a crowded one pay the same for the same effort.
-func bossGold(mine, pool int) int {
-	if mine <= 0 || pool <= 0 {
+// bossGold pays for pulling your weight, measured against the average fighter rather than
+// against the whole pool, so the same effort is worth the same whether five people show up or
+// a hundred and sixty.
+func bossGold(mine, pool, fighters int) int {
+	if mine <= 0 || pool <= 0 || fighters <= 0 {
 		return 0
 	}
-	// Square root flattens the curve: ten times the damage pays about three times the gold.
-	share := float64(mine) / float64(pool)
-	gold := bossGoldFloor + int(float64(bossGoldCap-bossGoldFloor)*math.Sqrt(min(share*4, 1)))
+	// Square root flattens the curve: ten times the damage pays about three times the gold,
+	// which keeps a geared pet ahead without leaving a new one feeling pointless.
+	weight := float64(mine) / (float64(pool) / float64(fighters))
+	gold := bossGoldFloor + int(float64(bossGoldCap-bossGoldFloor)*math.Sqrt(min(weight/2.5, 1)))
 	return min(gold, bossGoldCap)
 }
 
-// bossCrates follows the same share, so a crowded day cannot quietly demote everyone: the pool
-// grows with the fighters, and the thresholds are read against that pool rather than a fixed
-// damage number.
-func bossCrates(mine, pool int) int {
-	if mine <= 0 || pool <= 0 {
+// bossCrates measures a player against the rest of the field rather than against the pool. A
+// fixed share cannot work: twenty fighters each take 5% of the bar and a hundred and sixty
+// each take 0.6%, so a share threshold pays the same effort three crates on a quiet day and
+// one on a busy one — exactly the "it gets worse when more people play" complaint.
+//
+// Pulling your weight means roughly a 1/fighters share, so that is the yardstick: the ratio of
+// your damage to the average. Turn up and do your part and the crowd size stops mattering.
+func bossCrates(mine, pool, fighters int) int {
+	if mine <= 0 || pool <= 0 || fighters <= 0 {
 		return 0
 	}
-	switch share := float64(mine) / float64(pool); {
-	case share >= 0.08:
+	average := float64(pool) / float64(fighters)
+	switch weight := float64(mine) / average; {
+	case weight >= 2.5:
 		return 4
-	case share >= 0.04:
+	case weight >= 1.5:
 		return 3
-	case share >= 0.015:
+	case weight >= 0.6:
 		return 2
 	default:
 		return 1
@@ -143,8 +161,9 @@ func bossReward(st *userState, b *worldBoss, user string, now int64) string {
 	share := mine * 100 / pool
 	// payout() only halves the cruelty penalty; the daily cap is applied by earnBoss so boss
 	// gold cannot route around the economy the way it did before.
-	gold := st.earnBoss(st.payout(bossGold(mine, pool), now), now)
-	crates := bossCrates(mine, pool)
+	fighters := max(1, len(b.Damage))
+	gold := st.earnBoss(st.payout(bossGold(mine, pool, fighters), now), now)
+	crates := bossCrates(mine, pool, fighters)
 	st.add("tui_vukhi", crates)
 	return fmt.Sprintf("Nhận thưởng boss: %d sát thương (%d%%), %d vàng và %d hòm vũ khí.", mine, share, gold, crates)
 }
