@@ -38,6 +38,7 @@ with sync_playwright() as p:
         api(page, '/api/v1/pet', dict(name='Layout pet', parts=PARTS))
         original = api(page, '/api/v1/state')
         original['welcome_gift'] = None
+        original['halloween'] = False  # Event popup has a separate smoke test.
         for case in ['two', 'one', 'dead', 'care', 'empty', 'no-pet']:
             fixture = copy.deepcopy(original)
             fixture['slots'] = 1

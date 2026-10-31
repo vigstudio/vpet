@@ -54,7 +54,8 @@
 - Đã kiểm thử: Go toàn suite; test hồi sinh bảo toàn đồ, từ chối không mutate, lỗi commit không đổi DB, legacy và ranh giới múi giờ. HTTP local thật hồi sinh đủ đồ +3/ngọc/phụ kiện, từ chối gửi lại và giữ kết quả sau reload. Sáu repository integration test đã chạy thật trên DB local cô lập, không skip.
 - Đã kiểm thử: frontend 81/81 và build đạt; fake AudioContext kiểm tra opt-in, một context, cue, mute/ẩn tab/cleanup/resume sau dispose. Playwright bắt pageerror: popup một lần/Escape/CTA, xác nhận hiến tế, nhóm pet/chợ, 360/375/390/768/1440 và landscape 740×375/844×390 đạt; đã xem screenshot và sửa lỗi co ngang pet. CTA landscape hiển thị ngay, không cần scrollIntoView.
 - Chưa xác nhận chất lượng nghe bằng tai; nhạc vẫn là tổng hợp Web Audio, không phải bản thu orchestral. Chưa E2E đầy đủ pause/skip/replay/gacha/audio lifecycle trên mọi browser; nhãn ải landscape vẫn dày. Task gameplay cũ phía trên giữ nguyên.
-- Deploy: đang chờ xác minh bản phát hành mới; chưa coi test local là đã production.
+- Đã push/deploy app `380282d` ngày 31/10/2026; app/DB healthy. Backup DB đã qua `pg_restore -l`, giữ image rollback riêng. Bundle local đã test/origin/public cùng 779.715 byte, SHA-256 `022108fea5ad919dca357cdc296413b60869403447a9e6ee4d6899f4c412a48b`; public xác minh bằng browser vì HTTP client Python bị Cloudflare trả 403. Màn đăng nhập public 1440/375 không pageerror/tràn ngang; không tạo tài khoản production.
+- Smoke bổ sung đạt: bật/tắt nhạc và SFX bằng gesture, lưu âm lượng, menu Escape; CTA landscape có toast + hai pet vẫn trên nav. Regression 6 trạng thái pet (hai/một/chết/nghỉ dưỡng/kho trống/no-pet) ở 1440/1024/375 đạt. Stack/volume test local đã dọn, không đụng volume production.
 
 ## Kiểm chứng artwork production
 
