@@ -1,7 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 
 import * as api from './api';
-import {t} from './i18n';
+import {t, tr} from './i18n';
+import {audio} from './audio.cjs';
+import './market-mobile.css';
+
 import {RARITY} from './Hunt';
 import ItemIcon from './ItemIcon';
 import marketArt from '../assets/fantasy/nav-market.png';
@@ -170,6 +173,7 @@ function WantRow({row, state, busy, onFulfill, onCancel}) {
 
 export default function MarketTab({state, busy, act, children, sellItem, onSellItemUsed}) {
   const [view, setView] = useState('sell');
+  const [pane, setPane] = useState('browse');
   const [query, setQuery] = useState('');
   const [item, setItem] = useState('');
   const [qty, setQty] = useState(1);
@@ -185,6 +189,7 @@ export default function MarketTab({state, busy, act, children, sellItem, onSellI
   useEffect(() => {
     if (!sellItem) return;
     setView('sell');
+    setPane('post');
     setItem(sellItem);
     onSellItemUsed?.();
   }, [sellItem]);
@@ -231,18 +236,20 @@ export default function MarketTab({state, busy, act, children, sellItem, onSellI
   const buy = async (id) => {
     const next = await act(() => api.buyListing(id), true);
     setConfirm(null);
-    if (next) setNote(next.message);
+    if (next) { setNote(next.message); audio.cue('success'); }
     else await refresh();
   };
   const cancel = async (id) => {
     const next = await act(() => api.cancelListing(id), true);
-    if (next) setNote(next.message);
+    if (next) { setNote(next.message); audio.cue('success'); }
   };
   const sell = async () => {
     if (busy || blocked) return;
     const next = await act(() => api.sellItem(chosen.id, lot, asking), true);
     if (next) {
       setNote(next.message);
+      audio.cue('success');
+      setPane('own');
       setConfirm(null);
       setPrice('');
       setQty(1);
@@ -253,6 +260,8 @@ export default function MarketTab({state, busy, act, children, sellItem, onSellI
     const next = await act(() => api.postBuyOrder(wanted.id, requestedQty, bid), true);
     if (next) {
       setNote(next.message);
+      audio.cue('success');
+      setPane('own');
       setConfirm(null);
       setWantPrice('');
       setWantQty(1);
@@ -260,16 +269,19 @@ export default function MarketTab({state, busy, act, children, sellItem, onSellI
   };
   const fulfill = async (id) => {
     const next = await act(() => api.fulfillBuyOrder(id), true);
-    if (next) setNote(next.message);
+    if (next) { setNote(next.message); audio.cue('success'); }
     else await refresh();
   };
   const cancelWant = async (id) => {
     const next = await act(() => api.cancelBuyOrder(id), true);
-    if (next) setNote(next.message);
+    if (next) { setNote(next.message); audio.cue('success'); }
   };
 
   return (
-    <div className='vpet-market'>
+    <div className={`vpet-market is-pane-${pane}`}>
+      <nav className='vpet-phone-sections' aria-label={t('market.modes')}>
+        {[['browse', tr('Xem chợ', 'Browse', '市場を見る')], ['post', tr('Đăng tin', 'Post', '出品')], ['own', tr('Tin của tôi', 'My posts', '自分の出品')]].map(([id, label]) => <button key={id} type='button' aria-pressed={pane === id} onClick={() => { setPane(id); setConfirm(null); }}>{label}</button>)}
+      </nav>
       <p className='vpet-note'>{t('market.note', fee, tax)}</p>
       {note && <div className='vpet-inv__receipt' role='status'>{note}</div>}
       <nav className='vpet-market__modes' role='tablist' aria-label={t('market.modes')}>
@@ -344,6 +356,7 @@ export default function MarketTab({state, busy, act, children, sellItem, onSellI
             <button type='button' className='vpet-btn' disabled={busy} onClick={() => setConfirm(null)}>{t('app.cancel')}</button>
             <button type='button' className='vpet-btn vpet-btn--primary' disabled={busy || Boolean(blocked)} onClick={sell}>{t('market.confirmSell')}</button>
           </div> : <button type='button' className='vpet-btn vpet-btn--primary' disabled={busy || Boolean(blocked)} onClick={() => setConfirm({kind: 'sell'})}>{busy ? t('market.posting') : t('market.post')}</button>}
+          <div className='vpet-market__own'>
           <h4>{t('market.mine', mine.length)}</h4>
           {mine.length ? (
             <ul className='vpet-market__list is-mine'>
@@ -351,6 +364,7 @@ export default function MarketTab({state, busy, act, children, sellItem, onSellI
             </ul>
           ) : <p className='vpet-muted'>{t('market.noneListed')}</p>}
           {children}
+          </div>
         </aside>
       </div>
       )}
@@ -380,9 +394,11 @@ export default function MarketTab({state, busy, act, children, sellItem, onSellI
             {wantBlocked && <p className='vpet-inv__warning'>{wantBlocked}</p>}
             {confirm?.kind === 'want' ? <div className='vpet-market__confirm'><p>{t('market.wantLine', bid, requestedQty, wanted?.name, fee)}</p><button type='button' className='vpet-btn' disabled={busy} onClick={() => setConfirm(null)}>{t('app.cancel')}</button><button type='button' className='vpet-btn vpet-btn--primary' disabled={busy || Boolean(wantBlocked)} onClick={postWant}>{t('market.confirmWant')}</button></div>
               : <button type='button' className='vpet-btn vpet-btn--primary' disabled={busy || Boolean(wantBlocked)} onClick={() => setConfirm({kind:'want'})}>{t('market.postWant')}</button>}
+            <div className='vpet-market__own'>
             <h4>{t('market.myWants', myOrders.length)}</h4>
             {myOrders.length ? <ul className='vpet-market__list is-mine'>{myOrders.map((r) => <WantRow key={r.id} row={r} state={state} busy={busy} onFulfill={fulfill} onCancel={cancelWant}/>)}</ul> : <p className='vpet-muted'>{t('market.noWants')}</p>}
             {children}
+            </div>
           </aside>
         </div>
       )}

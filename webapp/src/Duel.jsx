@@ -6,6 +6,7 @@ import tiles from '../assets/world-tiles.png';
 import PetCanvas from './PetCanvas';
 import {monsterStyle} from './World';
 import UserPicker from './UserPicker';
+import {audio, turnCue} from './audio.cjs';
 
 export const skillText = (state, ids) => (ids || []).map((id) => {
   const s = state.skills?.find((k) => k.id === id);
@@ -14,13 +15,15 @@ export const skillText = (state, ids) => (ids || []).map((id) => {
 
 // Text box that types itself out, like a handheld RPG.
 function Typed({text}) {
+  const reduced = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches || false;
   const [n, setN] = useState(0);
   useEffect(() => {
+    if (reduced) return undefined;
     setN(0);
     const t = setInterval(() => setN((x) => (x >= text.length ? (clearInterval(t), x) : x + 1)), 18);
     return () => clearInterval(t);
-  }, [text]);
-  return <>{text.slice(0, n)}</>;
+  }, [text, reduced]);
+  return <>{reduced ? text : text.slice(0, n)}</>;
 }
 
 // skills that act on the user instead of flying at the foe
@@ -66,6 +69,21 @@ export function Replay({duel, state, onClose, onComplete}) {
   const crit = Boolean(turn?.text?.includes(t('duel.critical')));
   const skill = turn?.skill || '';
   const fx = skill ? state.skills?.find((k) => k.id === skill)?.emoji : '💥';
+  const heard = useRef(reduced ? duel.turns.length : 0);
+  const resultHeard = useRef(false);
+  useEffect(() => {
+    audio.battle(!done, paused);
+    return () => audio.battle(false);
+  }, [done, paused]);
+  useEffect(() => {
+    if (n < heard.current) resultHeard.current = false;
+    if (n === heard.current + 1 && !reduced && turn) audio.cue(turnCue(turn, before));
+    heard.current = n;
+    if (done && !resultHeard.current) {
+      resultHeard.current = true;
+      audio.cue(duel.winner === mine ? 'win' : 'lose');
+    }
+  }, [n, done, duel, mine, reduced]);
   const live = Boolean(turn) && !done;
   const attack = live && !SELF.has(skill);
   const log = done ? (sudden ? t('duel.suddenWinner', sides[duel.winner].name) : t('duel.winner', sides[duel.winner].name)) : (turn?.text || t('duel.intro', sides[foe].name, sides[mine].name));
@@ -105,7 +123,8 @@ export function Replay({duel, state, onClose, onComplete}) {
   return (
     <div className='vpet-arena'>
       <header className='vpet-battle-head'><div><b>{t('duel.title')}</b><small>{`${duel.a.name} đối đầu ${duel.b.name}`}</small></div><span>{done ? t('duel.finished') : `Lượt ${n}/${duel.turns.length}`}</span></header>
-      <div className='vpet-arena__stage' style={{'--arena-tiles': `url(${tiles})`}}>
+      <div className={`vpet-arena__stage${paused ? ' is-paused' : ''}`} style={{'--arena-tiles': `url(${tiles})`}}>
+        {live && <span key={`impact${n}`} className={`vpet-arena__impact is-${turnCue(turn, before)}`} aria-hidden='true'/>}
         <div className='vpet-arena__sky'/>
         <div className='vpet-arena__floor'/>
         {fighter(foe, 'far')}

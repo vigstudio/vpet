@@ -267,7 +267,72 @@
   .vpet-world-shell .vpet-market__filter { white-space:normal; min-height:44px; }
 }
 
-.vpet-music.is-on { border-color:#4f91bd; background:#e8f5ff; color:#1d6ba3; }
+/* Utilities stay mounted so closing the menu never stops the audio engine. */
+.vpet-tools { position:relative; margin-left:auto; }
+.vpet-tools__toggle { position:relative; }
+.vpet-tools__content { display:none; position:absolute; z-index:60; top:calc(100% + 8px); right:0; width:300px; max-height:70dvh; overflow:auto; padding:14px; border:3px solid var(--wood); border-radius:16px; background:var(--paper); box-shadow:0 8px 24px #21365340; }
+.vpet-tools__content.is-open { display:flex; flex-wrap:wrap; gap:10px; }
+.vpet-audio { flex-basis:100%; min-width:0; margin:0; padding:10px; border:1px solid #c5a77b; border-radius:8px; }
+.vpet-audio label, .vpet-tools .vpet-mute { display:flex; align-items:center; gap:8px; min-height:44px; flex-wrap:wrap; }
+.vpet-audio input[type='range'] { width:100%; min-height:44px; accent-color:#438340; }
+.vpet-phone-sections { display:none; }
+.vpet-arena__impact { position:absolute; pointer-events:none; inset:20% 25%; border:3px solid #ffd273; border-radius:50%; opacity:0; animation:vpet-impact .6s ease-out; }
+.vpet-arena__impact.is-heal { border-color:#72dc91; }
+.vpet-arena__impact.is-shield { border-color:#77caff; }
+.vpet-arena__impact.is-poison { border-color:#bb87df; }
+.vpet-arena__impact.is-miss { display:none; }
+.vpet-arena__stage.is-paused * { animation-play-state:paused!important; }
+@keyframes vpet-impact { 0% { opacity:0; transform:scale(.15); } 35% { opacity:.65; } 100% { opacity:0; transform:scale(1.2); } }
+@media (max-width:760px) {
+  .vpet-world-shell { --nav-height:76px; }
+  .vpet-world-shell .vpet-panel__head { flex-wrap:nowrap; gap:5px; }
+  .vpet-world-shell .vpet-panel__title { flex:0 0 auto; min-width:0; padding:5px; }
+  .vpet-world-shell .vpet-panel__title h2 { font-size:16px; }
+  .vpet-world-shell .vpet-coins { margin:0; padding:5px; white-space:nowrap; font-size:13px; }
+  .vpet-world-shell .vpet-profile__toggle { max-width:100px; }
+  .vpet-world-shell .vpet-panel__head > .vpet-tools { order:2; margin:0; }
+  .vpet-world-shell .vpet-panel__head > .vpet-profile { margin-left:auto; }
+  .vpet-tools__content { position:fixed; top:calc(60px + env(safe-area-inset-top)); right:8px; width:min(340px,calc(100vw - 16px)); max-height:calc(100dvh - 150px); }
+  .vpet-world-shell .vpet-panel__body, .vpet-world-shell .vpet-panel__body.is-city { padding-bottom:calc(var(--nav-height) + env(safe-area-inset-bottom)); scroll-padding-bottom:calc(var(--nav-height) + 12px + env(safe-area-inset-bottom)); }
+  .vpet-world-shell .vpet-tabs { min-height:var(--nav-height); box-sizing:border-box; }
+  .vpet-world-shell .vpet-tabs .vpet-game-icon { width:32px; height:32px; }
+  .vpet-phone-sections { display:flex; gap:5px; margin:0 0 10px; }
+  .vpet-phone-sections button { flex:1; min-width:0; min-height:44px; padding:6px; border:1px solid #ad804c; border-radius:9px; background:#fff2d8; color:#634124; font:inherit; font-size:14px; }
+  .vpet-phone-sections button[aria-pressed='true'] { background:#f4bd45; border-color:#805031; font-weight:700; }
+  .vpet-world-shell .vpet-pet-layout .vpet-sheet { display:flex; flex-direction:column; align-items:stretch; gap:10px; }
+  .vpet-pettab:not(.is-section-care) .vpet-sheet__care,
+  .vpet-pettab:not(.is-section-care) .vpet-sheet__more,
+  .vpet-pettab:not(.is-section-growth) .vpet-sheet__gear,
+  .vpet-pettab:not(.is-section-growth) .vpet-sheet__progress,
+  .vpet-pettab.is-section-growth .vpet-sheet__hero,
+  .vpet-pettab.is-section-care .vpet-doll__col,
+  .vpet-pettab.is-section-care .vpet-character__gearhint { display:none; }
+  .vpet-world-shell .vpet-pet-layout .vpet-sheet__hero .vpet-doll { min-height:190px; padding:10px; }
+  .vpet-world-shell .vpet-pet-layout .is-section-care .vpet-doll__stats { display:none; }
+  .vpet-world-shell .vpet-pet-layout .is-section-care .vpet-doll { grid-template-columns:1fr; }
+  .vpet-world-shell .vpet-pet-layout .vpet-sheet__hero { padding:10px; }
+  .vpet-world-shell .vpet-character__head h3 { margin:0; }
+  .vpet-world-shell .vpet-switch { margin-bottom:8px; }
+  .vpet-world-shell .vpet-switch button { min-height:44px; }
+}
+.vpet-halloween { position:fixed; box-sizing:border-box; width:min(460px,calc(100% - 32px)); max-height:calc(100dvh - 32px); overflow:auto; padding:26px; border:3px solid #a87546; border-radius:20px; background:#fff0d2; color:#213653; box-shadow:0 20px 70px #0008; }
+.vpet-halloween::backdrop { background:#162139b8; }
+.vpet-halloween h2 { margin:0 0 8px; font-size:30px; color:#633e70; }
+.vpet-halloween p { line-height:1.5; }
+.vpet-halloween small { display:block; line-height:1.5; }
+.vpet-halloween__close { position:absolute; right:8px; top:8px; }
+.vpet-halloween__moon { font-size:68px; line-height:1; color:#805031; }
+.vpet-halloween__actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; margin-top:20px; }
+.vpet-halloween button { min-width:44px; min-height:44px; }
+.vpet-graveyard .vpet-grave { flex-wrap:wrap; filter:none; }
+.vpet-graveyard .vpet-grave > div { flex:1; min-width:130px; }
+.vpet-graveyard select { display:block; box-sizing:border-box; width:100%; min-height:44px; margin:8px 0; }
+.vpet-graveyard__gear { display:flex; flex-wrap:wrap; gap:10px; }
+.vpet-graveyard__confirm { display:flex; align-items:center; gap:10px; min-height:44px; margin:12px 0; }
+.vpet-graveyard__confirm input { flex-shrink:0; width:24px; height:24px; }
+@media (prefers-reduced-motion:reduce) {
+  .vpet-arena__impact { display:none; animation:none; }
+}
 
 @media (max-width:900px) and (orientation:landscape) and (max-height:500px) {
   .vpet-world-shell .vpet-panel__head { min-height:50px; padding:3px 10px; }
@@ -288,7 +353,10 @@
     border-radius:12px 12px 0 0;
     background:linear-gradient(#a87546,#805031);
   }
-  .vpet-world-shell .vpet-tabs button { min-height:48px; }
+  .vpet-world-shell { --nav-height:54px; }
+  .vpet-world-shell .vpet-tabs { min-height:var(--nav-height); }
+  .vpet-world-shell .vpet-tabs button { min-height:44px; }
+  .vpet-world-shell .vpet-tabs .vpet-game-icon { width:24px; height:24px; }
   .vpet-world-shell .vpet-tabs button.is-overflow { display:none; }
   .vpet-world-shell .vpet-tabs .vpet-tabs__more {
     display:flex;

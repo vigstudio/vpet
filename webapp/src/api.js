@@ -43,6 +43,7 @@ export const interact = (pet, action) => game('/interact', {pet, action});
 export const reskin = (pet, name, parts) => game('/reskin', {pet, name, parts});
 export const unequip = (pet) => game('/unequip', {pet});
 export const bury = (pet) => game('/bury', {pet});
+export const resurrect = (born, died, sacrifice) => game('/resurrect', {born, died, sacrifice});
 export const kill = (pet) => game('/kill', {pet});
 export const hunt = (pet, map) => game('/hunt', {pet, map});
 export const wild = (pet, map) => game('/wild', {pet, map});

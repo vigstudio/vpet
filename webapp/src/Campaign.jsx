@@ -101,6 +101,7 @@ export default function Campaign({state, sel, busy, act}) {
     {view === 'alliance' ? <Alliance state={state} sel={sel} busy={busy} act={act}/> : (!pet || pet.dead) ? <p className='vpet-empty'>{t('campaign.needAlive')}</p> : view === 'tower' ? <Tower state={state} sel={sel} busy={busy} act={act}/> : view === 'wild' ? <WorldTab state={state} sel={sel} busy={busy} act={act}/> : view === 'boss' ? <Boss state={state} sel={sel} busy={busy} act={act} now={now}/> : view === 'party' ? <Parties state={state} sel={sel} busy={busy} act={act} mapID={chapter} now={now}/> : <>
       {/* One toolbar: where you are, how hard, and what it costs. Everything else is the map. */}
       <div className='vpet-campaign__setup'>
+      <div className='vpet-campaign__controls'>
       <div className='vpet-campaign__bar'>
         <nav className='vpet-chapters' aria-label={t('campaign.map')}>
           {maps.map((m) => {
@@ -129,11 +130,6 @@ export default function Campaign({state, sel, busy, act}) {
         </div>
       </div>
 
-      <Realm id={chapter} className='vpet-campaign__map'>
-        <div className='vpet-realm__heading'><b>{map?.name}</b><small>{t('campaign.mapSub')}</small></div>
-        <svg className='vpet-route' viewBox='0 0 100 100' preserveAspectRatio='none' aria-hidden='true'><polyline points={nodes.map(([x,y])=>`${x},${y}`).join(' ')}/></svg>
-        {visibleRows.map((r,i)=><button key={r.id} type='button' className={`vpet-stage${r.stage===stage?' is-picked':''}${r.open?'':' is-locked'}`} style={{left:`${nodes[i][0]}%`,top:`${nodes[i][1]}%`}} aria-pressed={r.stage===stage} onClick={()=>{setStage(r.stage);setResult(null);}}><span>{r.boss?'BOSS':r.stage}</span><b>{r.name}</b><small>{r.open?starsText(r.stars[difficulty] || 0):tr(`Cấp ${r.min_lv} · khóa`, `Level ${r.min_lv} · locked`, `レベル${r.min_lv} · ロック`)}</small></button>)}
-      </Realm>
       <section className='vpet-expedition-bar' aria-label={t('campaign.prepare')}>
         <div>
           <b>{`${picked?.stage || 1}. ${picked?.name || ''} · ${[t('difficulty.easy'),t('difficulty.medium'),t('difficulty.hard')][difficulty]} · ${starsText(picked?.stars[difficulty] || 0)}`}</b>
@@ -150,6 +146,12 @@ export default function Campaign({state, sel, busy, act}) {
         </div>
         <button type='button' className='vpet-btn vpet-btn--primary' disabled={busy || Boolean(stop)} onClick={enter}>{busy ? t('campaign.entering') : stop || t('campaign.enter')}</button>
       </section>
+      </div>
+      <Realm id={chapter} className='vpet-campaign__map'>
+        <div className='vpet-realm__heading'><b>{map?.name}</b><small>{t('campaign.mapSub')}</small></div>
+        <svg className='vpet-route' viewBox='0 0 100 100' preserveAspectRatio='none' aria-hidden='true'><polyline points={nodes.map(([x,y])=>`${x},${y}`).join(' ')}/></svg>
+        {visibleRows.map((r,i)=><button key={r.id} type='button' className={`vpet-stage${r.stage===stage?' is-picked':''}${r.open?'':' is-locked'}`} style={{left:`${nodes[i][0]}%`,top:`${nodes[i][1]}%`}} aria-pressed={r.stage===stage} onClick={()=>{setStage(r.stage);setResult(null);}}><span>{r.boss?'BOSS':r.stage}</span><b>{r.name}</b><small>{r.open?starsText(r.stars[difficulty] || 0):tr(`Cấp ${r.min_lv} · khóa`, `Level ${r.min_lv} · locked`, `レベル${r.min_lv} · ロック`)}</small></button>)}
+      </Realm>
       </div>
       <details className='vpet-campaign__rules'><summary>{tr('Cách tính sao và rủi ro', 'Stars and risks', '星とリスク')}</summary><p className='vpet-muted'>{tr(`Độ khó áp dụng cho toàn bộ ${map?.name || 'bản đồ'}. 1 sao: thắng. 2 sao: còn ít nhất 35% máu. 3 sao: còn ít nhất 70% máu, thắng trong 18 lượt. Thua bị thương; vùng khó có thể tử trận. Ải thường tốn ${energy.stage_cost} năng lượng, boss chương ${energy.boss_cost}, thám hiểm ${energy.wild_cost}.`, `Difficulty applies to the entire ${map?.name || 'map'}. 1 star: win. 2 stars: at least 35% HP. 3 stars: at least 70% HP within 18 turns. Defeat causes injury; hard zones can be fatal. A stage costs ${energy.stage_cost} energy, a chapter boss ${energy.boss_cost}, exploring ${energy.wild_cost}.`, `難易度は${map?.name || 'マップ'}全体に適用。勝利で星1、HP35%以上で星2、HP70%以上かつ18ターン以内で星3。敗北すると負傷し、高難度では死亡する場合があります。気力はステージ${energy.stage_cost}、ボス${energy.boss_cost}、探索${energy.wild_cost}。`)}</p></details>
       {result && <CampaignResult result={result} state={state} onClose={closeResult} onReplay={()=>setReplay(result.duel)}/>}

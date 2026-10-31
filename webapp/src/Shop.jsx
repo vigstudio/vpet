@@ -5,6 +5,7 @@ import {t} from './i18n';
 import {RARITY} from './Hunt';
 import ItemIcon from './ItemIcon';
 import {itemOf} from './store';
+import {audio} from './audio.cjs';
 const {actAt, buildReel, totalMs} = require('./gacha.cjs');
 
 // The daily shop and the blind box. Stock rotates at midnight and is the same for everyone.
@@ -23,7 +24,11 @@ function Box({state, busy, act}) {
   const [round, setRound] = useState(0);
   const [act4, setAct4] = useState('launch');
   const timer = useRef(null);
-  useEffect(() => () => clearTimeout(timer.current), []);
+  const mounted = useRef(false);
+  useEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; clearTimeout(timer.current); };
+  }, []);
   const cost = state.gacha_cost || 150;
   const prizes = (state.catalog || []).filter((it) => !['junk', 'bag', 'gem'].includes(it.kind) && (it.rarity || 0) < 4);
   const spinning = phase === 'loading' || phase === 'spinning';
@@ -35,9 +40,12 @@ function Box({state, busy, act}) {
       return undefined;
     }
     const started = performance.now();
+    let lastTick = 0;
     let raf = requestAnimationFrame(function step(now) {
       const at = actAt(now - started);
       setAct4(at);
+      const interval = at === 'creep' ? 380 : at === 'slow' ? 210 : 85;
+      if (at !== 'done' && now - lastTick >= interval) { audio.cue('tick'); lastTick = now; }
       if (at !== 'done') {
         raf = requestAnimationFrame(step);
       }
@@ -49,6 +57,7 @@ function Box({state, busy, act}) {
     setPhase('loading');
     setLast(null);
     const next = await act(() => api.gacha(), true);
+    if (!mounted.current) return;
     const won = next?.gacha_result && prizes.find((it) => it.id === next.gacha_result.item);
     if (!won) {
       setPhase('idle');
@@ -62,6 +71,7 @@ function Box({state, busy, act}) {
     timer.current = setTimeout(() => {
       setLast({item: won, note: next.message});
       setPhase('won');
+      audio.cue('reward');
     }, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : totalMs());
   };
 

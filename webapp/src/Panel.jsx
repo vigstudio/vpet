@@ -9,6 +9,8 @@ import Creator from './Creator';
 import DuelTab from './Duel';
 import GameIcon from './GameIcon';
 import Gift from './Gift';
+import Graveyard from './Graveyard';
+import Halloween from './Halloween';
 import HuntTab, {Badges, GearBox, Skills, RARITY} from './Hunt';
 import Inventory from './Inventory';
 import Quests, {Gems} from './Quests';
@@ -178,6 +180,7 @@ function PetTab({state, sel, busy, act, onCreate, onReskin, onInventory, onGo}) 
   const [supply, setSupply] = useState('food');
   const [renaming, setRenaming] = useState(false);
   const [sheetTab, setSheetTab] = useState('skills');
+  const [section, setSection] = useState('care');
   const pet = state.pets[sel];
   if (!pet) {
     return <Creator/>;
@@ -196,7 +199,10 @@ function PetTab({state, sel, busy, act, onCreate, onReskin, onInventory, onGo}) 
   const known = Object.entries(pet.known || {});
   const care = ACTIONS.filter(([id]) => !['bung', 'dam'].includes(id));
   return (
-    <div className='vpet-pettab'>
+    <div className={`vpet-pettab is-section-${section}`}>
+      <nav className='vpet-phone-sections' aria-label={t('pet.more')}>
+        {[['care', t('pet.care')], ['gear', t('pet.gear')], ['growth', t('pet.development')]].map(([id, label]) => <button key={id} type='button' aria-pressed={section === id} onClick={() => setSection(id)}>{label}</button>)}
+      </nav>
       <div className='vpet-sheet'>
         <section className='vpet-sheet__hero'>
           <header className='vpet-character__head'>
@@ -333,26 +339,6 @@ function LegacyOffers({state, busy, act}) {
   );
 }
 
-function GraveTab({state}) {
-  if (!state.graves?.length) {
-    return <p className='vpet-empty'>{tr('Nghĩa trang trống. Chăm thú thật tốt nhé!','The graveyard is empty. Take good care of your pet!','墓地は空です。大切に育ててください！')}</p>;
-  }
-  return (
-    <div className='vpet-graves'>
-      {state.graves.map((g) => (
-        <div key={`${g.name}-${g.died}`} className='vpet-grave'>
-          <PetCanvas parts={g.parts} pet={{}} scale={2} still={true}/>
-          <div>
-            <b>{g.name}</b>
-            <p className='vpet-muted'>{`Sống ${age(g.born, g.died)} · ${g.cause}`}</p>
-            <p className='vpet-muted'>{new Date(g.died).toLocaleString('vi-VN')}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 // One tab button, used by the bar and by the phone's "More" sheet.
 function TabButton({id, badge, active, className = '', onGo}) {
   const label = t(`tab.${id}`);
@@ -375,12 +361,41 @@ export default function Panel({account, profile}) {
   // an item picked in the bag opens the market with its sell form already filled in
   const [sellItem, setSellItem] = useState('');
   const [settings, setSettings] = useState(false);
+  const tools = useRef(null);
+  const toolsButton = useRef(null);
+  useEffect(() => {
+    if (!settings) return undefined;
+    const close = (e) => {
+      if (e.type === 'keydown' && e.key !== 'Escape') return;
+      if (e.type === 'pointerdown' && tools.current?.contains(e.target)) return;
+      setSettings(false);
+      if (e.type === 'keydown') toolsButton.current?.focus();
+    };
+    document.addEventListener('keydown', close);
+    document.addEventListener('pointerdown', close);
+    return () => { document.removeEventListener('keydown', close); document.removeEventListener('pointerdown', close); };
+  }, [settings]);
   const [moreOpen, setMoreOpen] = useState(false);
   // the calendar shows itself once a day; dismissing it must not bring it back this session
   const [checkinOpen, setCheckinOpen] = useState(false);
   const checkinSeen = useRef(false);
   const [giftOpen, setGiftOpen] = useState(false);
   const giftSeen = useRef(false);
+  const [halloweenOpen, setHalloweenOpen] = useState(false);
+  const halloweenSeen = useRef(false);
+  const eventKey = `vpet.halloween.${account.id}.${state?.now ? new Date(state.now + 7 * 3600000).getUTCFullYear() : ''}`;
+  useEffect(() => {
+    if (!state?.halloween || halloweenSeen.current || giftOpen || checkinOpen || settings || moreOpen || creating) return;
+    const giftPending = state.welcome_gift && !state.welcome_gift.claimed;
+    if (tab === 'city' && ((giftPending && !giftSeen.current) || (!giftPending && state.checkin && !state.checkin.claimed_today && !checkinSeen.current))) return;
+    halloweenSeen.current = true;
+    try { if (localStorage.getItem(eventKey)) return; } catch (_) { /* session fallback */ }
+    setHalloweenOpen(true);
+  }, [state?.halloween, eventKey, tab, giftOpen, checkinOpen, settings, moreOpen, creating]);
+  const closeHalloween = () => {
+    try { localStorage.setItem(eventKey, '1'); } catch (_) { /* session fallback */ }
+    setHalloweenOpen(false);
+  };
   useEffect(() => {
     if (tab !== 'city' || giftSeen.current || !state?.welcome_gift || state.welcome_gift.claimed) return;
     giftSeen.current = true;
@@ -448,39 +463,32 @@ export default function Panel({account, profile}) {
   };
 
   return (
-    <main className='vpet-world-shell'>
+    <main className={`vpet-world-shell is-screen-${tab}`}>
       <div className='vpet-panel'>
         <header className='vpet-panel__head'>
           <div className='vpet-panel__title'><h2>{t('app.title')}</h2><span>{t(`tab.${tab}`)}</span></div>
           {state && <Coins state={state}/>}
+          {state && <div className='vpet-tools' ref={tools}>
+            <button ref={toolsButton} type='button' className='vpet-iconbtn vpet-tools__toggle' aria-label={t('app.settings')} aria-expanded={settings} aria-controls='vpet-tools' onClick={() => setSettings(!settings)}><GameIcon name='settings'/>{(state.air > 0 || (state.checkin && !state.checkin.claimed_today) || (state.welcome_gift && !state.welcome_gift.claimed)) && <span className='vpet-badge'>!</span>}</button>
+            <div id='vpet-tools' className={`vpet-tools__content${settings ? ' is-open' : ''}`}>
           {state?.air > 0 && (
             <button type='button' className='vpet-iconbtn vpet-airdrop' disabled={busy} aria-label={t('buddy.crate')} title={t('buddy.crate')} onClick={() => act(api.claimAirdrop)}>
               {'📦'}<span className='vpet-badge'>{state.air}</span>
             </button>
           )}
           {state?.welcome_gift && !state.welcome_gift.claimed && (
-            <button type='button' className='vpet-iconbtn vpet-gift__open' aria-label={t('gift.open')} title={t('gift.open')} onClick={() => { setCheckinOpen(false); setGiftOpen(true); }}>{'🎁'}</button>
+            <button type='button' className='vpet-iconbtn vpet-gift__open' aria-label={t('gift.open')} title={t('gift.open')} onClick={() => { setSettings(false); setCheckinOpen(false); setGiftOpen(true); }}>{'🎁'}</button>
           )}
           {state?.checkin && (
             <button type='button' className={`vpet-iconbtn vpet-checkin__open${state.checkin.claimed_today ? '' : ' is-due'}`}
               aria-label={state.checkin.claimed_today ? t('checkin.openDone') : t('checkin.open')}
               title={state.checkin.claimed_today ? t('checkin.streakNow', state.checkin.streak) : t('checkin.open')}
-              onClick={() => setCheckinOpen(true)}>{'📅'}</button>
+              onClick={() => { setSettings(false); setGiftOpen(false); setCheckinOpen(true); }}>{'📅'}</button>
           )}
-          {state && <Music/>}
-          {state && (
-            <div className='vpet-gear-menu'>
-              <button type='button' className='vpet-iconbtn' aria-label={t('app.settings')} aria-expanded={settings} onClick={() => setSettings(!settings)}><GameIcon name='settings'/></button>
-              {settings && (
-                <div className='vpet-setmenu' role='menu'>
-                  <label className='vpet-mute'>
-                    <input type='checkbox' checked={!state.muted} onChange={(e) => act(() => api.setMuted(!e.target.checked))}/>
-                    {t('app.notify')}
-                  </label>
-                </div>
-              )}
+              <Music tab={tab}/>
+              <label className='vpet-mute'><input type='checkbox' checked={!state.muted} onChange={(e) => act(() => api.setMuted(!e.target.checked))}/>{t('app.notify')}</label>
             </div>
-          )}
+          </div>}
           {profile}
         </header>
         <nav className='vpet-tabs' aria-label='Chức năng game'>
@@ -516,6 +524,7 @@ export default function Panel({account, profile}) {
         )}
         {giftOpen && state && tab === 'city' && <Gift state={state} busy={busy} act={act} onClose={() => setGiftOpen(false)}/>}
         {checkinOpen && !giftOpen && state && tab === 'city' && <Checkin state={state} busy={busy} act={act} onClose={() => setCheckinOpen(false)}/>}
+        {halloweenOpen && state?.halloween && !giftOpen && !checkinOpen && <Halloween onClose={closeHalloween} onVisit={() => { closeHalloween(); go('grave'); }}/>}
         {bubble && <div className='vpet-toast' role='status'>{bubble.text}</div>}
         <div className={`vpet-panel__body${tab === 'city' ? ' is-city' : ''}`}>
           <Boundary resetKey={tab} onHome={() => go('city')}>
@@ -550,7 +559,7 @@ export default function Panel({account, profile}) {
           {state && !creating && tab === 'duel' && <DuelTab state={state} sel={sel} busy={busy} act={act} replay={replay} onReplayed={() => setReplay('')}/>}
           {state && !creating && tab === 'quest' && <Quests state={state} sel={sel} busy={busy} act={act} onGo={go}/>}
           {state && !creating && tab === 'clinic' && <Clinic state={state} sel={sel} busy={busy} act={act}/>}
-          {state && !creating && tab === 'grave' && <GraveTab state={state}/>}
+          {state && !creating && tab === 'grave' && <Graveyard state={state} busy={busy} act={act}/>}
           </Boundary>
         </div>
       </div>

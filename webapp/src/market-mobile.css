@@ -1,0 +1,11 @@
+@media (max-width:760px) {
+  .vpet-world-shell .vpet-market.is-pane-browse .vpet-market__stall,
+  .vpet-world-shell .vpet-market:not(.is-pane-browse) .vpet-market__board,
+  .vpet-world-shell .vpet-market.is-pane-post .vpet-market__own,
+  .vpet-world-shell .vpet-market.is-pane-own .vpet-market__stall > :not(.vpet-market__own) { display:none; }
+  .vpet-world-shell .vpet-market__body { display:block; }
+  .vpet-world-shell .vpet-market__own { padding-top:12px; }
+  .vpet-world-shell .vpet-market__own > h4 { margin-top:0; }
+  .vpet-world-shell .vpet-market__list { max-height:none; overflow:visible; }
+  .vpet-world-shell .vpet-market__confirm { scroll-margin:12px; }
+}

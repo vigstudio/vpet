@@ -15,10 +15,18 @@ type textRule struct {
 }
 
 var exactText = map[string][2]string{
-	`Tinh Hồn không thể giao dịch`:                 {`Soul Essence cannot be traded`, `精魂は売買・交換できません`},
-	`chưa đủ trang bị, vàng hoặc Tinh Hồn để ghép`: {`not enough equipment, gold or Soul Essence to forge`, `鍛造に必要な装備・金貨・精魂が足りません`},
-	`🎁 Đã nhận quà 3.000 vàng!`:                    {`🎁 Claimed the 3,000-gold gift!`, `🎁 3,000ゴールドのギフトを受け取りました！`},
-	`quà 3.000 vàng đã được nhận rồi`:              {`the 3,000-gold gift was already claimed`, `3,000ゴールドのギフトは受取済みです`},
+	`hồi sinh Halloween chỉ mở ngày 31/10 theo giờ Việt Nam`:                             {`Halloween revival opens only October 31, Vietnam time`, `ハロウィンの復活はベトナム時間10月31日限定です`},
+	`mộ hoặc thú hiến tế đã thay đổi; hãy tải lại`:                                       {`the grave or sacrifice pet changed; reload first`, `お墓か捧げるペットが変更されました。再読み込みしてください`},
+	`thú hiến tế phải đang sống, không nghỉ phép hoặc dưỡng bệnh`:                        {`the sacrifice must be alive, not on holiday or in care`, `生きていて休暇中・療養中ではないペットが必要です`},
+	`hãy xử lý lời mời tỷ thí trước khi hiến tế`:                                         {`resolve pending duel invitations before sacrificing`, `捧げる前に対戦の招待を処理してください`},
+	`thiếu đúng trang bị/cấp cường hóa trong kho để hồi sinh; đồ đã trả về kho khi chôn`: {`recorded gear or enhancement level is missing from the bag; burial returned the items`, `記録された装備か強化段階が不足しています。埋葬時に装備はバッグに返却されています`},
+	`thiếu ngọc trong kho để khôi phục thú`:                                              {`recorded gems are missing from the bag`, `復活に必要な宝石がバッグにありません`},
+	`thiếu phụ kiện trong kho để khôi phục thú`:                                          {`the recorded accessory is missing from the bag`, `復活に必要なアクセサリーがバッグにありません`},
+	`hãy rời tổ đội đang chờ trước khi hiến tế`:                                          {`leave the waiting party before sacrificing`, `捧げる前に待機中のパーティから退出してください`},
+	`Tinh Hồn không thể giao dịch`:                                                       {`Soul Essence cannot be traded`, `精魂は売買・交換できません`},
+	`chưa đủ trang bị, vàng hoặc Tinh Hồn để ghép`:                                       {`not enough equipment, gold or Soul Essence to forge`, `鍛造に必要な装備・金貨・精魂が足りません`},
+	`🎁 Đã nhận quà 3.000 vàng!`:                                                          {`🎁 Claimed the 3,000-gold gift!`, `🎁 3,000ゴールドのギフトを受け取りました！`},
+	`quà 3.000 vàng đã được nhận rồi`:                                                    {`the 3,000-gold gift was already claimed`, `3,000ゴールドのギフトは受取済みです`},
 
 	`bấm 🎴 Biến hình ở thẻ Thú cưng để dùng thẻ này`:      {`use the 🎴 Reshape button on the Pet tab`, `ペット画面の🎴変身ボタンから使ってください`},
 	`bấm 🏷️ Đổi tên ở thẻ Thú cưng để dùng thẻ này`:       {`use the 🏷️ Rename button on the Pet tab`, `ペット画面の🏷️改名ボタンから使ってください`},
@@ -133,6 +141,7 @@ var exactText = map[string][2]string{
 }
 
 var formattedText = []*textRule{
+	newTextRule(`Đã hiến tế %s để hồi sinh %s. Đồ của thú hiến tế còn lại trong kho.`, `Sacrificed $1 to revive $2. Remaining sacrifice equipment is in your bag.`, `$1を捧げて$2を復活させました。残った装備はバッグにあります。`),
 
 	newTextRule(`🔨 Ghép nhanh %d lần, dùng %d vàng.`, `🔨 Forged $1 times, spent $2 gold.`, `🔨 $1回鍛造し、$2金貨を使用。`),
 	newTextRule(`Nhận thưởng boss: %d sát thương (%d%%), %d vàng, %d hòm vũ khí và %d Tinh Hồn.`, `Boss reward: $1 damage ($2%), $3 gold, $4 weapon crates and $5 Soul Essence.`, `ボス報酬：$1ダメージ（$2%）、$3金貨、武器箱$4個、精魂$5個。`),

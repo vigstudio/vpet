@@ -44,6 +44,18 @@
 - Frontend 78/78, Go suite và Docker build đạt; DB repository integration vẫn tự skip, webpack còn ba cảnh báo kích thước (~738 KiB JS). Skill max/thiếu vật liệu, toàn bộ trạng thái giá sai/thiếu vàng và buy-order UI chưa E2E đầy đủ trong đợt này.
 - Đã push/deploy app `93c93fc` ngày 31/10/2026. App/DB healthy; backup DB đã qua `pg_restore -l`, giữ image rollback riêng. Origin/public/local cùng bundle 755.756 byte, SHA-256 `9d749eaae9ac5464f2b8277aadd3693fbb54797a196f9392f2d774a37101c0b2`; 43 ảnh runtime public hợp lệ. Login public 1440/375 không pageerror/tràn ngang. Stack/volume và fixture test local đã dọn; task gameplay cũ giữ nguyên.
 
+## Mobile / âm thanh / Halloween
+
+- Đã viết: header mobile một hàng, tiện ích gom menu; Thú cưng chia Chăm sóc/Trang bị/Phát triển, Chợ chia Xem chợ/Đăng tin/Tin của tôi. Landscape đổi cấu trúc controls, CTA ưu tiên hiển thị trước; giữ cảnh 16:9 và nút tối thiểu 44px.
+- Đã viết: ba arrangement Web Audio tự soạn cho thành phố/phiêu lưu/trận đấu, SFX theo lượt chiến đấu/gacha/thao tác thành công; nhạc và tiếng động có opt-in/âm lượng riêng. Scheduler giới hạn voice, dừng khi ẩn tab/unmount; không thêm thư viện hoặc nhạc bên ngoài.
+- Đã viết: Halloween mở ngày 31/10 theo giờ Việt Nam; đổi vĩnh viễn một thú sống để hồi sinh thú đã chôn. Lưu snapshot khi chôn mới, giữ cấp/kỹ năng/trang bị/cường hóa/ngọc/phụ kiện. Đồ vốn trả về kho khi chôn nên phải thu lại đúng món; thiếu đồ từ chối toàn bộ, không nhân bản. Chặn thú nghỉ dưỡng, lời mời tỷ thí và tổ đội chờ.
+- Giới hạn dữ liệu: mộ trước bản này chỉ có tên/ngoại hình, không có lịch sử cấp/kỹ năng/đồ; chỉ hồi sinh cấp 1, không bịa dữ liệu. Thú hiến tế không tạo mộ, đồ còn lại trả kho. Không thưởng hoạt động khi hồi sinh.
+- Popup sự kiện dùng cờ từ server, hiện một lần mỗi tài khoản/năm trên trình duyệt; ưu tiên quà/điểm danh trước, Escape và focus bằng native dialog; CTA đến Nghĩa trang. Có vi/en/ja, cảnh báo hiến tế không hoàn tác và giới hạn mộ cũ.
+- Đã kiểm thử: Go toàn suite; test hồi sinh bảo toàn đồ, từ chối không mutate, lỗi commit không đổi DB, legacy và ranh giới múi giờ. HTTP local thật hồi sinh đủ đồ +3/ngọc/phụ kiện, từ chối gửi lại và giữ kết quả sau reload. Sáu repository integration test đã chạy thật trên DB local cô lập, không skip.
+- Đã kiểm thử: frontend 81/81 và build đạt; fake AudioContext kiểm tra opt-in, một context, cue, mute/ẩn tab/cleanup/resume sau dispose. Playwright bắt pageerror: popup một lần/Escape/CTA, xác nhận hiến tế, nhóm pet/chợ, 360/375/390/768/1440 và landscape 740×375/844×390 đạt; đã xem screenshot và sửa lỗi co ngang pet. CTA landscape hiển thị ngay, không cần scrollIntoView.
+- Chưa xác nhận chất lượng nghe bằng tai; nhạc vẫn là tổng hợp Web Audio, không phải bản thu orchestral. Chưa E2E đầy đủ pause/skip/replay/gacha/audio lifecycle trên mọi browser; nhãn ải landscape vẫn dày. Task gameplay cũ phía trên giữ nguyên.
+- Deploy: đang chờ xác minh bản phát hành mới; chưa coi test local là đã production.
+
 ## Kiểm chứng artwork production
 
 - Bản app: `4fac173`, 31/10/2026; không thay backend hoặc dữ liệu người chơi.

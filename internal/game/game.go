@@ -194,11 +194,12 @@ type pet struct {
 }
 
 type grave struct {
-	Name  string         `json:"name"`
-	Parts map[string]int `json:"parts"`
-	Born  int64          `json:"born"`
-	Died  int64          `json:"died"`
-	Cause string         `json:"cause"`
+	Snapshot *pet           `json:"snapshot,omitempty"`
+	Name     string         `json:"name"`
+	Parts    map[string]int `json:"parts"`
+	Born     int64          `json:"born"`
+	Died     int64          `json:"died"`
+	Cause    string         `json:"cause"`
 }
 
 type userState struct {
@@ -554,8 +555,12 @@ func bury(st *userState, i int) error {
 	if !p.Dead {
 		return errors.New(p.Name + " vẫn còn sống")
 	}
+	snapshot, err := copyPet(p)
+	if err != nil {
+		return err
+	}
 	recoverPetItems(st, p)
-	st.Graves = append([]grave{{Name: p.Name, Parts: p.Parts, Born: p.Born, Died: p.DiedAt, Cause: p.Cause}}, st.Graves...)
+	st.Graves = append([]grave{{Snapshot: snapshot, Name: p.Name, Parts: p.Parts, Born: p.Born, Died: p.DiedAt, Cause: p.Cause}}, st.Graves...)
 	if len(st.Graves) > maxGraves {
 		st.Graves = st.Graves[:maxGraves]
 	}

@@ -4,6 +4,7 @@ import {useEffect, useState} from 'react';
 import * as api from './api';
 import {gainedItems} from './newitems.cjs';
 import {mergeFastState} from './state.cjs';
+import {audio} from './audio.cjs';
 
 // Tiny shared store: the corner widget and the panel read the same server state.
 let state = null;
@@ -128,10 +129,12 @@ export async function run(call, who = sel, quiet = false) {
     emit();
     if (!quiet) {
       say(next?.message, 4000, who);
+      if (next?.message) audio.cue('success');
     }
     return next;
   } catch (e) {
     say(e.message, 4000, who);
+    audio.cue('error');
     throw e;
   }
 }

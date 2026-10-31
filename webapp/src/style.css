@@ -1705,7 +1705,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .vpet-gift__open { color:#e0a33a; animation:vpet-pulse 1.8s ease-in-out infinite; }
 
 /* Campaign owns one frame. Native 16:9 stays intact; the setup wrapper only changes placement. */
-.vpet-campaign__setup { display:contents; }
+.vpet-campaign__setup { display:flex; flex-direction:column; }
+.vpet-campaign__setup > .vpet-campaign__map { order:1; flex:none; }
+.vpet-campaign__controls > .vpet-expedition-bar { order:2; }
 .vpet-campaign__setup > .vpet-campaign__map {
   width:min(100%, calc((100dvh - 390px) * 16 / 9));
   min-height:0;
@@ -1734,15 +1736,6 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
     margin:0;
     aspect-ratio:16/9;
   }
-  .vpet-campaign__setup > .vpet-campaign__bar,
-  .vpet-campaign__setup > .vpet-expedition-bar { grid-area:controls; }
-  .vpet-campaign__setup > .vpet-campaign__bar {
-    display:grid;
-    grid-template-columns:1fr auto;
-    align-content:start;
-    gap:6px;
-    margin:0 0 106px;
-  }
   .vpet-campaign__bar .vpet-chapters {
     grid-column:1 / -1;
     display:grid;
@@ -1762,19 +1755,6 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
   .vpet-campaign__bar .vpet-difficulties { display:flex; }
   .vpet-campaign__bar .vpet-difficulties button { min-height:44px; padding:4px 8px; }
   .vpet-energy-pill { min-width:82px; min-height:44px; padding:0 8px; }
-  .vpet-campaign__setup > .vpet-expedition-bar {
-    position:relative;
-    z-index:1;
-    top:-46px;
-    align-self:start;
-    min-height:94px;
-    margin:64px 0 0;
-    padding:8px;
-    background:var(--game-surface);
-  }
-  .vpet-campaign__setup > .vpet-expedition-bar > div { gap:2px; }
-  .vpet-campaign__setup .vpet-reward-line { max-height:42px; overflow:hidden; }
-  .vpet-campaign__setup > .vpet-expedition-bar .vpet-btn { width:100%; }
   .vpet-campaign__rules { display:none; }
 }
 
@@ -2054,13 +2034,17 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 
 .vpet-war__map::before, .vpet-war__map::after { pointer-events:none; }
 .vpet-campaign__bar > .vpet-campaign__pages { grid-column:1/-1; }
+.vpet-campaign__controls { display:contents; }
 @media (max-width:900px) and (orientation:landscape) and (max-height:500px) {
- .vpet-campaign__setup { height:auto; grid-template-areas:'map controls' 'pages controls'; }
- .vpet-campaign__bar > .vpet-campaign__pages { display:flex; }
- .vpet-campaign__setup > .vpet-campaign__bar { display:flex; flex-wrap:wrap; margin:0; }
+ .vpet-campaign__setup { height:auto; grid-template-areas:'map controls'; grid-template-columns:minmax(0,1fr) minmax(280px,44%); }
+ .vpet-campaign__controls { display:flex; flex-direction:column; grid-area:controls; gap:6px; }
+ .vpet-campaign__controls .vpet-campaign__bar { display:flex; flex-wrap:wrap; gap:4px; margin:0; }
  .vpet-campaign__bar .vpet-chapters { width:100%; }
  .vpet-campaign__bar > .vpet-campaign__pages { width:100%; flex-wrap:nowrap; gap:4px; }
  .vpet-campaign__pages .vpet-btn { flex:1; min-width:0; min-height:44px; padding:4px; font-size:11px; }
- .vpet-campaign__setup > .vpet-expedition-bar { top:0; margin-top:100px; }
+ .vpet-campaign__controls .vpet-expedition-bar { order:-1; display:flex; flex-wrap:nowrap; flex-direction:row; align-items:center; gap:6px; margin:0; padding:6px; min-height:44px; }
+ .vpet-campaign__controls .vpet-expedition-bar > div { min-width:0; flex:1; }
+ .vpet-campaign__controls .vpet-expedition-bar > div > b { font-size:11px; }
+ .vpet-campaign__controls .vpet-expedition-bar .vpet-btn { min-height:44px; max-width:55%; padding:5px; }
  .vpet-campaign__setup .vpet-reward-line { display:none; }
 }

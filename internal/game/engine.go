@@ -609,6 +609,9 @@ func (p *Engine) ServeHTTP(w http.ResponseWriter, r *http.Request, userID string
 		ID         string         `json:"id"`
 		Tag        string         `json:"tag"`
 		Open       bool           `json:"open"`
+		Born       int64          `json:"born"`
+		Died       int64          `json:"died"`
+		Sacrifice  int64          `json:"sacrifice"`
 	}
 	// Empty JSON bodies are accepted for actions without parameters.
 	if err := json.NewDecoder(http.MaxBytesReader(w, r.Body, maxBody)).Decode(&body); err != nil && !errors.Is(err, io.EOF) {
@@ -663,6 +666,12 @@ func (p *Engine) ServeHTTP(w http.ResponseWriter, r *http.Request, userID string
 		err = unequip(st, body.Pet)
 	case "/kill":
 		msg, err = kill(st, body.Pet, now)
+	case "/resurrect":
+		msg, err = p.resurrectPet(userID, st, body.Born, body.Died, body.Sacrifice, now)
+		if err == nil {
+			p.respondState(w, userID, msg)
+			return
+		}
 	case "/bury":
 		err = bury(st, body.Pet)
 		if err == nil {
@@ -888,6 +897,7 @@ func (p *Engine) ServeHTTP(w http.ResponseWriter, r *http.Request, userID string
 }
 
 type stateView struct {
+	Halloween      bool                `json:"halloween"`
 	Campaign       [][]stageView       `json:"campaign"`
 	BuildPoints    []int               `json:"build_points"`
 	Energy         []energyView        `json:"energy"`
@@ -992,7 +1002,7 @@ func (p *Engine) respondAll(w http.ResponseWriter, userID, msg string, hunt *hun
 		}
 	}
 	lang := p.locale(userID)
-	v := stateView{Now: now, Pets: []*pet{}, Slots: st.Slots, Inv: st.Inv, Graves: st.Graves, Muted: st.Muted, Air: st.Air, Catalog: translatedCatalog(lang), Message: localizeText(lang, msg),
+	v := stateView{Halloween: halloweenOpen(now), Now: now, Pets: []*pet{}, Slots: st.Slots, Inv: st.Inv, Graves: st.Graves, Muted: st.Muted, Air: st.Air, Catalog: translatedCatalog(lang), Message: localizeText(lang, msg),
 		In: p.offerViews(st.In), Out: p.offerViews(st.Out),
 		DIn: p.duelViews(st.DIn), DOut: p.duelViews(st.DOut), Duels: localizeDuels(lang, st.Duels), Skills: translatedSkills(lang),
 		Maps: translatedMaps(lang), Slots3: translatedSlots(lang), Rarities: translatedRarities(lang), GearStat: gearByID, Coin: st.Coin, Shop: st.stockFor(now), Gacha: gachaCost, Forge: st.forgeList(), Enhanced: st.enhancedViews(), MarketFx: [3]int{marketFee, marketTax, marketCeiling}, Cruel: st.cruelLeft(now), Medals: [][]medal{}, Hunt: hunt, Wild: wild, NextDrop: st.LastDrop + dropCooldown.Milliseconds()}
@@ -1048,6 +1058,14 @@ func (p *Engine) respondAll(w http.ResponseWriter, userID, msg string, hunt *hun
 	v.Drops = dropsPerDay
 	if st.DropDay == time.UnixMilli(now).In(vnZone).Format("2006-01-02") {
 		v.Drops = dropsPerDay - st.Drops
+	}
+	v.Graves = append([]grave{}, st.Graves...)
+	for i := range v.Graves {
+		if snapshot := v.Graves[i].Snapshot; snapshot != nil {
+			cp := *snapshot
+			cp.Likes, cp.Hates, cp.Touch = "", "", nil
+			v.Graves[i].Snapshot = &cp
+		}
 	}
 	for _, pt := range st.Pets {
 		cp := *pt
