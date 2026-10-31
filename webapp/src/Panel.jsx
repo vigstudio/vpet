@@ -17,6 +17,7 @@ import Checkin from './Checkin';
 import {dateLocale, t, tr} from './i18n';
 import ItemIcon from './ItemIcon';
 import MarketTab from './Market';
+import Music from './Music';
 import PetCanvas from './PetCanvas';
 import ShopTab, {Coins} from './Shop';
 import Campaign from './Campaign';
@@ -461,6 +462,7 @@ export default function Panel({account, profile}) {
               title={state.checkin.claimed_today ? t('checkin.streakNow', state.checkin.streak) : t('checkin.open')}
               onClick={() => setCheckinOpen(true)}>{'📅'}</button>
           )}
+          {state && <Music/>}
           {state && (
             <div className='vpet-gear-menu'>
               <button type='button' className='vpet-iconbtn' aria-label={t('app.settings')} aria-expanded={settings} onClick={() => setSettings(!settings)}><GameIcon name='settings'/></button>

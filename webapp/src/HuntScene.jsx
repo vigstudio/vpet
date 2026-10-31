@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import PetCanvas from './PetCanvas';
 import {RARITY} from './Hunt';
@@ -16,18 +16,20 @@ export function Backdrop({id}) {
 export default function HuntScene({hunt, map, onDone, onSkip}) {
   const label = (id) => `${itemOf(id)?.emoji || '❔'} ${itemOf(id)?.name || id}`;
   const [beats] = useState(() => beatsOf(hunt, map, label));
+  const doneRef = useRef(onDone);
+  doneRef.current = onDone;
   const [n, setN] = useState(0);
   const beat = beats[Math.min(n, beats.length - 1)];
   const done = n >= beats.length;
 
   useEffect(() => {
     if (done) {
-      const end = setTimeout(onDone, 400);
+      const end = setTimeout(() => doneRef.current(), 400);
       return () => clearTimeout(end);
     }
     const t = setTimeout(() => setN((x) => x + 1), beats[n].ms);
     return () => clearTimeout(t);
-  }, [n, done]);
+  }, [n, done, beats]);
 
   const pet = hunt.pet || {};
   const cls = ['vpet-scene__hero'];

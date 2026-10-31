@@ -82,7 +82,7 @@ export default function Campaign({state, sel, busy, act}) {
   const nodes=ROUTES[chapter] || ROUTES.vuon;
   const closeResult = useCallback(() => setResult(null), []);
   if (!pet || pet.dead) return <p className='vpet-empty'>{t('campaign.needAlive')}</p>;
-  if (replay) return <Replay duel={replay} state={state} onClose={() => setReplay(null)}/>;
+  if (replay) return <Replay duel={replay} state={state} onClose={() => setReplay(null)} onComplete={() => setReplay(null)}/>;
   const cleared = Boolean(picked?.stars[difficulty]);
   const pay = picked?.rewards?.[difficulty] || {coin: 0, xp: 0, rarity: 0, shards: 0, replay: cleared, drop_chance: 0};
   const stop = !picked?.open ? t('campaign.locked') : difficulty > 0 && !picked.stars[difficulty-1] ? t('campaign.prevDifficulty') : pet.sick || pet.health < 30 ? t('campaign.needCare') : pet.hunger < 5 ? t('campaign.needFood') : energy.now < cost ? tr(`Thiếu năng lượng (${energy.now}/${cost})`, `Not enough energy (${energy.now}/${cost})`, `気力不足（${energy.now}/${cost}）`) : '';
@@ -97,6 +97,7 @@ export default function Campaign({state, sel, busy, act}) {
     </nav>
     {view === 'wild' ? <WorldTab state={state} sel={sel} busy={busy} act={act}/> : view === 'boss' ? <Boss state={state} sel={sel} busy={busy} act={act} now={now}/> : view === 'party' ? <Parties state={state} sel={sel} busy={busy} act={act} mapID={chapter} now={now}/> : <>
       {/* One toolbar: where you are, how hard, and what it costs. Everything else is the map. */}
+      <div className='vpet-campaign__setup'>
       <div className='vpet-campaign__bar'>
         <nav className='vpet-chapters' aria-label={t('campaign.map')}>
           {maps.map((m) => {
@@ -144,6 +145,7 @@ export default function Campaign({state, sel, busy, act}) {
         </div>
         <button type='button' className='vpet-btn vpet-btn--primary' disabled={busy || Boolean(stop)} onClick={enter}>{busy ? t('campaign.entering') : stop || t('campaign.enter')}</button>
       </section>
+      </div>
       <details className='vpet-campaign__rules'><summary>{tr('Cách tính sao và rủi ro', 'Stars and risks', '星とリスク')}</summary><p className='vpet-muted'>{tr(`Độ khó áp dụng cho toàn bộ ${map?.name || 'bản đồ'}. 1 sao: thắng. 2 sao: còn ít nhất 35% máu. 3 sao: còn ít nhất 70% máu, thắng trong 18 lượt. Thua bị thương; vùng khó có thể tử trận. Ải thường tốn ${energy.stage_cost} năng lượng, boss chương ${energy.boss_cost}, thám hiểm ${energy.wild_cost}.`, `Difficulty applies to the entire ${map?.name || 'map'}. 1 star: win. 2 stars: at least 35% HP. 3 stars: at least 70% HP within 18 turns. Defeat causes injury; hard zones can be fatal. A stage costs ${energy.stage_cost} energy, a chapter boss ${energy.boss_cost}, exploring ${energy.wild_cost}.`, `難易度は${map?.name || 'マップ'}全体に適用。勝利で星1、HP35%以上で星2、HP70%以上かつ18ターン以内で星3。敗北すると負傷し、高難度では死亡する場合があります。気力はステージ${energy.stage_cost}、ボス${energy.boss_cost}、探索${energy.wild_cost}。`)}</p></details>
       {result && <CampaignResult result={result} state={state} onClose={closeResult} onReplay={()=>setReplay(result.duel)}/>}
     </>}

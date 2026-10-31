@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import * as api from './api';
 import {dateLocale, t, tr} from './i18n';
@@ -32,10 +32,14 @@ const hpTone = (v, max) => (v / max > 0.5 ? 'is-ok' : v / max > 0.2 ? 'is-mid' :
 // Replays a finished duel turn by turn on a perspective field: your pet close up at the
 // bottom left, the opponent further back at the top right. Hits throw the skill across,
 // the target flashes and loses HP; heals and shields glow on the user.
-export function Replay({duel, state, onClose}) {
-  const [n, setN] = useState(0);
+export function Replay({duel, state, onClose, onComplete}) {
+  const reduced = useRef(globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches || false).current;
+  const completeRef = useRef(onComplete);
+  completeRef.current = onComplete;
+  const [n, setN] = useState(() => reduced ? duel.turns.length : 0);
   const [paused, setPaused] = useState(false);
   const [speed, setSpeed] = useState(1);
+  const completed = useRef(false);
   const mine = (state.pets || []).some((p) => p.born === duel.b.born) && !(state.pets || []).some((p) => p.born === duel.a.born) ? 1 : 0;
   const foe = 1 - mine;
   useEffect(() => {
@@ -45,6 +49,12 @@ export function Replay({duel, state, onClose}) {
     const t = setTimeout(() => setN((x) => x + 1), (n ? 1900 : 1600) / speed);
     return () => clearTimeout(t);
   }, [n, duel, paused, speed]);
+  useEffect(() => {
+    if (n < duel.turns.length || completed.current || !completeRef.current) return undefined;
+    completed.current = true;
+    const timer = setTimeout(() => completeRef.current?.(), reduced ? 0 : 700);
+    return () => clearTimeout(timer);
+  }, [n, duel, reduced]);
   const sides = [duel.a, duel.b];
   const turn = n > 0 ? duel.turns[n - 1] : null;
   const before = n > 1 ? duel.turns[n - 2].hp : [duel.a.hp, duel.b.hp];
@@ -115,7 +125,7 @@ export function Replay({duel, state, onClose}) {
         {!done && <button type='button' className='vpet-btn' onClick={() => setPaused(!paused)}>{paused ? 'Tiếp tục' : 'Tạm dừng'}</button>}
         <button type='button' className='vpet-btn' onClick={() => setSpeed(speed === 1 ? 2 : 1)} aria-label={t('duel.speed')}>{`${speed}×`}</button>
         {!done && <button type='button' className='vpet-btn' onClick={() => setN(duel.turns.length)}>{t('duel.skip')}</button>}
-        {done && <button type='button' className='vpet-btn' onClick={() => { setPaused(false); setN(0); }}>{t('duel.replay')}</button>}
+        {done && <button type='button' className='vpet-btn' onClick={() => { completed.current = false; setPaused(false); setN(0); }}>{t('duel.replay')}</button>}
         <button type='button' className='vpet-btn' onClick={onClose}>{t('app.close')}</button>
       </div>
     </div>

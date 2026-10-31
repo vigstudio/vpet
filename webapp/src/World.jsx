@@ -91,7 +91,7 @@ export default function WorldTab({state, sel, busy, act}) {
     return <p className='vpet-empty'>{t('world.needPet')}</p>;
   }
   if (watch) {
-    return <Replay duel={watch} state={state} onClose={() => setWatch(null)}/>;
+    return <Replay duel={watch} state={state} onClose={() => setWatch(null)} onComplete={() => setWatch(null)}/>;
   }
   if (wild && !phase) {
     return <Found state={state} wild={wild} onClose={() => setWild(null)} onReplay={() => setWatch(wild.duel)}/>;

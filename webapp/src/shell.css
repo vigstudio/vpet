@@ -106,3 +106,37 @@
 @media (prefers-reduced-motion: reduce) {
   .vpet-chat__messages { scroll-behavior: auto; }
 }
+
+.vpet-music.is-on { border-color:#4f91bd; background:#e8f5ff; color:#1d6ba3; }
+
+@media (max-width:900px) and (orientation:landscape) and (max-height:500px) {
+  .vpet-world-shell .vpet-panel__head { min-height:50px; padding:3px 10px; }
+  .vpet-world-shell .vpet-panel__title span { display:none; }
+  .vpet-world-shell .vpet-panel__body { padding:6px 10px 62px; overflow:auto; }
+  .vpet-world-shell .vpet-tabs {
+    position:fixed;
+    z-index:30;
+    right:0;
+    bottom:0;
+    left:0;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    padding:3px 4px max(3px,env(safe-area-inset-bottom));
+    border-top:1px solid #cad8e2;
+    background:#fff;
+  }
+  .vpet-world-shell .vpet-tabs button { min-height:48px; }
+  .vpet-world-shell .vpet-tabs button.is-overflow { display:none; }
+  .vpet-world-shell .vpet-tabs .vpet-tabs__more {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:48px;
+    border:0;
+    background:transparent;
+    color:inherit;
+    font:inherit;
+  }
+  .vpet-world-shell .vpet-tabs__label { font-size:10px; }
+}

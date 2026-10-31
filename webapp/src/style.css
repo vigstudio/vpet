@@ -1749,3 +1749,77 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .vpet-gift p { margin:8px 0 18px; color:var(--game-muted); }
 .vpet-gift .vpet-btn { min-width:180px; margin:0; }
 .vpet-gift__open { color:#e0a33a; animation:vpet-pulse 1.8s ease-in-out infinite; }
+
+/* Campaign owns one frame. Native 16:9 stays intact; the setup wrapper only changes placement. */
+.vpet-campaign__setup { display:contents; }
+.vpet-campaign__setup > .vpet-campaign__map {
+  width:min(100%, calc((100dvh - 390px) * 16 / 9));
+  min-height:0;
+  max-height:none;
+  margin-inline:auto;
+}
+
+@media (max-width:900px) and (orientation:landscape) and (max-height:500px) {
+  .vpet-campaign { min-height:0; }
+  .vpet-campaign > .vpet-inv__tabs { margin-bottom:6px; }
+  .vpet-campaign__setup {
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(250px,34%);
+    grid-template-areas:'map controls';
+    align-items:start;
+    height:calc(100dvh - 212px);
+    min-height:0;
+    gap:10px;
+  }
+  .vpet-campaign__setup > .vpet-campaign__map {
+    grid-area:map;
+    justify-self:center;
+    width:min(100%, calc((100dvh - 212px) * 16 / 9)) !important;
+    min-height:0;
+    max-height:none;
+    margin:0;
+    aspect-ratio:16/9;
+  }
+  .vpet-campaign__setup > .vpet-campaign__bar,
+  .vpet-campaign__setup > .vpet-expedition-bar { grid-area:controls; }
+  .vpet-campaign__setup > .vpet-campaign__bar {
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-content:start;
+    gap:6px;
+    margin:0 0 106px;
+  }
+  .vpet-campaign__bar .vpet-chapters {
+    grid-column:1 / -1;
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:4px;
+  }
+  .vpet-campaign__bar .vpet-chapters button {
+    display:grid;
+    place-items:center;
+    min-height:44px;
+    padding:3px;
+    text-align:center;
+  }
+  .vpet-campaign__bar .vpet-chapters button > span { grid-row:auto; font-size:16px; }
+  .vpet-campaign__bar .vpet-chapters button > b,
+  .vpet-campaign__bar .vpet-chapters button > small { display:none; }
+  .vpet-campaign__bar .vpet-difficulties { display:flex; }
+  .vpet-campaign__bar .vpet-difficulties button { min-height:44px; padding:4px 8px; }
+  .vpet-energy-pill { min-width:82px; min-height:44px; padding:0 8px; }
+  .vpet-campaign__setup > .vpet-expedition-bar {
+    position:relative;
+    z-index:1;
+    top:-46px;
+    align-self:start;
+    min-height:94px;
+    margin:64px 0 0;
+    padding:8px;
+    background:var(--game-surface);
+  }
+  .vpet-campaign__setup > .vpet-expedition-bar > div { gap:2px; }
+  .vpet-campaign__setup .vpet-reward-line { max-height:42px; overflow:hidden; }
+  .vpet-campaign__setup > .vpet-expedition-bar .vpet-btn { width:100%; }
+  .vpet-campaign__rules { display:none; }
+}
