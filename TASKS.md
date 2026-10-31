@@ -31,7 +31,15 @@
 | Chat / hồ sơ | Đổi khung giấy, giữ nguyên logic | Tên/tin dài, keyboard mobile, reconnect chưa regression đầy đủ |
 | Go / frontend | Go toàn suite xanh; frontend 78/78 xanh; webpack và Docker build thành công | Store DB integration không bật, tự skip; JS khoảng 729 KiB, artwork xuất file riêng; còn cảnh báo kích thước |
 | Browser smoke | Desktop 1024/mobile 375: Alliance, săn đội, tháp, nhiệm vụ, pet, thành phố, shop xanh; gacha và đổi skill xanh | CTA ngang đã sửa và assert xanh ở 740×375, 844×390; tổng 18 kiểm tra smoke xanh |
-| Git / deploy đợt này | Gameplay `37d3716` đã phát hành; bản artwork đã qua smoke local 9 tổ hợp Thành phố/Nhiệm vụ/Thú cưng và 2 landscape | Đang phát hành artwork; 0 pageerror/tràn ngang, ảnh tải đủ, CTA ngang trong viewport; mỹ thuật cảnh HD vẫn chưa hoàn tất |
+| Git / deploy đợt này | Artwork `4fac173` đã push và deploy; app/DB healthy; backup DB đã kiểm tra bằng pg_restore, có image rollback riêng | Smoke local 9 tổ hợp và 2 landscape đạt; mỹ thuật cảnh HD vẫn chưa hoàn tất; kiểm tra public ghi bên dưới |
+
+## Kiểm chứng artwork production
+
+- Bản app: `4fac173`, 31/10/2026; không thay backend hoặc dữ liệu người chơi.
+- Origin/public `main.js` cùng SHA-256 `ac9124ee7b4e564c658b71790085196d5afca987c67b56700e9a9a4d392e83e6`, 746.033 byte.
+- 37 tài nguyên PNG/WebP được bundle tham chiếu tải public thành công, đúng chữ ký ảnh; `Cache-Control: no-cache`, Cloudflare `REVALIDATED`.
+- Backup DB định dạng custom đã qua `pg_restore -l`; image rollback giữ riêng. Stack/volume test local đã dọn.
+- Frontend 78/78; 11 kiểm tra màn/kích thước local đạt. Store integration và E2E gameplay chi tiết chưa chạy trong đợt artwork.
 
 ## Tham chiếu UI bổ sung #5–#7
 
@@ -42,7 +50,7 @@
 - Không thêm rương mốc 2/4/6, thưởng hoàn thành tất cả, cấp nhà, giới tính hoặc tăng cấp thủ công chỉ vì xuất hiện trong ảnh. Mọi số liệu/giới hạn/chi phí lấy từ game thật.
 - Nav xanh/panel sáng trong ảnh là tham khảo phân cấp; chưa thay hướng nav gỗ chung đã duyệt. Giữ selected vàng và một bộ icon/trạng thái xuyên các màn; không tạo hai theme.
 - Asset bổ sung: cảnh sân chăm pet, bệ pet, icon care/quest/skill và slot gear đồng bộ. Giữ pet thật bằng `PetCanvas`.
-- Nghiệm thu thêm: đổi pet tác động đúng đối tượng, pet bệnh/chết/no-pet, kho trống, skill max/thiếu vật liệu; nhiệm vụ đủ/chưa đủ/đã nhận, Thành tựu/Danh hiệu, vi/en/ja, desktop/mobile. Chưa triển khai/kiểm thử các bố cục mới.
+- Nghiệm thu thêm: đổi pet tác động đúng đối tượng, pet bệnh/chết/no-pet, kho trống, skill max/thiếu vật liệu; nhiệm vụ đủ/chưa đủ/đã nhận, Thành tựu/Danh hiệu, vi/en/ja, desktop/mobile. Đã smoke bố cục Thành phố/Nhiệm vụ/Thú cưng ở ba kích thước; các trạng thái gameplay chi tiết trong dòng này chưa E2E đầy đủ.
 
 ## Thứ tự tiếp tục
 
