@@ -1,0 +1,61 @@
+{
+  "name": "thu-ao-ui-kit",
+  "version": "0.1.0",
+  "license": "project-use",
+  "sheets": [
+    {
+      "id": "ui-controls",
+      "file": "assets/sheets/ui-controls.png",
+      "format": "RGBA"
+    },
+    {
+      "id": "nav-icons-mascots",
+      "file": "assets/sheets/nav-icons-mascots.png",
+      "format": "RGBA"
+    },
+    {
+      "id": "buildings",
+      "file": "assets/sheets/buildings.png",
+      "format": "RGBA"
+    },
+    {
+      "id": "map-props",
+      "file": "assets/sheets/map-props.png",
+      "format": "RGBA"
+    },
+    {
+      "id": "pets-emotes",
+      "file": "assets/sheets/pets-emotes.png",
+      "format": "RGBA"
+    },
+    {
+      "id": "items-equipment",
+      "file": "assets/sheets/items-equipment.png",
+      "format": "RGBA"
+    },
+    {
+      "id": "skills-effects",
+      "file": "assets/sheets/skills-effects.png",
+      "format": "RGBA"
+    }
+  ],
+  "screens": [
+    "assets/screens/city.png",
+    "assets/screens/pet.png",
+    "assets/screens/quest.png",
+    "assets/screens/pet-alt.png",
+    "assets/screens/asset-overview.png"
+  ],
+  "components": [
+    "game-topbar",
+    "game-panel",
+    "game-title",
+    "game-btn",
+    "game-tab",
+    "game-progress",
+    "game-quest",
+    "game-slot",
+    "game-popup",
+    "chat-bubble"
+  ]
+}

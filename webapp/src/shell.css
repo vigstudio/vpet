@@ -14,6 +14,30 @@
 .vpet-world-shell .vpet-tabs button:focus-visible { outline:3px solid #fff; outline-offset:-3px; }
 .vpet-world-shell .vpet-tabs .vpet-tabs__more { display: none; }
 
+.vpet-game-icon { object-fit:contain; }
+.vpet-world-shell .vpet-tabs .vpet-game-icon { width:44px; height:44px; filter:drop-shadow(0 2px 1px #43261988); }
+.vpet-more__grid .vpet-game-icon { width:40px; height:40px; }
+.vpet-world-shell .vpet-panel__title { border:0; border-radius:0; background:transparent; border-image:url('../assets/library/panel-wood.png') 22 fill / 22px / 0 stretch; box-shadow:none; padding:14px 30px; }
+.vpet-world-shell .vpet-tabs { border-image:url('../assets/library/panel-wood.png') 22 fill / 22px / 0 stretch; border-width:8px; background:transparent; }
+.vpet-world-shell .vpet-btn--primary { background:transparent url('../assets/fantasy/button-gold.png') center/100% 100% no-repeat; color:#49321d; border-color:transparent; box-shadow:none; text-shadow:0 1px #fff0ad; }
+.vpet-world-shell .vpet-btn--primary:disabled { filter:grayscale(.8); }
+.vpet-world-shell .vpet-city__fantasy { width:100%; aspect-ratio:16/9; background-size:cover; }
+.vpet-world-shell .vpet-city .vpet-house { width:16%; height:24%; justify-content:flex-end; border-radius:15px; }
+.vpet-world-shell .vpet-city .vpet-house__art { width:100%; height:calc(100% - 24px); object-fit:contain; image-rendering:auto; }
+.vpet-world-shell .vpet-city .vpet-house small { font-size:clamp(10px,.9vw,14px); line-height:1.2; white-space:normal; text-align:center; }
+.vpet-world-shell .vpet-city__pet { top:68%; }
+@media (min-width:761px) {
+  .vpet-world-shell .vpet-panel__title { flex:0 0 auto; min-width:210px; }
+  .vpet-world-shell .vpet-tabs button { flex-direction:column; gap:3px; font-weight:800; }
+}
+.vpet-world-shell .vpet-panel { height:auto; overflow:visible; }
+.vpet-world-shell .vpet-panel__head { justify-content:space-between; }
+.vpet-world-shell .vpet-panel__body { overflow:visible; }
+@media (max-width:900px) and (orientation:landscape) and (max-height:500px) {
+  .vpet-world-shell .vpet-panel { height:100dvh; overflow:hidden; }
+  .vpet-world-shell .vpet-tabs .vpet-game-icon { width:24px; height:24px; }
+}
+
 /* Desktop: the map keeps the room it had, chat takes the column beside it. */
 .vpet-home { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 380px); gap: 18px; width: min(1500px, 100%); height: 100%; margin: 0 auto; }
 .vpet-home .vpet-city { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
@@ -91,7 +115,9 @@
 .vpet-world-shell .vpet-sheet > .vpet-sheet__hero,
 .vpet-world-shell .vpet-sheet > .vpet-sheet__care,
 .vpet-world-shell .vpet-sheet > .vpet-sheet__gear { border:2px solid #d4e5f1; border-radius:20px; background:linear-gradient(#fffefa,#eef3ff); box-shadow:inset 0 2px #fff,0 4px 0 #51748d26; }
-.vpet-world-shell .vpet-sheet__hero .vpet-doll { background:linear-gradient(#112d3d80,#112d3dcc),url('../assets/realm-vuon.webp') center/cover; border:2px solid #d4bc80; border-radius:18px; }
+.vpet-world-shell .vpet-sheet__hero .vpet-doll { min-height:340px; background:url('../assets/fantasy-pet.webp') center/cover; border:2px solid #d4bc80; border-radius:18px; }
+.vpet-world-shell .vpet-sheet__hero .vpet-doll__stats { padding:6px; border-radius:10px; background:#fff4dbef; color:#263d43; }
+.vpet-world-shell .vpet-sheet__hero .vpet-doll__stats small { color:#425b66; }
 .vpet-world-shell .vpet-sheet__care .vpet-actions button { min-height:44px; border-radius:12px; }
 .vpet-world-shell .vpet-sheet-tabs button { min-height:44px; }
 .vpet-world-shell .vpet-sheet-tabs button[aria-selected='true'] { color:#49321d; background:linear-gradient(#fff6b8,#f4bd45); border-color:#d7a039; }
@@ -113,6 +139,18 @@
 @media (min-width:761px) and (max-width:1199px) {
   .vpet-home { grid-template-columns:minmax(0,1fr); height:auto; }
   .vpet-home > .vpet-chat { height:360px; }
+}
+
+.vpet-world-shell .vpet-quest-row__text { position:relative; min-height:52px; padding-left:64px; }
+.vpet-quest-row__icon { position:absolute; left:0; top:0; width:52px; height:52px; display:grid; place-items:center; }
+.vpet-quest-row__icon img { width:48px; height:48px; object-fit:contain; }
+.vpet-quest-row__pay > span { display:flex; align-items:center; gap:4px; }
+.vpet-quests__guide { display:none; }
+@media (min-width:1400px) {
+  .vpet-world-shell .vpet-quests { grid-template-columns:180px minmax(0,1fr) 230px; }
+  .vpet-world-shell .vpet-quests > .vpet-quests__guide { display:block; grid-column:3; grid-row:1/5; align-self:start; padding:20px; border:2px solid #dcc294; border-radius:16px; background:#fff9e9; line-height:1.65; }
+  .vpet-quests__guide img { display:block; margin:0 auto; object-fit:contain; }
+  .vpet-quests__guide h3 { margin:12px 0; }
 }
 
 /* Phone: map on top, chat underneath, five nav slots with the rest behind "More". */

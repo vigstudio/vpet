@@ -7,6 +7,11 @@ import {RARITY} from './Hunt';
 import {t, tr} from './i18n';
 import {ladders, titleGroups, wornTitle} from './quests.cjs';
 import {itemOf, select} from './store';
+import GameIcon from './GameIcon';
+import foodArt from '../assets/fantasy/food-sushi.png';
+import trophyArt from '../assets/fantasy/trophy.png';
+import coinArt from '../assets/fantasy/coin.png';
+import scrollArt from '../assets/fantasy/scroll.png';
 
 // Quests are the first thing a new player can finish, so dailies lead and the longer
 // achievements sit underneath rather than competing for the top of the screen.
@@ -16,6 +21,7 @@ function Row({q, busy, act, rung, onGo}) {
   return (
     <li className={`vpet-quest-row${q.done ? ' is-done' : ''}${ready ? ' is-ready' : ''}`}>
       <div className='vpet-quest-row__text'>
+        <span className='vpet-quest-row__icon' aria-hidden='true'>{q.id === 'd_feed' ? <img src={foodArt} alt=''/> : destination ? <GameIcon name={destination} size={48}/> : <img src={trophyArt} alt=''/>}</span>
         <b>{q.name}{rung && <i className='vpet-quest-row__rung'>{rung}</i>}</b>
         <small>{q.desc}</small>
       </div>
@@ -24,7 +30,7 @@ function Row({q, busy, act, rung, onGo}) {
         <span>{`${q.have}/${q.need}`}</span>
       </div>
       <div className='vpet-quest-row__pay'>
-        <span>{`${q.gold} 🪙`}</span>
+        <span><img src={coinArt} width='22' height='22' alt={tr('vàng', 'gold', 'ゴールド')}/>{q.gold}</span>
         {q.item && <span className='vpet-quest-row__item'><ItemIcon id={q.item} size={18}/>{`×${q.count}`}</span>}
       </div>
       <button type='button' className={`vpet-btn${ready ? ' vpet-btn--primary' : ''}`} disabled={busy || q.done || (!ready && !destination)}
@@ -121,6 +127,13 @@ export default function Quests({state, sel, busy, act, onGo}) {
           {view === 'feats' && <p className='vpet-muted'>{t('quest.ladderHint')}</p>}
         </>
       )}
+      <aside className='vpet-quests__guide'>
+        <img src={scrollArt} width='100' height='100' alt=''/>
+        <h3>{t('quest.section')}</h3>
+        <p>{t('quest.note')}</p>
+        <b>{tr(`${ready} nhiệm vụ có thể nhận`, `${ready} quests ready to claim`, `${ready}件の報酬を受取可能`)}</b>
+        <p>{t('quest.ladderHint')}</p>
+      </aside>
     </div>
   );
 }

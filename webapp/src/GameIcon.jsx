@@ -1,5 +1,18 @@
 import React from 'react';
 
+import city from '../assets/fantasy/nav-city.png';
+import pet from '../assets/fantasy/nav-pet.png';
+import quest from '../assets/fantasy/nav-quest.png';
+import world from '../assets/fantasy/nav-world.png';
+import hunt from '../assets/fantasy/nav-hunt.png';
+import bag from '../assets/fantasy/nav-bag.png';
+import shop from '../assets/fantasy/nav-shop.png';
+import clinic from '../assets/fantasy/nav-clinic.png';
+import market from '../assets/fantasy/nav-market.png';
+import duel from '../assets/fantasy/nav-duel.png';
+import grave from '../assets/fantasy/nav-grave.png';
+const ART = {city, pet, quest, world, hunt, bag, shop, clinic, market, duel, grave};
+
 const PATHS = {
   city: 'M3 10 12 3l9 7M5 9v12h14V9M9 21v-7h6v7',
   pet: 'M8 14c-3 0-4 6 0 6 2 0 2-1 4-1s2 1 4 1c4 0 3-6 0-6-2-3-6-3-8 0ZM5 7v2m5-5v3m4-3v3m5 0v2',
@@ -22,5 +35,6 @@ const PATHS = {
 };
 
 export default function GameIcon({name, size = 20}) {
+  if (ART[name]) return <img className='vpet-game-icon' src={ART[name]} width={size} height={size} alt='' aria-hidden='true'/>;
   return <svg width={size} height={size} viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='1.7' strokeLinecap='round' strokeLinejoin='round' aria-hidden='true'><path d={PATHS[name] || PATHS.pet}/></svg>;
 }

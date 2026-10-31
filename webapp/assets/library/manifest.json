@@ -1,0 +1,1280 @@
+{
+  "source": "fantasy-source/21.png",
+  "sha256": "466672d78ac717497cdb546bce4bdf99bf9578157421c5adce7ea745f105f133",
+  "assets": {
+    "nav-city": {
+      "crop": [
+        28,
+        145,
+        95,
+        200
+      ],
+      "size": [
+        42,
+        39
+      ],
+      "background_removed": true
+    },
+    "nav-pet": {
+      "crop": [
+        95,
+        145,
+        169,
+        200
+      ],
+      "size": [
+        42,
+        34
+      ],
+      "background_removed": true
+    },
+    "nav-quest": {
+      "crop": [
+        169,
+        145,
+        242,
+        200
+      ],
+      "size": [
+        34,
+        39
+      ],
+      "background_removed": true
+    },
+    "nav-world": {
+      "crop": [
+        242,
+        145,
+        313,
+        200
+      ],
+      "size": [
+        40,
+        36
+      ],
+      "background_removed": true
+    },
+    "nav-hunt": {
+      "crop": [
+        313,
+        145,
+        389,
+        200
+      ],
+      "size": [
+        38,
+        35
+      ],
+      "background_removed": true
+    },
+    "nav-bag": {
+      "crop": [
+        32,
+        231,
+        94,
+        280
+      ],
+      "size": [
+        37,
+        39
+      ],
+      "background_removed": true
+    },
+    "nav-shop": {
+      "crop": [
+        94,
+        231,
+        168,
+        280
+      ],
+      "size": [
+        42,
+        38
+      ],
+      "background_removed": true
+    },
+    "nav-clinic": {
+      "crop": [
+        168,
+        231,
+        241,
+        280
+      ],
+      "size": [
+        36,
+        37
+      ],
+      "background_removed": true
+    },
+    "nav-market": {
+      "crop": [
+        241,
+        231,
+        305,
+        280
+      ],
+      "size": [
+        39,
+        37
+      ],
+      "background_removed": true
+    },
+    "nav-duel": {
+      "crop": [
+        305,
+        231,
+        360,
+        280
+      ],
+      "size": [
+        37,
+        36
+      ],
+      "background_removed": true
+    },
+    "nav-grave": {
+      "crop": [
+        360,
+        231,
+        398,
+        280
+      ],
+      "size": [
+        29,
+        37
+      ],
+      "background_removed": true
+    },
+    "coin": {
+      "crop": [
+        29,
+        377,
+        91,
+        429
+      ],
+      "size": [
+        42,
+        41
+      ],
+      "background_removed": true
+    },
+    "gem": {
+      "crop": [
+        91,
+        377,
+        162,
+        429
+      ],
+      "size": [
+        37,
+        36
+      ],
+      "background_removed": true
+    },
+    "energy": {
+      "crop": [
+        162,
+        377,
+        232,
+        429
+      ],
+      "size": [
+        30,
+        39
+      ],
+      "background_removed": true
+    },
+    "heart": {
+      "crop": [
+        232,
+        377,
+        300,
+        429
+      ],
+      "size": [
+        41,
+        37
+      ],
+      "background_removed": true
+    },
+    "happy": {
+      "crop": [
+        300,
+        377,
+        367,
+        429
+      ],
+      "size": [
+        40,
+        41
+      ],
+      "background_removed": true
+    },
+    "clover": {
+      "crop": [
+        29,
+        434,
+        95,
+        485
+      ],
+      "size": [
+        40,
+        36
+      ],
+      "background_removed": true
+    },
+    "star": {
+      "crop": [
+        95,
+        434,
+        156,
+        485
+      ],
+      "size": [
+        40,
+        37
+      ],
+      "background_removed": true
+    },
+    "crown": {
+      "crop": [
+        156,
+        434,
+        217,
+        485
+      ],
+      "size": [
+        42,
+        37
+      ],
+      "background_removed": true
+    },
+    "trophy": {
+      "crop": [
+        217,
+        434,
+        276,
+        485
+      ],
+      "size": [
+        45,
+        40
+      ],
+      "background_removed": true
+    },
+    "medal": {
+      "crop": [
+        276,
+        434,
+        332,
+        485
+      ],
+      "size": [
+        32,
+        41
+      ],
+      "background_removed": true
+    },
+    "gift": {
+      "crop": [
+        332,
+        434,
+        389,
+        485
+      ],
+      "size": [
+        39,
+        40
+      ],
+      "background_removed": true
+    },
+    "pet-orange": {
+      "crop": [
+        443,
+        144,
+        529,
+        239
+      ],
+      "size": [
+        64,
+        83
+      ],
+      "background_removed": true
+    },
+    "pet-purple": {
+      "crop": [
+        529,
+        144,
+        633,
+        239
+      ],
+      "size": [
+        60,
+        82
+      ],
+      "background_removed": true
+    },
+    "pet-blue": {
+      "crop": [
+        633,
+        144,
+        731,
+        239
+      ],
+      "size": [
+        60,
+        82
+      ],
+      "background_removed": true
+    },
+    "pet-yellow": {
+      "crop": [
+        731,
+        144,
+        824,
+        239
+      ],
+      "size": [
+        62,
+        84
+      ],
+      "background_removed": true
+    },
+    "pet-pink": {
+      "crop": [
+        824,
+        144,
+        922,
+        239
+      ],
+      "size": [
+        62,
+        83
+      ],
+      "background_removed": true
+    },
+    "pet-green": {
+      "crop": [
+        922,
+        144,
+        1007,
+        239
+      ],
+      "size": [
+        60,
+        82
+      ],
+      "background_removed": true
+    },
+    "building-home": {
+      "crop": [
+        436,
+        377,
+        554,
+        494
+      ],
+      "size": [
+        96,
+        83
+      ],
+      "background_removed": true
+    },
+    "building-hunt": {
+      "crop": [
+        554,
+        377,
+        659,
+        494
+      ],
+      "size": [
+        81,
+        104
+      ],
+      "background_removed": true
+    },
+    "building-portal": {
+      "crop": [
+        659,
+        377,
+        779,
+        494
+      ],
+      "size": [
+        79,
+        114
+      ],
+      "background_removed": true
+    },
+    "building-arena": {
+      "crop": [
+        779,
+        377,
+        913,
+        494
+      ],
+      "size": [
+        109,
+        89
+      ],
+      "background_removed": true
+    },
+    "building-clinic": {
+      "crop": [
+        913,
+        377,
+        1022,
+        494
+      ],
+      "size": [
+        99,
+        101
+      ],
+      "background_removed": true
+    },
+    "building-shop": {
+      "crop": [
+        435,
+        521,
+        553,
+        613
+      ],
+      "size": [
+        96,
+        83
+      ],
+      "background_removed": true
+    },
+    "building-warehouse": {
+      "crop": [
+        553,
+        521,
+        673,
+        613
+      ],
+      "size": [
+        94,
+        83
+      ],
+      "background_removed": true
+    },
+    "building-market": {
+      "crop": [
+        673,
+        521,
+        786,
+        613
+      ],
+      "size": [
+        97,
+        81
+      ],
+      "background_removed": true
+    },
+    "building-grave": {
+      "crop": [
+        786,
+        521,
+        915,
+        613
+      ],
+      "size": [
+        102,
+        85
+      ],
+      "background_removed": true
+    },
+    "building-fountain": {
+      "crop": [
+        915,
+        521,
+        1023,
+        613
+      ],
+      "size": [
+        79,
+        76
+      ],
+      "background_removed": true
+    },
+    "food-steak": {
+      "crop": [
+        447,
+        683,
+        508,
+        729
+      ],
+      "size": [
+        38,
+        29
+      ],
+      "background_removed": true
+    },
+    "food-sushi": {
+      "crop": [
+        508,
+        683,
+        569,
+        729
+      ],
+      "size": [
+        39,
+        30
+      ],
+      "background_removed": true
+    },
+    "food-cake": {
+      "crop": [
+        569,
+        683,
+        624,
+        729
+      ],
+      "size": [
+        37,
+        33
+      ],
+      "background_removed": true
+    },
+    "food-tea": {
+      "crop": [
+        624,
+        683,
+        680,
+        729
+      ],
+      "size": [
+        29,
+        39
+      ],
+      "background_removed": true
+    },
+    "food-apple": {
+      "crop": [
+        680,
+        683,
+        737,
+        729
+      ],
+      "size": [
+        33,
+        34
+      ],
+      "background_removed": true
+    },
+    "food-grape": {
+      "crop": [
+        737,
+        683,
+        796,
+        729
+      ],
+      "size": [
+        31,
+        32
+      ],
+      "background_removed": true
+    },
+    "item-gold": {
+      "crop": [
+        796,
+        683,
+        848,
+        729
+      ],
+      "size": [
+        35,
+        30
+      ],
+      "background_removed": true
+    },
+    "item-stone": {
+      "crop": [
+        848,
+        683,
+        905,
+        729
+      ],
+      "size": [
+        36,
+        30
+      ],
+      "background_removed": true
+    },
+    "item-wood": {
+      "crop": [
+        905,
+        683,
+        960,
+        729
+      ],
+      "size": [
+        35,
+        33
+      ],
+      "background_removed": true
+    },
+    "item-crystal": {
+      "crop": [
+        960,
+        683,
+        1014,
+        729
+      ],
+      "size": [
+        28,
+        33
+      ],
+      "background_removed": true
+    },
+    "weapon-sword": {
+      "crop": [
+        447,
+        731,
+        508,
+        778
+      ],
+      "size": [
+        37,
+        39
+      ],
+      "background_removed": true
+    },
+    "gear-shield": {
+      "crop": [
+        508,
+        731,
+        569,
+        778
+      ],
+      "size": [
+        35,
+        38
+      ],
+      "background_removed": true
+    },
+    "gear-armor": {
+      "crop": [
+        569,
+        731,
+        624,
+        778
+      ],
+      "size": [
+        44,
+        39
+      ],
+      "background_removed": true
+    },
+    "gear-boots": {
+      "crop": [
+        624,
+        731,
+        680,
+        778
+      ],
+      "size": [
+        39,
+        39
+      ],
+      "background_removed": true
+    },
+    "gear-ring": {
+      "crop": [
+        680,
+        731,
+        737,
+        778
+      ],
+      "size": [
+        33,
+        39
+      ],
+      "background_removed": true
+    },
+    "gear-cloak": {
+      "crop": [
+        737,
+        731,
+        796,
+        778
+      ],
+      "size": [
+        42,
+        37
+      ],
+      "background_removed": true
+    },
+    "potion-red": {
+      "crop": [
+        796,
+        731,
+        848,
+        778
+      ],
+      "size": [
+        28,
+        38
+      ],
+      "background_removed": true
+    },
+    "potion-blue": {
+      "crop": [
+        848,
+        731,
+        905,
+        778
+      ],
+      "size": [
+        29,
+        38
+      ],
+      "background_removed": true
+    },
+    "item-key": {
+      "crop": [
+        905,
+        731,
+        960,
+        778
+      ],
+      "size": [
+        33,
+        37
+      ],
+      "background_removed": true
+    },
+    "item-scroll": {
+      "crop": [
+        960,
+        731,
+        1014,
+        778
+      ],
+      "size": [
+        38,
+        39
+      ],
+      "background_removed": true
+    },
+    "chest-wood": {
+      "crop": [
+        436,
+        829,
+        498,
+        890
+      ],
+      "size": [
+        46,
+        42
+      ],
+      "background_removed": true
+    },
+    "chest-silver": {
+      "crop": [
+        498,
+        829,
+        556,
+        890
+      ],
+      "size": [
+        46,
+        43
+      ],
+      "background_removed": true
+    },
+    "chest-gold": {
+      "crop": [
+        556,
+        829,
+        616,
+        890
+      ],
+      "size": [
+        47,
+        43
+      ],
+      "background_removed": true
+    },
+    "chest-purple": {
+      "crop": [
+        616,
+        829,
+        679,
+        890
+      ],
+      "size": [
+        51,
+        47
+      ],
+      "background_removed": true
+    },
+    "chest-open": {
+      "crop": [
+        679,
+        829,
+        768,
+        890
+      ],
+      "size": [
+        87,
+        61
+      ],
+      "background_removed": true
+    },
+    "effect-star": {
+      "crop": [
+        790,
+        830,
+        844,
+        888
+      ],
+      "size": [
+        54,
+        57
+      ],
+      "background_removed": true
+    },
+    "effect-sparkle": {
+      "crop": [
+        844,
+        830,
+        891,
+        888
+      ],
+      "size": [
+        40,
+        33
+      ],
+      "background_removed": true
+    },
+    "effect-heart": {
+      "crop": [
+        891,
+        830,
+        936,
+        888
+      ],
+      "size": [
+        40,
+        35
+      ],
+      "background_removed": true
+    },
+    "effect-lightning": {
+      "crop": [
+        936,
+        830,
+        983,
+        888
+      ],
+      "size": [
+        35,
+        35
+      ],
+      "background_removed": true
+    },
+    "effect-level": {
+      "crop": [
+        983,
+        830,
+        1024,
+        888
+      ],
+      "size": [
+        38,
+        40
+      ],
+      "background_removed": true
+    },
+    "badge-medal": {
+      "crop": [
+        435,
+        935,
+        477,
+        980
+      ],
+      "size": [
+        30,
+        37
+      ],
+      "background_removed": true
+    },
+    "badge-crown": {
+      "crop": [
+        477,
+        935,
+        522,
+        980
+      ],
+      "size": [
+        34,
+        31
+      ],
+      "background_removed": true
+    },
+    "badge-shield": {
+      "crop": [
+        522,
+        935,
+        564,
+        980
+      ],
+      "size": [
+        31,
+        33
+      ],
+      "background_removed": true
+    },
+    "badge-star": {
+      "crop": [
+        564,
+        935,
+        609,
+        980
+      ],
+      "size": [
+        34,
+        32
+      ],
+      "background_removed": true
+    },
+    "badge-fire": {
+      "crop": [
+        609,
+        935,
+        653,
+        980
+      ],
+      "size": [
+        29,
+        33
+      ],
+      "background_removed": true
+    },
+    "badge-ice": {
+      "crop": [
+        653,
+        935,
+        697,
+        980
+      ],
+      "size": [
+        31,
+        32
+      ],
+      "background_removed": true
+    },
+    "badge-energy": {
+      "crop": [
+        697,
+        935,
+        740,
+        980
+      ],
+      "size": [
+        25,
+        32
+      ],
+      "background_removed": true
+    },
+    "badge-leaf": {
+      "crop": [
+        740,
+        935,
+        782,
+        980
+      ],
+      "size": [
+        29,
+        32
+      ],
+      "background_removed": true
+    },
+    "scene-sky": {
+      "crop": [
+        1075,
+        151,
+        1270,
+        188
+      ],
+      "size": [
+        195,
+        37
+      ],
+      "background_removed": false
+    },
+    "scene-meadow": {
+      "crop": [
+        1299,
+        146,
+        1510,
+        193
+      ],
+      "size": [
+        211,
+        47
+      ],
+      "background_removed": false
+    },
+    "scene-island": {
+      "crop": [
+        1067,
+        209,
+        1280,
+        255
+      ],
+      "size": [
+        213,
+        46
+      ],
+      "background_removed": false
+    },
+    "scene-night": {
+      "crop": [
+        1299,
+        209,
+        1510,
+        255
+      ],
+      "size": [
+        211,
+        46
+      ],
+      "background_removed": false
+    },
+    "scene-sunset": {
+      "crop": [
+        1067,
+        272,
+        1280,
+        318
+      ],
+      "size": [
+        213,
+        46
+      ],
+      "background_removed": false
+    },
+    "scene-cave": {
+      "crop": [
+        1299,
+        272,
+        1510,
+        318
+      ],
+      "size": [
+        211,
+        46
+      ],
+      "background_removed": false
+    },
+    "scene-snow": {
+      "crop": [
+        1067,
+        335,
+        1280,
+        378
+      ],
+      "size": [
+        213,
+        43
+      ],
+      "background_removed": false
+    },
+    "scene-desert": {
+      "crop": [
+        1299,
+        335,
+        1510,
+        378
+      ],
+      "size": [
+        211,
+        43
+      ],
+      "background_removed": false
+    },
+    "island-large": {
+      "crop": [
+        1065,
+        441,
+        1265,
+        544
+      ],
+      "size": [
+        188,
+        97
+      ],
+      "background_removed": true
+    },
+    "island-small": {
+      "crop": [
+        1271,
+        443,
+        1357,
+        502
+      ],
+      "size": [
+        71,
+        51
+      ],
+      "background_removed": true
+    },
+    "pine-large": {
+      "crop": [
+        1366,
+        423,
+        1417,
+        498
+      ],
+      "size": [
+        43,
+        66
+      ],
+      "background_removed": true
+    },
+    "tree": {
+      "crop": [
+        1417,
+        436,
+        1475,
+        498
+      ],
+      "size": [
+        46,
+        50
+      ],
+      "background_removed": true
+    },
+    "pine-small": {
+      "crop": [
+        1476,
+        437,
+        1518,
+        498
+      ],
+      "size": [
+        30,
+        47
+      ],
+      "background_removed": true
+    },
+    "rocks": {
+      "crop": [
+        1257,
+        505,
+        1314,
+        545
+      ],
+      "size": [
+        44,
+        30
+      ],
+      "background_removed": true
+    },
+    "fence": {
+      "crop": [
+        1323,
+        505,
+        1402,
+        545
+      ],
+      "size": [
+        68,
+        28
+      ],
+      "background_removed": true
+    },
+    "bush-pink": {
+      "crop": [
+        1404,
+        505,
+        1453,
+        545
+      ],
+      "size": [
+        37,
+        31
+      ],
+      "background_removed": true
+    },
+    "bush-yellow": {
+      "crop": [
+        1459,
+        505,
+        1515,
+        545
+      ],
+      "size": [
+        46,
+        33
+      ],
+      "background_removed": true
+    },
+    "panel-ribbon": {
+      "crop": [
+        17,
+        864,
+        148,
+        999
+      ],
+      "size": [
+        122,
+        126
+      ],
+      "background_removed": true
+    },
+    "panel-paper": {
+      "crop": [
+        155,
+        859,
+        275,
+        932
+      ],
+      "size": [
+        107,
+        63
+      ],
+      "background_removed": true
+    },
+    "panel-wood": {
+      "crop": [
+        279,
+        857,
+        398,
+        925
+      ],
+      "size": [
+        111,
+        60
+      ],
+      "background_removed": true
+    },
+    "panel-stone": {
+      "crop": [
+        155,
+        935,
+        275,
+        999
+      ],
+      "size": [
+        107,
+        55
+      ],
+      "background_removed": true
+    },
+    "panel-purple": {
+      "crop": [
+        279,
+        931,
+        398,
+        999
+      ],
+      "size": [
+        108,
+        65
+      ],
+      "background_removed": true
+    }
+  }
+}

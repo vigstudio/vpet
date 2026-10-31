@@ -1,35 +1,35 @@
 import {t} from './i18n';
 import React, {useEffect, useRef, useState} from 'react';
 
-import Realm from './Realm';
+import cityScene from '../assets/fantasy-city.webp';
+import home from '../assets/fantasy/building-home.png';
+import hunt from '../assets/fantasy/building-hunt.png';
+import portal from '../assets/fantasy/building-portal.png';
+import shop from '../assets/fantasy/building-shop.png';
+import warehouse from '../assets/fantasy/building-warehouse.png';
+import market from '../assets/fantasy/building-market.png';
+import arena from '../assets/fantasy/building-arena.png';
+import clinic from '../assets/fantasy/building-clinic.png';
+import grave from '../assets/fantasy/building-grave.png';
 import points from '../assets/realm-points.json';
 import PetCanvas from './PetCanvas';
 import {newStroll, strollStep} from './stroll.cjs';
 
-// The home screen is a little town: one building per feature, the way the old browser games
-// did it. Picking a house opens that tab, so the tab strip no longer has to hold eight labels.
-export const HOUSES = [
-  {tab: 'pet', x: 20, y: 62},
-  {tab: 'hunt', x: 44, y: 40},
-  {tab: 'world', x: 70, y: 36},
-  {tab: 'shop', x: 33, y: 83},
-  {tab: 'bag', x: 57, y: 66},
-  {tab: 'market', x: 82, y: 70},
-  {tab: 'duel', x: 13, y: 36},
-  {tab: 'clinic', x: 62, y: 46},
-  {tab: 'grave', x: 90, y: 20},
-];
+const BUILDINGS = {pet: home, hunt, world: portal, shop, bag: warehouse, market, duel: arena, clinic, grave};
 
-function House({h, i, badge, onGo}) {
+// Each town building opens its existing feature tab.
+export const HOUSES = points.map(({id, x, y}) => ({tab: id, x, y}));
+
+function House({h, badge, onGo}) {
   return (
     <button
       type='button'
       className='vpet-house'
-      style={{left: `${points.find((p)=>p.id===h.tab)?.x || h.x}%`, top: `${points.find((p)=>p.id===h.tab)?.y || h.y}%`}}
+      style={{left: `${h.x}%`, top: `${h.y}%`}}
       title={`${t(`house.${h.tab}`)} — ${t(`house.${h.tab}.desc`)}`}
       onClick={() => onGo(h.tab)}
     >
-      <span className='vpet-house__art' aria-hidden='true'/>
+      <img className='vpet-house__art' src={BUILDINGS[h.tab]} alt='' aria-hidden='true'/>
       <small>{t(`house.${h.tab}`)}</small>
       {badge > 0 && <span className='vpet-badge'>{badge}</span>}
     </button>
@@ -83,11 +83,11 @@ export default function City({state, sel, onGo}) {
   const badges = {market: state.in?.length || 0, duel: state.din?.length || 0};
   return (
     <div className='vpet-city'>
-      <Realm id='city' className='vpet-city__map'>
+      <div className='vpet-realm vpet-city__map vpet-city__fantasy' style={{backgroundImage: `url(${cityScene})`}}>
         <div className='vpet-realm__heading'><b>{t('city.name')}</b><small>{t('city.motto')}</small></div>
-        {HOUSES.map((h, i) => <House key={h.tab} h={h} i={i} badge={badges[h.tab] || 0} onGo={onGo}/>)}
+        {HOUSES.map((h) => <House key={h.tab} h={h} badge={badges[h.tab] || 0} onGo={onGo}/>)}
         {pet && !pet.dead && <Resident pet={pet}/>}
-      </Realm>
+      </div>
       <nav className='vpet-city__doors' aria-label={t('tab.city')}>
         {HOUSES.map((h) => <button key={h.tab} type='button' onClick={() => onGo(h.tab)}>{t(`house.${h.tab}`)}{badges[h.tab] > 0 ? ` (${badges[h.tab]})` : ''}</button>)}
       </nav>

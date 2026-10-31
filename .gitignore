@@ -16,6 +16,7 @@ snapshots/
 webapp/node_modules/
 webapp/dist/
 cmd/vpet/static/main.js
+cmd/vpet/static/art/
 
 # Local assistant configuration
 .claude/

@@ -26,12 +26,12 @@
 | Nhạc nền | Có sẵn | Regression toggle/nhớ lựa chọn/ẩn tab |
 | Replay tự hiện thưởng | Có sẵn và tích hợp tháp | Callback một lần, pause/skip/reduced-motion |
 | Landscape | Đã sửa, CTA trong viewport 740×375 và 844×390 qua Playwright | Nhãn ải trên cảnh nhỏ còn dày, cần tinh chỉnh mỹ thuật |
-| Bộ asset fantasy | Chưa hoàn tất | Tranh đảo sạch, icon/khung đồng bộ, nguồn hợp lệ; nền low-poly hiện tại không đạt ảnh mẫu |
-| Vỏ / Thành phố / Nhiệm vụ | Đã áp nav gỗ, nền trời, giấy; mobile có 9 lối vào, nhiệm vụ có điều hướng | Chưa đạt bộ tranh/icon mẫu; chưa đủ bố cục pet và nhiệm vụ ba cột |
+| Bộ asset fantasy | ZIP starter: tái cắt 208 PNG giữ alpha; ảnh #21: thêm 98 PNG và manifest; đã ghép hai cảnh WebP | Nguồn/giới hạn tại `webapp/assets/FANTASY-ASSET-SOURCES.md`; một số crop/FX cần kiểm duyệt thêm, thumbnail cảnh không phải tranh HD |
+| Vỏ / Thành phố / Nhiệm vụ | Đã tích hợp 11 icon tranh, 9 công trình DOM, khung gỗ, sân pet; nhiệm vụ ba cột ở desktop rộng | Smoke local 1440/1024/375 không pageerror/tràn ngang; cảnh ghép chưa tương đương tranh toàn cảnh reference, tiếp tục tinh chỉnh mỹ thuật |
 | Chat / hồ sơ | Đổi khung giấy, giữ nguyên logic | Tên/tin dài, keyboard mobile, reconnect chưa regression đầy đủ |
-| Go / frontend | Go toàn suite xanh; frontend 76/76 xanh; webpack build thành công | Store DB integration không bật, tự skip; còn cảnh báo bundle khoảng 1,24 MiB |
+| Go / frontend | Go toàn suite xanh; frontend 78/78 xanh; webpack và Docker build thành công | Store DB integration không bật, tự skip; JS khoảng 729 KiB, artwork xuất file riêng; còn cảnh báo kích thước |
 | Browser smoke | Desktop 1024/mobile 375: Alliance, săn đội, tháp, nhiệm vụ, pet, thành phố, shop xanh; gacha và đổi skill xanh | CTA ngang đã sửa và assert xanh ở 740×375, 844×390; tổng 18 kiểm tra smoke xanh |
-| Git / deploy đợt này | Commit `37d3716` đã push và deploy; backup DB được kiểm tra, có image rollback | Origin/public healthy, checksum bundle khớp, Cache-Control no-cache, login desktop/mobile xanh; mỹ thuật chưa hoàn tất |
+| Git / deploy đợt này | Gameplay `37d3716` đã phát hành; bản artwork đã qua smoke local 9 tổ hợp Thành phố/Nhiệm vụ/Thú cưng và 2 landscape | Đang phát hành artwork; 0 pageerror/tràn ngang, ảnh tải đủ, CTA ngang trong viewport; mỹ thuật cảnh HD vẫn chưa hoàn tất |
 
 ## Tham chiếu UI bổ sung #5–#7
 

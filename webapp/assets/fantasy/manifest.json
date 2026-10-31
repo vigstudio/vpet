@@ -1,0 +1,2946 @@
+{
+  "sources": {
+    "ui": {
+      "file": "ui.png",
+      "sha256": "01a9fd57d253cb0cc38e9dd5ef887ae087699add8dabc28a9eb5813a3f6e479f"
+    },
+    "icons": {
+      "file": "icons.png",
+      "sha256": "256f27675671fc078a848b5303bb8089a9b1b74b245094cde7f26a8f21927e7e"
+    },
+    "14": {
+      "file": "14.png",
+      "sha256": "2a31e28888271fc9a41cc8ad843c9381ae3d5b801acd6ee988d22c55540e2f10"
+    },
+    "15": {
+      "file": "15.png",
+      "sha256": "a0e1301ca23b7f453246d1b420df485d1694b65b3c0cbb4a837ecbe134901e77"
+    },
+    "16": {
+      "file": "16.png",
+      "sha256": "4ef719fec500d20bd90ddc559aad7b4e0eca271a5ad6425514acb912794a4f21"
+    },
+    "17": {
+      "file": "17.png",
+      "sha256": "e4e34854e441402f5c2c8be6bb498212c220dc43c69e673c9d1f8f9ac227716e"
+    },
+    "18": {
+      "file": "18.png",
+      "sha256": "2d909fb3483060ffcf345c037e5c51b2f029ae6c8d6eaebcb91aeacd6837acb7"
+    }
+  },
+  "assets": {
+    "nav-city": {
+      "source": "icons",
+      "crop": [
+        6,
+        30,
+        173,
+        228
+      ],
+      "size": [
+        167,
+        183
+      ],
+      "blank_center": false
+    },
+    "nav-pet": {
+      "source": "icons",
+      "crop": [
+        174,
+        30,
+        316,
+        228
+      ],
+      "size": [
+        142,
+        142
+      ],
+      "blank_center": false
+    },
+    "nav-quest": {
+      "source": "icons",
+      "crop": [
+        317,
+        30,
+        438,
+        228
+      ],
+      "size": [
+        121,
+        151
+      ],
+      "blank_center": false
+    },
+    "nav-world": {
+      "source": "icons",
+      "crop": [
+        439,
+        30,
+        565,
+        228
+      ],
+      "size": [
+        126,
+        195
+      ],
+      "blank_center": false
+    },
+    "nav-hunt": {
+      "source": "icons",
+      "crop": [
+        566,
+        30,
+        684,
+        228
+      ],
+      "size": [
+        118,
+        192
+      ],
+      "blank_center": false
+    },
+    "nav-bag": {
+      "source": "icons",
+      "crop": [
+        685,
+        30,
+        801,
+        228
+      ],
+      "size": [
+        116,
+        195
+      ],
+      "blank_center": false
+    },
+    "nav-shop": {
+      "source": "icons",
+      "crop": [
+        802,
+        30,
+        942,
+        228
+      ],
+      "size": [
+        140,
+        196
+      ],
+      "blank_center": false
+    },
+    "nav-clinic": {
+      "source": "icons",
+      "crop": [
+        943,
+        30,
+        1083,
+        228
+      ],
+      "size": [
+        140,
+        178
+      ],
+      "blank_center": false
+    },
+    "nav-market": {
+      "source": "icons",
+      "crop": [
+        1084,
+        30,
+        1197,
+        228
+      ],
+      "size": [
+        113,
+        195
+      ],
+      "blank_center": false
+    },
+    "nav-duel": {
+      "source": "icons",
+      "crop": [
+        1198,
+        30,
+        1305,
+        228
+      ],
+      "size": [
+        107,
+        128
+      ],
+      "blank_center": false
+    },
+    "nav-grave": {
+      "source": "icons",
+      "crop": [
+        1306,
+        30,
+        1444,
+        228
+      ],
+      "size": [
+        138,
+        195
+      ],
+      "blank_center": false
+    },
+    "coin": {
+      "source": "icons",
+      "crop": [
+        27,
+        300,
+        209,
+        473
+      ],
+      "size": [
+        176,
+        164
+      ],
+      "blank_center": false
+    },
+    "gem": {
+      "source": "icons",
+      "crop": [
+        214,
+        300,
+        387,
+        473
+      ],
+      "size": [
+        173,
+        148
+      ],
+      "blank_center": false
+    },
+    "heart": {
+      "source": "icons",
+      "crop": [
+        392,
+        300,
+        566,
+        473
+      ],
+      "size": [
+        173,
+        138
+      ],
+      "blank_center": false
+    },
+    "energy": {
+      "source": "icons",
+      "crop": [
+        573,
+        300,
+        711,
+        473
+      ],
+      "size": [
+        120,
+        167
+      ],
+      "blank_center": false
+    },
+    "shield": {
+      "source": "icons",
+      "crop": [
+        722,
+        300,
+        887,
+        473
+      ],
+      "size": [
+        161,
+        172
+      ],
+      "blank_center": false
+    },
+    "paw": {
+      "source": "icons",
+      "crop": [
+        899,
+        300,
+        1072,
+        473
+      ],
+      "size": [
+        172,
+        171
+      ],
+      "blank_center": false
+    },
+    "trophy": {
+      "source": "icons",
+      "crop": [
+        1077,
+        300,
+        1250,
+        473
+      ],
+      "size": [
+        173,
+        162
+      ],
+      "blank_center": false
+    },
+    "crown": {
+      "source": "icons",
+      "crop": [
+        1258,
+        300,
+        1442,
+        473
+      ],
+      "size": [
+        171,
+        149
+      ],
+      "blank_center": false
+    },
+    "map": {
+      "source": "icons",
+      "crop": [
+        20,
+        483,
+        185,
+        635
+      ],
+      "size": [
+        158,
+        135
+      ],
+      "blank_center": false
+    },
+    "mail": {
+      "source": "icons",
+      "crop": [
+        185,
+        483,
+        325,
+        635
+      ],
+      "size": [
+        140,
+        129
+      ],
+      "blank_center": false
+    },
+    "settings": {
+      "source": "icons",
+      "crop": [
+        326,
+        483,
+        461,
+        635
+      ],
+      "size": [
+        127,
+        149
+      ],
+      "blank_center": false
+    },
+    "music": {
+      "source": "icons",
+      "crop": [
+        462,
+        483,
+        589,
+        635
+      ],
+      "size": [
+        125,
+        126
+      ],
+      "blank_center": false
+    },
+    "bell": {
+      "source": "icons",
+      "crop": [
+        590,
+        483,
+        714,
+        635
+      ],
+      "size": [
+        120,
+        152
+      ],
+      "blank_center": false
+    },
+    "search": {
+      "source": "icons",
+      "crop": [
+        715,
+        483,
+        860,
+        635
+      ],
+      "size": [
+        139,
+        136
+      ],
+      "blank_center": false
+    },
+    "close": {
+      "source": "icons",
+      "crop": [
+        861,
+        483,
+        993,
+        635
+      ],
+      "size": [
+        132,
+        143
+      ],
+      "blank_center": false
+    },
+    "check": {
+      "source": "icons",
+      "crop": [
+        994,
+        483,
+        1130,
+        635
+      ],
+      "size": [
+        136,
+        142
+      ],
+      "blank_center": false
+    },
+    "plus": {
+      "source": "icons",
+      "crop": [
+        1131,
+        483,
+        1267,
+        635
+      ],
+      "size": [
+        136,
+        141
+      ],
+      "blank_center": false
+    },
+    "chat": {
+      "source": "icons",
+      "crop": [
+        1268,
+        483,
+        1442,
+        635
+      ],
+      "size": [
+        157,
+        141
+      ],
+      "blank_center": false
+    },
+    "warning": {
+      "source": "icons",
+      "crop": [
+        54,
+        639,
+        269,
+        834
+      ],
+      "size": [
+        210,
+        168
+      ],
+      "blank_center": false
+    },
+    "timer": {
+      "source": "icons",
+      "crop": [
+        280,
+        639,
+        469,
+        834
+      ],
+      "size": [
+        184,
+        192
+      ],
+      "blank_center": false
+    },
+    "scroll": {
+      "source": "icons",
+      "crop": [
+        479,
+        639,
+        677,
+        834
+      ],
+      "size": [
+        195,
+        195
+      ],
+      "blank_center": false
+    },
+    "egg": {
+      "source": "icons",
+      "crop": [
+        691,
+        639,
+        885,
+        834
+      ],
+      "size": [
+        194,
+        195
+      ],
+      "blank_center": false
+    },
+    "portal": {
+      "source": "icons",
+      "crop": [
+        897,
+        639,
+        1144,
+        834
+      ],
+      "size": [
+        246,
+        195
+      ],
+      "blank_center": false
+    },
+    "backpack": {
+      "source": "icons",
+      "crop": [
+        1152,
+        639,
+        1392,
+        834
+      ],
+      "size": [
+        213,
+        187
+      ],
+      "blank_center": false
+    },
+    "mascot-cat": {
+      "source": "icons",
+      "crop": [
+        20,
+        834,
+        270,
+        1083
+      ],
+      "size": [
+        219,
+        218
+      ],
+      "blank_center": false
+    },
+    "mascot-fox": {
+      "source": "icons",
+      "crop": [
+        275,
+        834,
+        500,
+        1083
+      ],
+      "size": [
+        224,
+        229
+      ],
+      "blank_center": false
+    },
+    "mascot-rabbit": {
+      "source": "icons",
+      "crop": [
+        510,
+        834,
+        724,
+        1083
+      ],
+      "size": [
+        210,
+        238
+      ],
+      "blank_center": false
+    },
+    "mascot-dragon": {
+      "source": "icons",
+      "crop": [
+        726,
+        834,
+        958,
+        1083
+      ],
+      "size": [
+        232,
+        237
+      ],
+      "blank_center": false
+    },
+    "mascot-penguin": {
+      "source": "icons",
+      "crop": [
+        960,
+        834,
+        1200,
+        1083
+      ],
+      "size": [
+        240,
+        230
+      ],
+      "blank_center": false
+    },
+    "mascot-cat-flower": {
+      "source": "icons",
+      "crop": [
+        1201,
+        834,
+        1444,
+        1083
+      ],
+      "size": [
+        217,
+        215
+      ],
+      "blank_center": false
+    },
+    "button-gold": {
+      "source": "ui",
+      "crop": [
+        50,
+        20,
+        282,
+        111
+      ],
+      "size": [
+        229,
+        89
+      ],
+      "blank_center": true
+    },
+    "button-blue": {
+      "source": "ui",
+      "crop": [
+        283,
+        20,
+        490,
+        111
+      ],
+      "size": [
+        207,
+        91
+      ],
+      "blank_center": true
+    },
+    "button-green": {
+      "source": "ui",
+      "crop": [
+        491,
+        20,
+        698,
+        111
+      ],
+      "size": [
+        207,
+        91
+      ],
+      "blank_center": true
+    },
+    "button-disabled": {
+      "source": "ui",
+      "crop": [
+        699,
+        20,
+        893,
+        111
+      ],
+      "size": [
+        192,
+        86
+      ],
+      "blank_center": true
+    },
+    "button-red": {
+      "source": "ui",
+      "crop": [
+        894,
+        20,
+        1097,
+        111
+      ],
+      "size": [
+        199,
+        90
+      ],
+      "blank_center": true
+    },
+    "button-paper": {
+      "source": "ui",
+      "crop": [
+        1098,
+        20,
+        1280,
+        111
+      ],
+      "size": [
+        175,
+        85
+      ],
+      "blank_center": true
+    },
+    "frame-wood": {
+      "source": "ui",
+      "crop": [
+        19,
+        213,
+        354,
+        424
+      ],
+      "size": [
+        335,
+        211
+      ],
+      "blank_center": false
+    },
+    "frame-blue": {
+      "source": "ui",
+      "crop": [
+        362,
+        220,
+        719,
+        423
+      ],
+      "size": [
+        357,
+        203
+      ],
+      "blank_center": false
+    },
+    "frame-gold": {
+      "source": "ui",
+      "crop": [
+        725,
+        209,
+        1092,
+        424
+      ],
+      "size": [
+        367,
+        215
+      ],
+      "blank_center": false
+    },
+    "frame-leaf": {
+      "source": "ui",
+      "crop": [
+        1099,
+        209,
+        1428,
+        424
+      ],
+      "size": [
+        321,
+        215
+      ],
+      "blank_center": false
+    },
+    "divider-leaf": {
+      "source": "ui",
+      "crop": [
+        485,
+        965,
+        745,
+        1020
+      ],
+      "size": [
+        250,
+        54
+      ],
+      "blank_center": false
+    },
+    "divider-gold": {
+      "source": "ui",
+      "crop": [
+        494,
+        1024,
+        732,
+        1073
+      ],
+      "size": [
+        226,
+        48
+      ],
+      "blank_center": false
+    },
+    "corner-leaf": {
+      "source": "ui",
+      "crop": [
+        1006,
+        947,
+        1110,
+        1065
+      ],
+      "size": [
+        99,
+        107
+      ],
+      "blank_center": false
+    },
+    "corner-gold": {
+      "source": "ui",
+      "crop": [
+        1113,
+        947,
+        1209,
+        1065
+      ],
+      "size": [
+        96,
+        99
+      ],
+      "blank_center": false
+    },
+    "corner-blue": {
+      "source": "ui",
+      "crop": [
+        1211,
+        947,
+        1306,
+        1065
+      ],
+      "size": [
+        95,
+        106
+      ],
+      "blank_center": false
+    },
+    "corner-wood": {
+      "source": "ui",
+      "crop": [
+        1307,
+        947,
+        1427,
+        1065
+      ],
+      "size": [
+        115,
+        112
+      ],
+      "blank_center": false
+    },
+    "skill-fire": {
+      "source": "14",
+      "crop": [
+        0,
+        20,
+        285,
+        320
+      ],
+      "size": [
+        285,
+        299
+      ],
+      "blank_center": false
+    },
+    "skill-shield": {
+      "source": "14",
+      "crop": [
+        285,
+        20,
+        506,
+        320
+      ],
+      "size": [
+        221,
+        287
+      ],
+      "blank_center": false
+    },
+    "skill-heal": {
+      "source": "14",
+      "crop": [
+        506,
+        20,
+        719,
+        320
+      ],
+      "size": [
+        213,
+        299
+      ],
+      "blank_center": false
+    },
+    "skill-lightning": {
+      "source": "14",
+      "crop": [
+        719,
+        20,
+        950,
+        320
+      ],
+      "size": [
+        231,
+        300
+      ],
+      "blank_center": false
+    },
+    "skill-ice": {
+      "source": "14",
+      "crop": [
+        950,
+        20,
+        1178,
+        320
+      ],
+      "size": [
+        228,
+        297
+      ],
+      "blank_center": false
+    },
+    "skill-poison": {
+      "source": "14",
+      "crop": [
+        1178,
+        20,
+        1448,
+        320
+      ],
+      "size": [
+        256,
+        297
+      ],
+      "blank_center": false
+    },
+    "skill-wind": {
+      "source": "14",
+      "crop": [
+        0,
+        321,
+        272,
+        610
+      ],
+      "size": [
+        272,
+        289
+      ],
+      "blank_center": false
+    },
+    "skill-water": {
+      "source": "14",
+      "crop": [
+        272,
+        321,
+        503,
+        610
+      ],
+      "size": [
+        231,
+        289
+      ],
+      "blank_center": false
+    },
+    "skill-earth": {
+      "source": "14",
+      "crop": [
+        503,
+        321,
+        748,
+        610
+      ],
+      "size": [
+        245,
+        289
+      ],
+      "blank_center": false
+    },
+    "skill-light": {
+      "source": "14",
+      "crop": [
+        748,
+        321,
+        951,
+        610
+      ],
+      "size": [
+        203,
+        289
+      ],
+      "blank_center": false
+    },
+    "skill-curse": {
+      "source": "14",
+      "crop": [
+        951,
+        321,
+        1190,
+        610
+      ],
+      "size": [
+        239,
+        289
+      ],
+      "blank_center": false
+    },
+    "skill-speed": {
+      "source": "14",
+      "crop": [
+        1190,
+        321,
+        1448,
+        610
+      ],
+      "size": [
+        244,
+        289
+      ],
+      "blank_center": false
+    },
+    "status-burn": {
+      "source": "14",
+      "crop": [
+        0,
+        618,
+        158,
+        818
+      ],
+      "size": [
+        158,
+        200
+      ],
+      "blank_center": false
+    },
+    "status-freeze": {
+      "source": "14",
+      "crop": [
+        158,
+        618,
+        305,
+        818
+      ],
+      "size": [
+        147,
+        185
+      ],
+      "blank_center": false
+    },
+    "status-stun": {
+      "source": "14",
+      "crop": [
+        305,
+        618,
+        476,
+        818
+      ],
+      "size": [
+        171,
+        154
+      ],
+      "blank_center": false
+    },
+    "status-sleep": {
+      "source": "14",
+      "crop": [
+        476,
+        618,
+        629,
+        818
+      ],
+      "size": [
+        153,
+        199
+      ],
+      "blank_center": false
+    },
+    "status-regen": {
+      "source": "14",
+      "crop": [
+        629,
+        618,
+        786,
+        818
+      ],
+      "size": [
+        157,
+        200
+      ],
+      "blank_center": false
+    },
+    "status-attack": {
+      "source": "14",
+      "crop": [
+        786,
+        618,
+        922,
+        818
+      ],
+      "size": [
+        136,
+        199
+      ],
+      "blank_center": false
+    },
+    "status-defense": {
+      "source": "14",
+      "crop": [
+        922,
+        618,
+        1043,
+        818
+      ],
+      "size": [
+        121,
+        200
+      ],
+      "blank_center": false
+    },
+    "status-critical": {
+      "source": "14",
+      "crop": [
+        1043,
+        618,
+        1199,
+        818
+      ],
+      "size": [
+        156,
+        200
+      ],
+      "blank_center": false
+    },
+    "status-dodge": {
+      "source": "14",
+      "crop": [
+        1199,
+        618,
+        1312,
+        818
+      ],
+      "size": [
+        113,
+        195
+      ],
+      "blank_center": false
+    },
+    "status-target": {
+      "source": "14",
+      "crop": [
+        1312,
+        618,
+        1448,
+        818
+      ],
+      "size": [
+        136,
+        200
+      ],
+      "blank_center": false
+    },
+    "effect-sparkle": {
+      "source": "14",
+      "crop": [
+        0,
+        819,
+        210,
+        1086
+      ],
+      "size": [
+        210,
+        267
+      ],
+      "blank_center": false
+    },
+    "effect-hit": {
+      "source": "14",
+      "crop": [
+        210,
+        819,
+        438,
+        1086
+      ],
+      "size": [
+        228,
+        258
+      ],
+      "blank_center": false
+    },
+    "effect-magic": {
+      "source": "14",
+      "crop": [
+        438,
+        819,
+        670,
+        1086
+      ],
+      "size": [
+        232,
+        267
+      ],
+      "blank_center": false
+    },
+    "effect-dust": {
+      "source": "14",
+      "crop": [
+        670,
+        819,
+        908,
+        1086
+      ],
+      "size": [
+        238,
+        251
+      ],
+      "blank_center": false
+    },
+    "effect-level": {
+      "source": "14",
+      "crop": [
+        908,
+        819,
+        1176,
+        1086
+      ],
+      "size": [
+        268,
+        267
+      ],
+      "blank_center": false
+    },
+    "effect-love": {
+      "source": "14",
+      "crop": [
+        1176,
+        819,
+        1448,
+        1086
+      ],
+      "size": [
+        272,
+        267
+      ],
+      "blank_center": false
+    },
+    "food-sushi": {
+      "source": "15",
+      "crop": [
+        0,
+        0,
+        231,
+        248
+      ],
+      "size": [
+        231,
+        164
+      ],
+      "blank_center": false
+    },
+    "food-bun": {
+      "source": "15",
+      "crop": [
+        231,
+        0,
+        441,
+        248
+      ],
+      "size": [
+        210,
+        215
+      ],
+      "blank_center": false
+    },
+    "food-milk-tea": {
+      "source": "15",
+      "crop": [
+        441,
+        0,
+        589,
+        248
+      ],
+      "size": [
+        148,
+        248
+      ],
+      "blank_center": false
+    },
+    "food-strawberry": {
+      "source": "15",
+      "crop": [
+        589,
+        0,
+        771,
+        248
+      ],
+      "size": [
+        182,
+        182
+      ],
+      "blank_center": false
+    },
+    "food-herb": {
+      "source": "15",
+      "crop": [
+        771,
+        0,
+        974,
+        248
+      ],
+      "size": [
+        203,
+        217
+      ],
+      "blank_center": false
+    },
+    "food-honey": {
+      "source": "15",
+      "crop": [
+        974,
+        0,
+        1186,
+        248
+      ],
+      "size": [
+        212,
+        226
+      ],
+      "blank_center": false
+    },
+    "food-grilled-fish": {
+      "source": "15",
+      "crop": [
+        1186,
+        0,
+        1448,
+        248
+      ],
+      "size": [
+        262,
+        221
+      ],
+      "blank_center": false
+    },
+    "food-carrot": {
+      "source": "15",
+      "crop": [
+        0,
+        249,
+        216,
+        447
+      ],
+      "size": [
+        202,
+        193
+      ],
+      "blank_center": false
+    },
+    "food-cake": {
+      "source": "15",
+      "crop": [
+        216,
+        249,
+        404,
+        447
+      ],
+      "size": [
+        188,
+        193
+      ],
+      "blank_center": false
+    },
+    "item-potion": {
+      "source": "15",
+      "crop": [
+        404,
+        249,
+        576,
+        447
+      ],
+      "size": [
+        162,
+        198
+      ],
+      "blank_center": false
+    },
+    "item-energy": {
+      "source": "15",
+      "crop": [
+        576,
+        249,
+        707,
+        447
+      ],
+      "size": [
+        115,
+        189
+      ],
+      "blank_center": false
+    },
+    "food-steak": {
+      "source": "15",
+      "crop": [
+        707,
+        249,
+        894,
+        447
+      ],
+      "size": [
+        187,
+        198
+      ],
+      "blank_center": false
+    },
+    "food-fish": {
+      "source": "15",
+      "crop": [
+        894,
+        249,
+        1085,
+        447
+      ],
+      "size": [
+        191,
+        193
+      ],
+      "blank_center": false
+    },
+    "food-ham": {
+      "source": "15",
+      "crop": [
+        1085,
+        249,
+        1265,
+        447
+      ],
+      "size": [
+        180,
+        175
+      ],
+      "blank_center": false
+    },
+    "food-bone": {
+      "source": "15",
+      "crop": [
+        1265,
+        249,
+        1448,
+        447
+      ],
+      "size": [
+        172,
+        155
+      ],
+      "blank_center": false
+    },
+    "chest-wood": {
+      "source": "15",
+      "crop": [
+        0,
+        448,
+        272,
+        660
+      ],
+      "size": [
+        261,
+        199
+      ],
+      "blank_center": false
+    },
+    "chest-blue": {
+      "source": "15",
+      "crop": [
+        272,
+        448,
+        539,
+        660
+      ],
+      "size": [
+        267,
+        212
+      ],
+      "blank_center": false
+    },
+    "chest-royal": {
+      "source": "15",
+      "crop": [
+        539,
+        448,
+        835,
+        660
+      ],
+      "size": [
+        296,
+        212
+      ],
+      "blank_center": false
+    },
+    "item-scroll-blue": {
+      "source": "15",
+      "crop": [
+        835,
+        448,
+        1034,
+        660
+      ],
+      "size": [
+        199,
+        212
+      ],
+      "blank_center": false
+    },
+    "item-scroll-red": {
+      "source": "15",
+      "crop": [
+        1034,
+        448,
+        1236,
+        660
+      ],
+      "size": [
+        202,
+        207
+      ],
+      "blank_center": false
+    },
+    "item-scroll-green": {
+      "source": "15",
+      "crop": [
+        1236,
+        448,
+        1448,
+        660
+      ],
+      "size": [
+        200,
+        203
+      ],
+      "blank_center": false
+    },
+    "weapon-spear": {
+      "source": "15",
+      "crop": [
+        0,
+        661,
+        258,
+        910
+      ],
+      "size": [
+        204,
+        247
+      ],
+      "blank_center": false
+    },
+    "weapon-sword": {
+      "source": "15",
+      "crop": [
+        258,
+        661,
+        486,
+        910
+      ],
+      "size": [
+        167,
+        245
+      ],
+      "blank_center": false
+    },
+    "weapon-staff": {
+      "source": "15",
+      "crop": [
+        486,
+        661,
+        716,
+        910
+      ],
+      "size": [
+        222,
+        249
+      ],
+      "blank_center": false
+    },
+    "weapon-bow": {
+      "source": "15",
+      "crop": [
+        716,
+        661,
+        975,
+        910
+      ],
+      "size": [
+        245,
+        249
+      ],
+      "blank_center": false
+    },
+    "weapon-dagger": {
+      "source": "15",
+      "crop": [
+        975,
+        661,
+        1215,
+        910
+      ],
+      "size": [
+        212,
+        249
+      ],
+      "blank_center": false
+    },
+    "weapon-hammer": {
+      "source": "15",
+      "crop": [
+        1215,
+        661,
+        1448,
+        910
+      ],
+      "size": [
+        222,
+        239
+      ],
+      "blank_center": false
+    },
+    "gear-helmet": {
+      "source": "15",
+      "crop": [
+        0,
+        911,
+        184,
+        1086
+      ],
+      "size": [
+        184,
+        175
+      ],
+      "blank_center": false
+    },
+    "gear-armor": {
+      "source": "15",
+      "crop": [
+        184,
+        911,
+        399,
+        1086
+      ],
+      "size": [
+        215,
+        154
+      ],
+      "blank_center": false
+    },
+    "gear-boots": {
+      "source": "15",
+      "crop": [
+        399,
+        911,
+        580,
+        1086
+      ],
+      "size": [
+        181,
+        163
+      ],
+      "blank_center": false
+    },
+    "gear-gloves": {
+      "source": "15",
+      "crop": [
+        580,
+        911,
+        736,
+        1086
+      ],
+      "size": [
+        156,
+        147
+      ],
+      "blank_center": false
+    },
+    "gear-cloak": {
+      "source": "15",
+      "crop": [
+        736,
+        911,
+        976,
+        1086
+      ],
+      "size": [
+        240,
+        175
+      ],
+      "blank_center": false
+    },
+    "gear-ring": {
+      "source": "15",
+      "crop": [
+        976,
+        911,
+        1105,
+        1086
+      ],
+      "size": [
+        129,
+        159
+      ],
+      "blank_center": false
+    },
+    "gear-necklace": {
+      "source": "15",
+      "crop": [
+        1105,
+        911,
+        1261,
+        1086
+      ],
+      "size": [
+        156,
+        160
+      ],
+      "blank_center": false
+    },
+    "gear-collar": {
+      "source": "15",
+      "crop": [
+        1261,
+        911,
+        1448,
+        1086
+      ],
+      "size": [
+        176,
+        134
+      ],
+      "blank_center": false
+    },
+    "building-home": {
+      "source": "16",
+      "crop": [
+        0,
+        0,
+        374,
+        293
+      ],
+      "size": [
+        374,
+        276
+      ],
+      "blank_center": false
+    },
+    "building-hunt": {
+      "source": "16",
+      "crop": [
+        374,
+        0,
+        698,
+        293
+      ],
+      "size": [
+        324,
+        293
+      ],
+      "blank_center": false
+    },
+    "building-portal": {
+      "source": "16",
+      "crop": [
+        698,
+        0,
+        1037,
+        293
+      ],
+      "size": [
+        339,
+        290
+      ],
+      "blank_center": false
+    },
+    "building-arena": {
+      "source": "16",
+      "crop": [
+        1037,
+        0,
+        1448,
+        293
+      ],
+      "size": [
+        411,
+        290
+      ],
+      "blank_center": false
+    },
+    "building-shop": {
+      "source": "16",
+      "crop": [
+        0,
+        294,
+        359,
+        545
+      ],
+      "size": [
+        359,
+        251
+      ],
+      "blank_center": false
+    },
+    "building-clinic": {
+      "source": "16",
+      "crop": [
+        359,
+        294,
+        716,
+        545
+      ],
+      "size": [
+        357,
+        251
+      ],
+      "blank_center": false
+    },
+    "building-warehouse": {
+      "source": "16",
+      "crop": [
+        716,
+        294,
+        1073,
+        545
+      ],
+      "size": [
+        357,
+        251
+      ],
+      "blank_center": false
+    },
+    "building-market": {
+      "source": "16",
+      "crop": [
+        1073,
+        294,
+        1448,
+        545
+      ],
+      "size": [
+        375,
+        251
+      ],
+      "blank_center": false
+    },
+    "building-grave": {
+      "source": "16",
+      "crop": [
+        0,
+        546,
+        373,
+        803
+      ],
+      "size": [
+        373,
+        257
+      ],
+      "blank_center": false
+    },
+    "building-fountain": {
+      "source": "16",
+      "crop": [
+        373,
+        546,
+        744,
+        803
+      ],
+      "size": [
+        371,
+        257
+      ],
+      "blank_center": false
+    },
+    "building-windmill": {
+      "source": "16",
+      "crop": [
+        744,
+        546,
+        1081,
+        803
+      ],
+      "size": [
+        337,
+        257
+      ],
+      "blank_center": false
+    },
+    "building-training": {
+      "source": "16",
+      "crop": [
+        1081,
+        546,
+        1448,
+        803
+      ],
+      "size": [
+        366,
+        257
+      ],
+      "blank_center": false
+    },
+    "building-castle": {
+      "source": "16",
+      "crop": [
+        0,
+        804,
+        385,
+        1086
+      ],
+      "size": [
+        385,
+        282
+      ],
+      "blank_center": false
+    },
+    "building-tower": {
+      "source": "16",
+      "crop": [
+        385,
+        804,
+        719,
+        1086
+      ],
+      "size": [
+        334,
+        282
+      ],
+      "blank_center": false
+    },
+    "building-boss": {
+      "source": "16",
+      "crop": [
+        719,
+        804,
+        1094,
+        1086
+      ],
+      "size": [
+        375,
+        282
+      ],
+      "blank_center": false
+    },
+    "building-treasury": {
+      "source": "16",
+      "crop": [
+        1094,
+        804,
+        1448,
+        1086
+      ],
+      "size": [
+        350,
+        282
+      ],
+      "blank_center": false
+    },
+    "rabbit-idle": {
+      "source": "17",
+      "crop": [
+        0,
+        145,
+        177,
+        397
+      ],
+      "size": [
+        148,
+        222
+      ],
+      "blank_center": false
+    },
+    "rabbit-happy": {
+      "source": "17",
+      "crop": [
+        177,
+        145,
+        350,
+        397
+      ],
+      "size": [
+        173,
+        223
+      ],
+      "blank_center": false
+    },
+    "rabbit-sleep": {
+      "source": "17",
+      "crop": [
+        350,
+        145,
+        546,
+        397
+      ],
+      "size": [
+        196,
+        196
+      ],
+      "blank_center": false
+    },
+    "rabbit-eat": {
+      "source": "17",
+      "crop": [
+        546,
+        145,
+        705,
+        397
+      ],
+      "size": [
+        152,
+        219
+      ],
+      "blank_center": false
+    },
+    "rabbit-run": {
+      "source": "17",
+      "crop": [
+        705,
+        145,
+        902,
+        397
+      ],
+      "size": [
+        197,
+        205
+      ],
+      "blank_center": false
+    },
+    "rabbit-cheer": {
+      "source": "17",
+      "crop": [
+        902,
+        145,
+        1097,
+        397
+      ],
+      "size": [
+        195,
+        226
+      ],
+      "blank_center": false
+    },
+    "rabbit-fight": {
+      "source": "17",
+      "crop": [
+        1097,
+        145,
+        1273,
+        397
+      ],
+      "size": [
+        176,
+        220
+      ],
+      "blank_center": false
+    },
+    "rabbit-wave": {
+      "source": "17",
+      "crop": [
+        1273,
+        145,
+        1448,
+        397
+      ],
+      "size": [
+        175,
+        235
+      ],
+      "blank_center": false
+    },
+    "character-cat": {
+      "source": "17",
+      "crop": [
+        0,
+        398,
+        190,
+        632
+      ],
+      "size": [
+        175,
+        205
+      ],
+      "blank_center": false
+    },
+    "character-frog": {
+      "source": "17",
+      "crop": [
+        190,
+        398,
+        390,
+        632
+      ],
+      "size": [
+        200,
+        172
+      ],
+      "blank_center": false
+    },
+    "character-slime": {
+      "source": "17",
+      "crop": [
+        390,
+        398,
+        571,
+        632
+      ],
+      "size": [
+        175,
+        197
+      ],
+      "blank_center": false
+    },
+    "character-fox": {
+      "source": "17",
+      "crop": [
+        571,
+        398,
+        793,
+        632
+      ],
+      "size": [
+        217,
+        215
+      ],
+      "blank_center": false
+    },
+    "character-bird": {
+      "source": "17",
+      "crop": [
+        793,
+        398,
+        1000,
+        632
+      ],
+      "size": [
+        207,
+        211
+      ],
+      "blank_center": false
+    },
+    "character-dragon": {
+      "source": "17",
+      "crop": [
+        1000,
+        398,
+        1209,
+        632
+      ],
+      "size": [
+        209,
+        217
+      ],
+      "blank_center": false
+    },
+    "character-sheep": {
+      "source": "17",
+      "crop": [
+        1209,
+        398,
+        1448,
+        632
+      ],
+      "size": [
+        222,
+        223
+      ],
+      "blank_center": false
+    },
+    "monster-slime": {
+      "source": "17",
+      "crop": [
+        0,
+        633,
+        189,
+        908
+      ],
+      "size": [
+        164,
+        182
+      ],
+      "blank_center": false
+    },
+    "monster-mushroom": {
+      "source": "17",
+      "crop": [
+        189,
+        633,
+        379,
+        908
+      ],
+      "size": [
+        190,
+        168
+      ],
+      "blank_center": false
+    },
+    "monster-treant": {
+      "source": "17",
+      "crop": [
+        379,
+        633,
+        601,
+        908
+      ],
+      "size": [
+        222,
+        216
+      ],
+      "blank_center": false
+    },
+    "monster-bat": {
+      "source": "17",
+      "crop": [
+        601,
+        633,
+        825,
+        908
+      ],
+      "size": [
+        224,
+        182
+      ],
+      "blank_center": false
+    },
+    "monster-golem": {
+      "source": "17",
+      "crop": [
+        825,
+        633,
+        1125,
+        908
+      ],
+      "size": [
+        300,
+        275
+      ],
+      "blank_center": false
+    },
+    "monster-king-slime": {
+      "source": "17",
+      "crop": [
+        1125,
+        633,
+        1448,
+        908
+      ],
+      "size": [
+        307,
+        275
+      ],
+      "blank_center": false
+    },
+    "face-happy": {
+      "source": "17",
+      "crop": [
+        0,
+        909,
+        191,
+        1086
+      ],
+      "size": [
+        152,
+        156
+      ],
+      "blank_center": false
+    },
+    "face-angry": {
+      "source": "17",
+      "crop": [
+        191,
+        909,
+        387,
+        1086
+      ],
+      "size": [
+        162,
+        161
+      ],
+      "blank_center": false
+    },
+    "face-sleep": {
+      "source": "17",
+      "crop": [
+        387,
+        909,
+        563,
+        1086
+      ],
+      "size": [
+        163,
+        153
+      ],
+      "blank_center": false
+    },
+    "face-love": {
+      "source": "17",
+      "crop": [
+        563,
+        909,
+        740,
+        1086
+      ],
+      "size": [
+        177,
+        175
+      ],
+      "blank_center": false
+    },
+    "face-confused": {
+      "source": "17",
+      "crop": [
+        740,
+        909,
+        907,
+        1086
+      ],
+      "size": [
+        167,
+        157
+      ],
+      "blank_center": false
+    },
+    "face-cry": {
+      "source": "17",
+      "crop": [
+        907,
+        909,
+        1093,
+        1086
+      ],
+      "size": [
+        186,
+        163
+      ],
+      "blank_center": false
+    },
+    "face-wink": {
+      "source": "17",
+      "crop": [
+        1093,
+        909,
+        1255,
+        1086
+      ],
+      "size": [
+        162,
+        161
+      ],
+      "blank_center": false
+    },
+    "face-sad": {
+      "source": "17",
+      "crop": [
+        1255,
+        909,
+        1448,
+        1086
+      ],
+      "size": [
+        161,
+        159
+      ],
+      "blank_center": false
+    },
+    "tree-large": {
+      "source": "18",
+      "crop": [
+        0,
+        0,
+        371,
+        325
+      ],
+      "size": [
+        340,
+        325
+      ],
+      "blank_center": false
+    },
+    "tree-medium": {
+      "source": "18",
+      "crop": [
+        371,
+        0,
+        558,
+        325
+      ],
+      "size": [
+        187,
+        316
+      ],
+      "blank_center": false
+    },
+    "tree-small": {
+      "source": "18",
+      "crop": [
+        558,
+        0,
+        714,
+        325
+      ],
+      "size": [
+        156,
+        302
+      ],
+      "blank_center": false
+    },
+    "pine-large": {
+      "source": "18",
+      "crop": [
+        714,
+        0,
+        938,
+        325
+      ],
+      "size": [
+        223,
+        309
+      ],
+      "blank_center": false
+    },
+    "pine-medium": {
+      "source": "18",
+      "crop": [
+        938,
+        0,
+        1119,
+        325
+      ],
+      "size": [
+        181,
+        302
+      ],
+      "blank_center": false
+    },
+    "pine-small": {
+      "source": "18",
+      "crop": [
+        1119,
+        0,
+        1248,
+        325
+      ],
+      "size": [
+        129,
+        289
+      ],
+      "blank_center": false
+    },
+    "pine-tiny": {
+      "source": "18",
+      "crop": [
+        1248,
+        0,
+        1448,
+        325
+      ],
+      "size": [
+        194,
+        316
+      ],
+      "blank_center": false
+    },
+    "bush-white": {
+      "source": "18",
+      "crop": [
+        0,
+        326,
+        198,
+        454
+      ],
+      "size": [
+        198,
+        128
+      ],
+      "blank_center": false
+    },
+    "bush-pink": {
+      "source": "18",
+      "crop": [
+        198,
+        326,
+        340,
+        454
+      ],
+      "size": [
+        142,
+        128
+      ],
+      "blank_center": false
+    },
+    "bush-small": {
+      "source": "18",
+      "crop": [
+        340,
+        326,
+        473,
+        454
+      ],
+      "size": [
+        133,
+        128
+      ],
+      "blank_center": false
+    },
+    "bush-rock": {
+      "source": "18",
+      "crop": [
+        473,
+        326,
+        627,
+        454
+      ],
+      "size": [
+        154,
+        128
+      ],
+      "blank_center": false
+    },
+    "flowers-white": {
+      "source": "18",
+      "crop": [
+        627,
+        326,
+        718,
+        454
+      ],
+      "size": [
+        91,
+        128
+      ],
+      "blank_center": false
+    },
+    "flowers-pink": {
+      "source": "18",
+      "crop": [
+        718,
+        326,
+        814,
+        454
+      ],
+      "size": [
+        96,
+        128
+      ],
+      "blank_center": false
+    },
+    "flowers-blue": {
+      "source": "18",
+      "crop": [
+        814,
+        326,
+        911,
+        454
+      ],
+      "size": [
+        97,
+        124
+      ],
+      "blank_center": false
+    },
+    "grass-large": {
+      "source": "18",
+      "crop": [
+        911,
+        326,
+        1017,
+        454
+      ],
+      "size": [
+        106,
+        124
+      ],
+      "blank_center": false
+    },
+    "grass-small": {
+      "source": "18",
+      "crop": [
+        1017,
+        326,
+        1108,
+        454
+      ],
+      "size": [
+        91,
+        128
+      ],
+      "blank_center": false
+    },
+    "mushrooms-red": {
+      "source": "18",
+      "crop": [
+        1108,
+        326,
+        1247,
+        454
+      ],
+      "size": [
+        139,
+        128
+      ],
+      "blank_center": false
+    },
+    "mushrooms-yellow": {
+      "source": "18",
+      "crop": [
+        1247,
+        326,
+        1353,
+        454
+      ],
+      "size": [
+        106,
+        128
+      ],
+      "blank_center": false
+    },
+    "mushrooms-small": {
+      "source": "18",
+      "crop": [
+        1353,
+        326,
+        1448,
+        454
+      ],
+      "size": [
+        81,
+        127
+      ],
+      "blank_center": false
+    },
+    "rocks-large": {
+      "source": "18",
+      "crop": [
+        0,
+        455,
+        245,
+        632
+      ],
+      "size": [
+        232,
+        177
+      ],
+      "blank_center": false
+    },
+    "rocks-medium": {
+      "source": "18",
+      "crop": [
+        245,
+        455,
+        391,
+        632
+      ],
+      "size": [
+        146,
+        177
+      ],
+      "blank_center": false
+    },
+    "rock-small": {
+      "source": "18",
+      "crop": [
+        391,
+        455,
+        514,
+        632
+      ],
+      "size": [
+        123,
+        177
+      ],
+      "blank_center": false
+    },
+    "sign-paw": {
+      "source": "18",
+      "crop": [
+        514,
+        455,
+        661,
+        632
+      ],
+      "size": [
+        147,
+        177
+      ],
+      "blank_center": false
+    },
+    "sign-arrows": {
+      "source": "18",
+      "crop": [
+        661,
+        455,
+        826,
+        632
+      ],
+      "size": [
+        154,
+        177
+      ],
+      "blank_center": false
+    },
+    "fence": {
+      "source": "18",
+      "crop": [
+        826,
+        455,
+        1096,
+        632
+      ],
+      "size": [
+        269,
+        177
+      ],
+      "blank_center": false
+    },
+    "post-leaf": {
+      "source": "18",
+      "crop": [
+        1096,
+        455,
+        1176,
+        632
+      ],
+      "size": [
+        80,
+        177
+      ],
+      "blank_center": false
+    },
+    "post-plain": {
+      "source": "18",
+      "crop": [
+        1176,
+        455,
+        1286,
+        632
+      ],
+      "size": [
+        110,
+        177
+      ],
+      "blank_center": false
+    },
+    "lantern": {
+      "source": "18",
+      "crop": [
+        1286,
+        455,
+        1448,
+        632
+      ],
+      "size": [
+        146,
+        177
+      ],
+      "blank_center": false
+    },
+    "ground-dirt": {
+      "source": "18",
+      "crop": [
+        0,
+        633,
+        308,
+        790
+      ],
+      "size": [
+        308,
+        157
+      ],
+      "blank_center": false
+    },
+    "ground-stone": {
+      "source": "18",
+      "crop": [
+        308,
+        633,
+        593,
+        790
+      ],
+      "size": [
+        285,
+        157
+      ],
+      "blank_center": false
+    },
+    "bridge-wood": {
+      "source": "18",
+      "crop": [
+        593,
+        633,
+        897,
+        790
+      ],
+      "size": [
+        304,
+        157
+      ],
+      "blank_center": false
+    },
+    "bridge-stone": {
+      "source": "18",
+      "crop": [
+        897,
+        633,
+        1323,
+        790
+      ],
+      "size": [
+        426,
+        157
+      ],
+      "blank_center": false
+    },
+    "island-waterfall": {
+      "source": "18",
+      "crop": [
+        0,
+        791,
+        322,
+        1086
+      ],
+      "size": [
+        322,
+        295
+      ],
+      "blank_center": false
+    },
+    "island-small": {
+      "source": "18",
+      "crop": [
+        323,
+        791,
+        532,
+        1086
+      ],
+      "size": [
+        209,
+        295
+      ],
+      "blank_center": false
+    },
+    "island-double-waterfall": {
+      "source": "18",
+      "crop": [
+        533,
+        791,
+        818,
+        1086
+      ],
+      "size": [
+        285,
+        295
+      ],
+      "blank_center": false
+    },
+    "clouds": {
+      "source": "18",
+      "crop": [
+        819,
+        791,
+        1084,
+        934
+      ],
+      "size": [
+        265,
+        143
+      ],
+      "blank_center": false
+    },
+    "treasure": {
+      "source": "18",
+      "crop": [
+        1085,
+        791,
+        1272,
+        934
+      ],
+      "size": [
+        187,
+        139
+      ],
+      "blank_center": false
+    },
+    "campfire": {
+      "source": "18",
+      "crop": [
+        1273,
+        772,
+        1448,
+        934
+      ],
+      "size": [
+        175,
+        162
+      ],
+      "blank_center": false
+    },
+    "ruin-arch": {
+      "source": "18",
+      "crop": [
+        790,
+        935,
+        1028,
+        1086
+      ],
+      "size": [
+        238,
+        151
+      ],
+      "blank_center": false
+    },
+    "ruin-pillar": {
+      "source": "18",
+      "crop": [
+        1029,
+        935,
+        1131,
+        1086
+      ],
+      "size": [
+        102,
+        151
+      ],
+      "blank_center": false
+    },
+    "ruin-stone": {
+      "source": "18",
+      "crop": [
+        1132,
+        935,
+        1234,
+        1086
+      ],
+      "size": [
+        102,
+        139
+      ],
+      "blank_center": false
+    },
+    "crystals-blue": {
+      "source": "18",
+      "crop": [
+        1235,
+        935,
+        1371,
+        1086
+      ],
+      "size": [
+        136,
+        151
+      ],
+      "blank_center": false
+    },
+    "crystal-purple": {
+      "source": "18",
+      "crop": [
+        1372,
+        935,
+        1448,
+        1086
+      ],
+      "size": [
+        76,
+        118
+      ],
+      "blank_center": false
+    }
+  }
+}
