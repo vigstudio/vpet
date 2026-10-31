@@ -74,6 +74,7 @@ export const allocate = (pet, skill, qty = 1) => game('/build', {pet, skill, qty
 export const bossHit = (pet) => game('/boss/hit', {pet});
 export const bossClaim = () => game('/boss/claim', {});
 export const party = (action, pet, id = '', map = '') => game('/party', {action, pet, id, map});
+export const alliance = (action, payload = {}) => game('/alliance', {action, ...payload});
 export const claimQuest = (id) => game('/quest/claim', {id});
 export const wearTitle = (pet, id) => game('/title', {pet, id});
 export const checkin = () => game('/checkin', {});

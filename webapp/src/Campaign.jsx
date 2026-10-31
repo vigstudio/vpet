@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 import * as api from './api';
+import Alliance from './Alliance';
 import {dateLocale, t, tr} from './i18n';
 import {Replay} from './Duel';
 import {RARITY} from './Hunt';
@@ -93,9 +94,9 @@ export default function Campaign({state, sel, busy, act}) {
   };
   return <div className='vpet-campaign'>
     <nav className='vpet-inv__tabs' aria-label={t('campaign.activity')}>
-      {[['campaign',t('campaign.campaign')],['boss',t('campaign.boss')],['party',t('campaign.party')],['wild',t('campaign.free')]].map(([id,label]) => <button key={id} type='button' aria-pressed={view===id} className={view===id?'is-active':''} onClick={() => {setView(id); refresh();}}>{label}</button>)}
+      {[['campaign',t('campaign.campaign')],['boss',t('campaign.boss')],['party',t('campaign.party')],['wild',t('campaign.free')],['alliance',t('alliance.title')]].map(([id,label]) => <button key={id} type='button' aria-pressed={view===id} className={view===id?'is-active':''} onClick={() => {setView(id); refresh();}}>{label}</button>)}
     </nav>
-    {view === 'wild' ? <WorldTab state={state} sel={sel} busy={busy} act={act}/> : view === 'boss' ? <Boss state={state} sel={sel} busy={busy} act={act} now={now}/> : view === 'party' ? <Parties state={state} sel={sel} busy={busy} act={act} mapID={chapter} now={now}/> : <>
+    {view === 'alliance' ? <Alliance state={state} busy={busy} act={act}/> : view === 'wild' ? <WorldTab state={state} sel={sel} busy={busy} act={act}/> : view === 'boss' ? <Boss state={state} sel={sel} busy={busy} act={act} now={now}/> : view === 'party' ? <Parties state={state} sel={sel} busy={busy} act={act} mapID={chapter} now={now}/> : <>
       {/* One toolbar: where you are, how hard, and what it costs. Everything else is the map. */}
       <div className='vpet-campaign__setup'>
       <div className='vpet-campaign__bar'>

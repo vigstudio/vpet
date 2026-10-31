@@ -1823,3 +1823,40 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
   .vpet-campaign__setup > .vpet-expedition-bar .vpet-btn { width:100%; }
   .vpet-campaign__rules { display:none; }
 }
+
+/* Alliance lives inside Adventure: a roster, not another top-level application tab. */
+.vpet-alliance { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.7fr); gap:14px; align-items:start; }
+.vpet-alliance__head { grid-column:1/-1; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px; border:1px solid var(--game-line); border-radius:12px; background:var(--game-surface); }
+.vpet-alliance__head h3, .vpet-alliance h4 { margin:0; }
+.vpet-alliance__head p, .vpet-alliance__create p { margin:4px 0 0; color:var(--game-muted); }
+.vpet-alliance__head > span, .vpet-alliance__join article > span { padding:4px 8px; border-radius:999px; background:var(--game-soft); color:var(--game-accent); font-size:12px; font-weight:700; }
+.vpet-alliance__join, .vpet-alliance__create, .vpet-alliance__invite, .vpet-alliance__members { padding:14px; border:1px solid var(--game-line); border-radius:12px; background:var(--game-surface); }
+.vpet-alliance__list, .vpet-alliance__members { display:grid; gap:7px; }
+.vpet-alliance__list { margin-top:10px; }
+.vpet-alliance__list article, .vpet-alliance__members article { display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:8px; min-height:58px; padding:8px 10px; border:1px solid var(--game-line); border-radius:9px; }
+.vpet-alliance__list article > div, .vpet-alliance__members article > div:first-child { display:flex; flex-direction:column; min-width:0; }
+.vpet-alliance article b { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.vpet-alliance article small { color:var(--game-muted); }
+.vpet-alliance__create { display:grid; gap:10px; }
+.vpet-alliance label { display:grid; gap:4px; color:var(--game-muted); font-size:12px; font-weight:700; }
+.vpet-alliance input:not([type='checkbox']) { width:100%; min-height:44px; padding:0 10px; border:1px solid var(--game-line); border-radius:8px; background:var(--game-surface); color:var(--game-text); font:inherit; }
+.vpet-alliance__check { display:flex !important; align-items:center; min-height:44px; }
+.vpet-alliance__check input { width:20px; height:20px; }
+.vpet-alliance__invite { grid-column:1/-1; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:8px; }
+.vpet-alliance__members { grid-column:1/-1; }
+.vpet-alliance__members article { grid-template-columns:minmax(0,1fr) auto; }
+.vpet-alliance__actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:5px; }
+.vpet-alliance__actions button, .vpet-alliance__members article > button { min-height:44px; padding:0 9px; border:1px solid var(--game-line); border-radius:7px; background:var(--game-surface); color:inherit; cursor:pointer; }
+.vpet-alliance__footer { grid-column:1/-1; display:flex; justify-content:flex-end; }
+.vpet-alliance__lock { grid-column:1/-1; margin:0; padding:10px 12px; border-left:3px solid #c7852d; background:#fff5df; color:#714b16; }
+@media (max-width:700px) {
+  .vpet-alliance { grid-template-columns:1fr; }
+  .vpet-alliance__head, .vpet-alliance__invite, .vpet-alliance__members, .vpet-alliance__footer, .vpet-alliance__lock { grid-column:1; }
+  .vpet-alliance__list article { grid-template-columns:minmax(0,1fr) auto; }
+  .vpet-alliance__list article .vpet-btn { grid-column:1/-1; width:100%; }
+  .vpet-alliance__invite { grid-template-columns:1fr; }
+  .vpet-alliance__invite .vpet-btn { width:100%; }
+  .vpet-alliance__members article { align-items:start; grid-template-columns:1fr; }
+  .vpet-alliance__actions { justify-content:stretch; }
+  .vpet-alliance__actions button { flex:1 1 120px; }
+}

@@ -604,6 +604,8 @@ func (p *Engine) ServeHTTP(w http.ResponseWriter, r *http.Request, userID string
 		Price      int            `json:"price"`
 		Days       int            `json:"days"`
 		ID         string         `json:"id"`
+		Tag        string         `json:"tag"`
+		Open       bool           `json:"open"`
 	}
 	// Empty JSON bodies are accepted for actions without parameters.
 	if err := json.NewDecoder(http.MaxBytesReader(w, r.Body, maxBody)).Decode(&body); err != nil && !errors.Is(err, io.EOF) {
@@ -727,6 +729,12 @@ func (p *Engine) ServeHTTP(w http.ResponseWriter, r *http.Request, userID string
 		}
 	case "/party":
 		msg, err = p.partyAction(userID, st, body.Pet, body.Act, body.ID, body.Map, now)
+		if err == nil {
+			p.respondState(w, userID, msg)
+			return
+		}
+	case "/alliance":
+		msg, err = p.allianceAction(userID, st, body.Act, body.ID, body.Name, body.Tag, body.To, body.Open, now)
 		if err == nil {
 			p.respondState(w, userID, msg)
 			return
@@ -863,6 +871,7 @@ type stateView struct {
 	Lang           string              `json:"lang"`
 	Boss           *bossView           `json:"boss"`
 	Parties        []huntParty         `json:"parties"`
+	Alliance       allianceView        `json:"alliance"`
 	User           string              `json:"user"`
 	CampaignResult *campaignResult     `json:"campaign_result,omitempty"`
 	GachaResult    *gachaResult        `json:"gacha_result,omitempty"`
@@ -931,7 +940,7 @@ func (p *Engine) respondStateFast(w http.ResponseWriter, userID, msg string) {
 
 func globalStateChanged(path string) bool {
 	return strings.HasPrefix(path, "/market/") || strings.HasPrefix(path, "/duels") || strings.HasPrefix(path, "/offers") ||
-		strings.HasPrefix(path, "/boss/") || path == "/party"
+		strings.HasPrefix(path, "/boss/") || path == "/party" || path == "/alliance"
 }
 
 // respondAll answers with the full state, optionally carrying a hunt trip or a wild encounter.
@@ -961,6 +970,7 @@ func (p *Engine) respondAll(w http.ResponseWriter, userID, msg string, hunt *hun
 	v.User = userID
 	v.Boss = p.bossFor(userID, now)
 	v.Parties, _ = p.parties(now)
+	v.Alliance = p.allianceState(userID, now)
 	v.CampaignResult = campaign
 	v.GachaResult = gacha
 	if v.Hunt != nil {
