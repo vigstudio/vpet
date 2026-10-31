@@ -62,7 +62,7 @@
 - Đã viết: bỏ `body overflow:hidden` còn sót từ modal cũ; cuộn dọc native trở lại, giữ cuộn nội dung riêng ở landscape. Gia hạn sự kiện đến hết 01/11/2026 theo giờ Việt Nam; server, popup và Nghĩa trang đồng bộ vi/en/ja, không tự mở lại năm sau.
 - Đã kiểm thử: frontend 81/81, build đạt (ba cảnh báo kích thước); Go toàn suite đạt, store integration đợt sửa này không bật. Hồi sinh có snapshot và legacy thực thi ngày 01/11; kiểm tra trước/sau hai mốc mở/đóng và năm 2027.
 - Playwright có touch emulation + CDP touchStart/touchMove/touchEnd: cuộn thật ở 360/375/390/768 và landscape 740/844; khôi phục CSS khóa cũ thì không cuộn, gỡ khóa thì cuộn được. Vuốt tới ô chat Thành phố ở ba kích thước phone; CTA landscape không bị nav che, không pageerror/tràn ngang. Popup hiển thị đúng hạn mới. Chưa thử trực tiếp thiết bị iOS/Android vật lý.
-- Deploy: chờ phát hành bản sửa; không coi bản `380282d` đã chứa thay đổi này.
+- Đã push/deploy app `dcb3fc4` ngày 31/10/2026; app/DB healthy, backup DB qua `pg_restore -l`, có image rollback. Bundle local/origin/public cùng 779.713 byte, SHA-256 `857d9e365472a78986bd449613f33a808d58466c7bd4789dbea1b75573479c88`; browser public 1440/375 xác minh CSS `body overflow-y:auto`, không pageerror/tràn ngang. HTTP hồi sinh local đủ đồ +3/ngọc/phụ kiện, từ chối lặp và persistence đạt; regression sáu trạng thái pet đạt. Không tạo tài khoản production.
 
 ## Kiểm chứng artwork production
 
