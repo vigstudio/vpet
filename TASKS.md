@@ -64,6 +64,12 @@
 - Playwright có touch emulation + CDP touchStart/touchMove/touchEnd: cuộn thật ở 360/375/390/768 và landscape 740/844; khôi phục CSS khóa cũ thì không cuộn, gỡ khóa thì cuộn được. Vuốt tới ô chat Thành phố ở ba kích thước phone; CTA landscape không bị nav che, không pageerror/tràn ngang. Popup hiển thị đúng hạn mới. Chưa thử trực tiếp thiết bị iOS/Android vật lý.
 - Đã push/deploy app `dcb3fc4` ngày 31/10/2026; app/DB healthy, backup DB qua `pg_restore -l`, có image rollback. Bundle local/origin/public cùng 779.713 byte, SHA-256 `857d9e365472a78986bd449613f33a808d58466c7bd4789dbea1b75573479c88`; browser public 1440/375 xác minh CSS `body overflow-y:auto`, không pageerror/tràn ngang. HTTP hồi sinh local đủ đồ +3/ngọc/phụ kiện, từ chối lặp và persistence đạt; regression sáu trạng thái pet đạt. Không tạo tài khoản production.
 
+## Reload tự mở PvP
+
+- Đã viết: thông báo SSE chỉ refresh state và hiện nội dung, không tự điều hướng theo `tab/duel`. Giữ lịch sử PvP, replay chủ động, nhớ tab và chat cursor; không sửa backend/DB.
+- Đã tái hiện: regression Playwright trên image cũ thất bại vì thông báo PvP ép Chợ sang Đấu trường ở 375px. Script local `scripts/smoke-notification-navigation.py` kiểm tra reload/reconnect, toast/refresh và xem lại trận chủ động.
+- Đã kiểm thử bản sửa: frontend 81/81 và build đạt (ba cảnh báo kích thước). Playwright 375/1440: reload Chợ/Thành phố, phát thông báo PvP cũ và reconnect đều không chuyển màn hoặc tự mở replay; toast và refresh vẫn hoạt động, chủ động vào Lịch sử xem lại trận vẫn đạt, không pageerror. Mock EventSource để kiểm tra frontend; không coi đây là E2E đường truyền SSE thật. Deploy đang chờ phát hành.
+
 ## Kiểm chứng artwork production
 
 - Bản app: `4fac173`, 31/10/2026; không thay backend hoặc dữ liệu người chơi.

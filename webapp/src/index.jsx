@@ -5,7 +5,7 @@ import * as api from './api';
 import Panel from './Panel';
 import Profile from './Profile';
 import {setLocale} from './i18n';
-import {openAt, refresh, say, setUnauthorizedHandler} from './store';
+import {refresh, say, setUnauthorizedHandler} from './store';
 import {lastWorldChatID, receiveWorldChat} from './worldchat.cjs';
 import './style.css';
 import './shell.css';
@@ -91,8 +91,8 @@ function Game({account, onAccount, onLogout}) {
       source.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data);
+          // Old notifications replay on reconnect; they must not take over navigation.
           refresh();
-          if (data.tab) openAt(data.tab, data.duel);
           if (data.message) say(data.message);
         } catch (e) {
           // Ignore a malformed event; reconnect remains active.
