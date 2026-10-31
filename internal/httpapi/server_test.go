@@ -129,3 +129,33 @@ func TestVerifyClaimCode(t *testing.T) {
 		t.Fatal("tampered code accepted")
 	}
 }
+
+func TestAllianceRateKeyBoundsUnknownActions(t *testing.T) {
+	if allianceRateKey("u", "attack") == allianceRateKey("u", "garrison") {
+		t.Fatal("known actions shared a bucket")
+	}
+	if allianceRateKey("u", "invented-a") != allianceRateKey("u", "invented-b") {
+		t.Fatal("unknown actions created unbounded buckets")
+	}
+}
+
+func TestAllianceActionsUseSeparateRateBuckets(t *testing.T) {
+	s := &Server{limiter: newLimiter()}
+	for i := 0; i < 8; i++ {
+		r := httptest.NewRequest(http.MethodPost, "/api/v1/alliance", nil)
+		r.RemoteAddr = "192.0.2.1:1234"
+		if !s.limit(httptest.NewRecorder(), r, allianceRateKey("u", "attack")) {
+			t.Fatalf("attack %d rejected early", i+1)
+		}
+	}
+	other := httptest.NewRequest(http.MethodPost, "/api/v1/alliance", nil)
+	other.RemoteAddr = "192.0.2.1:1234"
+	if !s.limit(httptest.NewRecorder(), other, allianceRateKey("u", "garrison")) {
+		t.Fatal("garrison shared the attack bucket")
+	}
+	ninth := httptest.NewRequest(http.MethodPost, "/api/v1/alliance", nil)
+	ninth.RemoteAddr = "192.0.2.1:1234"
+	if s.limit(httptest.NewRecorder(), ninth, allianceRateKey("u", "attack")) {
+		t.Fatal("ninth attack request bypassed limiter")
+	}
+}

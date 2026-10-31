@@ -145,7 +145,7 @@ func (p *pet) campaignViews(st *userState, now int64) []stageView {
 	return out
 }
 
-func campaign(st *userState, i int, mapID string, stage, difficulty int, now int64, rnd rng) (*campaignResult, error) {
+func campaign(st *userState, i int, mapID string, stage, difficulty int, now int64, rnd rng, boostBPS ...int) (*campaignResult, error) {
 	p, err := st.petAt(i)
 	if err != nil {
 		return nil, err
@@ -203,7 +203,11 @@ func campaign(st *userState, i int, mapID string, stage, difficulty int, now int
 	foe.Speed = speedBase + float64(foe.Lv-1)*speedPerLv + float64(difficulty)*2
 	foe.Sprite = spriteOf(mapID, (stage-1)%5)
 	p.Hunger = clamp(p.Hunger - wildHunger)
-	duel := fight(sideOf("", p), foe, rnd)
+	attacker := sideOf("", p)
+	if len(boostBPS) > 0 {
+		attacker = boostedSideWithBPS(attacker, boostBPS[0])
+	}
+	duel := fight(attacker, foe, rnd)
 	duel.At = now
 	result := &campaignResult{wildResult: wildResult{Map: mapID, Duel: duel, Won: duel.Winner == 0, Finds: []huntFind{}}, Stage: stage, Difficulty: difficulty}
 	if !result.Won {

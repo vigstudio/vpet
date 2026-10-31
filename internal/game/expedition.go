@@ -270,7 +270,7 @@ func (p *Engine) bossAction(user string, st *userState, petIndex int, claim bool
 	}
 	// No single pet may delete the bar: the strongest hit is still a slice, which keeps the
 	// fight open for everybody else and makes the damage board a contest rather than a race.
-	dmg := min(b.HP, 60+power(pt)*2+int(p.random()*30))
+	dmg := min(b.HP, 60+boostedPower(pt, st, now)*2+int(p.random()*30))
 	dmg = min(dmg, max(1, int(float64(b.maxHP())*bossHitCap)))
 	b.HP -= dmg
 	b.Damage[user] += dmg
@@ -401,7 +401,7 @@ func (p *Engine) partyAction(user string, st *userState, petIndex int, action, i
 		if pt.FrozenUntil > now || pt.Hunger < 10 || (pt.LastHunt > 0 && now-pt.LastHunt < huntCooldown.Milliseconds()) {
 			return "", errors.New("thú chưa sẵn sàng: cần 10 no và hết hồi sức săn")
 		}
-		room.Members = append(room.Members, partyMember{User: user, Name: p.userName(user), Born: pt.Born, Pet: pt.Name, Power: power(pt)})
+		room.Members = append(room.Members, partyMember{User: user, Name: p.userName(user), Born: pt.Born, Pet: pt.Name, Power: boostedPower(pt, st, now)})
 		if err := p.commitRows(map[string]any{"party_" + room.ID: room}); err != nil {
 			return "", err
 		}
@@ -449,7 +449,7 @@ func (p *Engine) partyAction(user string, st *userState, petIndex int, action, i
 			if pt.FrozenUntil > now || pt.Hunger < 10 || (pt.LastHunt > 0 && now-pt.LastHunt < huntCooldown.Milliseconds()) {
 				return "", errors.New(member.Name + " chưa sẵn sàng: cần 10 no, không nghỉ phép, hết hồi sức đi săn")
 			}
-			room.Power += power(pt)
+			room.Power += boostedPower(pt, player, now)
 			players[member.User] = player
 		}
 		room.Done = true

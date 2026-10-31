@@ -30,6 +30,7 @@ const (
 	csrfCookie    = "vpet_csrf"
 	maxAuthBody   = 16 << 10
 	maxChatBody   = 2 << 10
+	maxGameBody   = 8 << 10
 	sessionTTL    = 7 * 24 * time.Hour
 )
 
@@ -353,8 +354,33 @@ func (s *Server) reportWorldMessage(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, 200, map[string]bool{"ok": true})
 }
 
+func allianceRateKey(accountID, action string) string {
+	switch action {
+	case "create", "join", "invite", "leave", "kick", "promote", "demote", "transfer", "open", "disband", "target", "abandon", "garrison", "attack", "claim-season":
+	default:
+		action = "unknown"
+	}
+	return "alliance:" + accountID + ":" + action
+}
+
 func (s *Server) game(w http.ResponseWriter, r *http.Request) {
-	s.Game.ServeHTTP(w, r, current(r).Account.ID)
+	account := current(r).Account
+	if r.Method == http.MethodPost && strings.TrimPrefix(r.URL.Path, "/api/v1") == "/alliance" {
+		var body struct {
+			Action string `json:"action"`
+		}
+		r.Body = http.MaxBytesReader(w, r.Body, maxGameBody)
+		raw, err := io.ReadAll(r.Body)
+		if err != nil || json.Unmarshal(raw, &body) != nil {
+			writeError(w, http.StatusBadRequest, "dữ liệu không hợp lệ")
+			return
+		}
+		r.Body = io.NopCloser(strings.NewReader(string(raw)))
+		if !s.limit(w, r, allianceRateKey(account.ID, body.Action)) {
+			return
+		}
+	}
+	s.Game.ServeHTTP(w, r, account.ID)
 }
 
 func (s *Server) notifications(w http.ResponseWriter, r *http.Request) {

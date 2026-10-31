@@ -82,11 +82,10 @@ export default function Campaign({state, sel, busy, act}) {
   const map = maps.find((m) => m.id === chapter);
   const nodes=ROUTES[chapter] || ROUTES.vuon;
   const closeResult = useCallback(() => setResult(null), []);
-  if (!pet || pet.dead) return <p className='vpet-empty'>{t('campaign.needAlive')}</p>;
   if (replay) return <Replay duel={replay} state={state} onClose={() => setReplay(null)} onComplete={() => setReplay(null)}/>;
   const cleared = Boolean(picked?.stars[difficulty]);
   const pay = picked?.rewards?.[difficulty] || {coin: 0, xp: 0, rarity: 0, shards: 0, replay: cleared, drop_chance: 0};
-  const stop = !picked?.open ? t('campaign.locked') : difficulty > 0 && !picked.stars[difficulty-1] ? t('campaign.prevDifficulty') : pet.sick || pet.health < 30 ? t('campaign.needCare') : pet.hunger < 5 ? t('campaign.needFood') : energy.now < cost ? tr(`Thiếu năng lượng (${energy.now}/${cost})`, `Not enough energy (${energy.now}/${cost})`, `気力不足（${energy.now}/${cost}）`) : '';
+  const stop = !pet ? t('campaign.needAlive') : !picked?.open ? t('campaign.locked') : difficulty > 0 && !picked.stars[difficulty-1] ? t('campaign.prevDifficulty') : pet.sick || pet.health < 30 ? t('campaign.needCare') : pet.hunger < 5 ? t('campaign.needFood') : energy.now < cost ? tr(`Thiếu năng lượng (${energy.now}/${cost})`, `Not enough energy (${energy.now}/${cost})`, `気力不足（${energy.now}/${cost}）`) : '';
   const enter = async () => {
     if (busy || stop) return;
     const next = await act(() => api.campaign(sel, chapter, stage, difficulty), true);
@@ -96,7 +95,7 @@ export default function Campaign({state, sel, busy, act}) {
     <nav className='vpet-inv__tabs' aria-label={t('campaign.activity')}>
       {[['campaign',t('campaign.campaign')],['boss',t('campaign.boss')],['party',t('campaign.party')],['wild',t('campaign.free')],['alliance',t('alliance.title')]].map(([id,label]) => <button key={id} type='button' aria-pressed={view===id} className={view===id?'is-active':''} onClick={() => {setView(id); refresh();}}>{label}</button>)}
     </nav>
-    {view === 'alliance' ? <Alliance state={state} busy={busy} act={act}/> : view === 'wild' ? <WorldTab state={state} sel={sel} busy={busy} act={act}/> : view === 'boss' ? <Boss state={state} sel={sel} busy={busy} act={act} now={now}/> : view === 'party' ? <Parties state={state} sel={sel} busy={busy} act={act} mapID={chapter} now={now}/> : <>
+    {view === 'alliance' ? <Alliance state={state} sel={sel} busy={busy} act={act}/> : (!pet || pet.dead) ? <p className='vpet-empty'>{t('campaign.needAlive')}</p> : view === 'wild' ? <WorldTab state={state} sel={sel} busy={busy} act={act}/> : view === 'boss' ? <Boss state={state} sel={sel} busy={busy} act={act} now={now}/> : view === 'party' ? <Parties state={state} sel={sel} busy={busy} act={act} mapID={chapter} now={now}/> : <>
       {/* One toolbar: where you are, how hard, and what it costs. Everything else is the map. */}
       <div className='vpet-campaign__setup'>
       <div className='vpet-campaign__bar'>

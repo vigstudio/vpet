@@ -202,51 +202,54 @@ type grave struct {
 }
 
 type userState struct {
-	Pet           *pet                   `json:"pet,omitempty"` // 1.0/1.1 data, moved into Pets by normalize
-	Pets          []*pet                 `json:"pets,omitempty"`
-	Slots         int                    `json:"slots,omitempty"`
-	Gift          int                    `json:"gift,omitempty"`
-	Inv           map[string]int         `json:"inv"`
-	Enhanced      map[string]map[int]int `json:"enhanced,omitempty"`
-	Graves        []grave                `json:"graves,omitempty"`
-	LastDrop      int64                  `json:"last_drop,omitempty"`
-	DropDay       string                 `json:"drop_day,omitempty"`
-	Drops         int                    `json:"drops,omitempty"`
-	WildDay       string                 `json:"wild_day,omitempty"`
-	WildToday     int                    `json:"wild_today,omitempty"`
-	WildAt        int64                  `json:"wild_at,omitempty"`
-	ReplayDay     string                 `json:"replay_day,omitempty"`
-	ReplayToday   int                    `json:"replay_today,omitempty"`
-	Air           int                    `json:"air,omitempty"` // bags on their way by plane, claimed by clicking them
-	In            []string               `json:"in,omitempty"`
-	Out           []string               `json:"out,omitempty"`
-	Muted         bool                   `json:"muted,omitempty"`
-	DIn           []string               `json:"din,omitempty"` // duel challenges received / sent
-	DOut          []string               `json:"dout,omitempty"`
-	Duels         []duelResult           `json:"duels,omitempty"`
-	DuelDay       string                 `json:"duel_day,omitempty"`
-	DuelWins      int                    `json:"duel_wins,omitempty"`
-	Coin          int                    `json:"coin,omitempty"` // 🪙 earned by gameplay activity
-	CoinDay       string                 `json:"coin_day,omitempty"`
-	CoinToday     int                    `json:"coin_today,omitempty"`
-	BossCoinDay   string                 `json:"boss_coin_day,omitempty"`
-	BossCoinToday int                    `json:"boss_coin_today,omitempty"`
-	LastCoin      int64                  `json:"last_coin,omitempty"`
-	ActivityAt    map[string]int64       `json:"activity_at,omitempty"`
-	ShopDay       string                 `json:"shop_day,omitempty"`
-	Bought        map[string]int         `json:"bought,omitempty"` // bought today, caps the daily stock
-	Sell          []string               `json:"sell,omitempty"`   // market listing ids this user has up
-	Buy           []string               `json:"buy,omitempty"`    // prepaid buy-order ids this user has up
-	Cruel         int64                  `json:"cruel,omitempty"`  // the cruelty mark runs out at this time
-	Kills         int                    `json:"kills,omitempty"`
-	Counts        map[string]int         `json:"counts,omitempty"`
-	QuestDay      string                 `json:"quest_day,omitempty"`
-	QuestBase     map[string]int         `json:"quest_base,omitempty"`
-	QuestDone     map[string]bool        `json:"quest_done,omitempty"`
-	CheckDay      string                 `json:"check_day,omitempty"` // last claimed attendance date
-	Streak        int                    `json:"streak,omitempty"`
-	BestStreak    int                    `json:"best_streak,omitempty"`
-	WelcomeGift   bool                   `json:"welcome_gift_3000,omitempty"`
+	Pet               *pet                   `json:"pet,omitempty"` // 1.0/1.1 data, moved into Pets by normalize
+	Pets              []*pet                 `json:"pets,omitempty"`
+	Slots             int                    `json:"slots,omitempty"`
+	Gift              int                    `json:"gift,omitempty"`
+	Inv               map[string]int         `json:"inv"`
+	Enhanced          map[string]map[int]int `json:"enhanced,omitempty"`
+	Graves            []grave                `json:"graves,omitempty"`
+	LastDrop          int64                  `json:"last_drop,omitempty"`
+	DropDay           string                 `json:"drop_day,omitempty"`
+	Drops             int                    `json:"drops,omitempty"`
+	WildDay           string                 `json:"wild_day,omitempty"`
+	WildToday         int                    `json:"wild_today,omitempty"`
+	WildAt            int64                  `json:"wild_at,omitempty"`
+	ReplayDay         string                 `json:"replay_day,omitempty"`
+	ReplayToday       int                    `json:"replay_today,omitempty"`
+	Air               int                    `json:"air,omitempty"` // bags on their way by plane, claimed by clicking them
+	In                []string               `json:"in,omitempty"`
+	Out               []string               `json:"out,omitempty"`
+	Muted             bool                   `json:"muted,omitempty"`
+	DIn               []string               `json:"din,omitempty"` // duel challenges received / sent
+	DOut              []string               `json:"dout,omitempty"`
+	Duels             []duelResult           `json:"duels,omitempty"`
+	DuelDay           string                 `json:"duel_day,omitempty"`
+	DuelWins          int                    `json:"duel_wins,omitempty"`
+	Coin              int                    `json:"coin,omitempty"` // 🪙 earned by gameplay activity
+	CoinDay           string                 `json:"coin_day,omitempty"`
+	CoinToday         int                    `json:"coin_today,omitempty"`
+	BossCoinDay       string                 `json:"boss_coin_day,omitempty"`
+	BossCoinToday     int                    `json:"boss_coin_today,omitempty"`
+	LastCoin          int64                  `json:"last_coin,omitempty"`
+	ActivityAt        map[string]int64       `json:"activity_at,omitempty"`
+	ShopDay           string                 `json:"shop_day,omitempty"`
+	Bought            map[string]int         `json:"bought,omitempty"` // bought today, caps the daily stock
+	Sell              []string               `json:"sell,omitempty"`   // market listing ids this user has up
+	Buy               []string               `json:"buy,omitempty"`    // prepaid buy-order ids this user has up
+	Cruel             int64                  `json:"cruel,omitempty"`  // the cruelty mark runs out at this time
+	Kills             int                    `json:"kills,omitempty"`
+	Counts            map[string]int         `json:"counts,omitempty"`
+	QuestDay          string                 `json:"quest_day,omitempty"`
+	QuestBase         map[string]int         `json:"quest_base,omitempty"`
+	QuestDone         map[string]bool        `json:"quest_done,omitempty"`
+	CheckDay          string                 `json:"check_day,omitempty"` // last claimed attendance date
+	Streak            int                    `json:"streak,omitempty"`
+	BestStreak        int                    `json:"best_streak,omitempty"`
+	WelcomeGift       bool                   `json:"welcome_gift_3000,omitempty"`
+	SeasonBoostBPS    int                    `json:"season_boost_bps,omitempty"`
+	SeasonBoostUntil  int64                  `json:"season_boost_until,omitempty"`
+	SeasonBoostSource string                 `json:"season_boost_source,omitempty"`
 }
 
 type challenge struct {

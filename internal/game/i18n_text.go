@@ -354,6 +354,11 @@ func localizeNames(locale, msg string) string {
 			pairs = append(pairs, pair{m.Name, tMaps[i].Name})
 		}
 	}
+	for _, land := range territoryDefs {
+		if translated := translatedTerritoryName(locale, land.ID); translated != land.Name {
+			pairs = append(pairs, pair{land.Name, translated})
+		}
+	}
 	tR := translatedRarities(locale)
 	for i, r := range rarityNames {
 		if i < len(tR) && r != tR[i] {

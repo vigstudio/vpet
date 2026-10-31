@@ -83,7 +83,7 @@ type wildResult struct {
 
 // encounter fights a wild pet in one region. Energy and hunger pace attempts; in dangerous
 // regions, a lost fight can kill the pet. Nothing changes when it returns an error.
-func encounter(st *userState, i int, mapID string, now int64, rnd rng) (*wildResult, error) {
+func encounter(st *userState, i int, mapID string, now int64, rnd rng, boostBPS ...int) (*wildResult, error) {
 	p, err := st.petAt(i)
 	if err != nil {
 		return nil, err
@@ -112,7 +112,11 @@ func encounter(st *userState, i int, mapID string, now int64, rnd rng) (*wildRes
 	p.Hunger = clamp(p.Hunger - wildHunger)
 
 	foe := wildSide(m, max(p.Lv, 1), rnd)
-	res := &wildResult{Map: m.ID, Duel: fight(sideOf("", p), foe, rnd)}
+	attacker := sideOf("", p)
+	if len(boostBPS) > 0 {
+		attacker = boostedSideWithBPS(attacker, boostBPS[0])
+	}
+	res := &wildResult{Map: m.ID, Duel: fight(attacker, foe, rnd)}
 	res.Duel.At = now
 	res.Won = res.Duel.Winner == 0
 	base := m.XP/2 + foe.Lv

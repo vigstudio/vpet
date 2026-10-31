@@ -62,6 +62,7 @@ type allianceView struct {
 	Mine        *allianceDetailView `json:"mine,omitempty"`
 	Rows        []allianceListView  `json:"rows"`
 	LockedUntil int64               `json:"locked_until,omitempty"`
+	War         warView             `json:"war"`
 }
 
 type allianceDetailView struct {
@@ -211,6 +212,11 @@ func (p *Engine) allianceState(userID string, now int64) allianceView {
 		})
 		out.Mine = mine
 	}
+	var mineAlliance *alliance
+	if out.Mine != nil {
+		mineAlliance, _ = p.loadAlliance(out.Mine.ID)
+	}
+	out.War = p.warState(userID, member, mineAlliance, now)
 	return out
 }
 
@@ -469,6 +475,9 @@ func (p *Engine) changeAllianceRole(actor, role string, a *alliance, target, act
 func (p *Engine) disbandAlliance(userID, role string, pointer *allianceMemberPointer, a *alliance, now int64) (string, error) {
 	if role != "leader" {
 		return "", errors.New("chỉ leader được giải tán Alliance")
+	}
+	if p.allianceOwnsTerritory(a.ID) {
+		return "", errors.New("phải bỏ toàn bộ lãnh thổ trước khi giải tán")
 	}
 	if len(a.Members) != 1 {
 		return "", errors.New("phải chuyển hoặc loại hết thành viên trước khi giải tán")

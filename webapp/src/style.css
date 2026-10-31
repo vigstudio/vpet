@@ -1860,3 +1860,32 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
   .vpet-alliance__actions { justify-content:stretch; }
   .vpet-alliance__actions button { flex:1 1 120px; }
 }
+.vpet-war { grid-column:1/-1; display:grid; gap:12px; padding:14px; border:1px solid var(--game-line); border-radius:12px; background:var(--game-surface); }
+.vpet-war > header { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.vpet-war > header p { margin:3px 0 0; color:var(--game-muted); }
+.vpet-war__map { position:relative; width:100%; aspect-ratio:16/9; overflow:hidden; border:1px solid var(--game-line); border-radius:12px; background:linear-gradient(145deg,#d9f0cf,#9fc6a8 52%,#c8b58b); }
+.vpet-war__map::before { content:''; position:absolute; inset:12%; background:repeating-linear-gradient(35deg,transparent 0 10%,rgba(255,255,255,.16) 10% 11%); border-radius:45%; }
+.vpet-war__map .vpet-territory { position:absolute; left:calc(10% + var(--tx)*26.666%); top:calc(16% + var(--ty)*34%); transform:translate(-50%,-50%); }
+.vpet-territory__node { display:grid; place-content:center; width:clamp(68px,12vw,124px); min-height:56px; padding:5px; border:2px solid #fff; border-radius:12px; background:#f7fbf4; box-shadow:0 3px 10px rgba(33,66,45,.25); color:#253b2d; cursor:pointer; }
+.vpet-territory__node b { font-size:clamp(10px,1.2vw,13px); line-height:1.1; }
+.vpet-territory__node small { font-size:10px; }
+.vpet-territory.is-mine .vpet-territory__node { outline:3px solid #4c9e68; }
+.vpet-territory.is-target .vpet-territory__node { outline:3px solid #d36a3b; }
+.vpet-war__map .vpet-territory__info { display:none; }
+.vpet-war__territory-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; }
+.vpet-war__territory-list .vpet-territory__node { display:none; }
+.vpet-territory__info { display:grid; gap:4px; min-height:118px; padding:9px; border:1px solid var(--game-line); border-radius:9px; }
+.vpet-territory__info span,.vpet-territory__info small { color:var(--game-muted); }
+.vpet-territory__info button { min-height:44px; border:1px solid var(--game-line); border-radius:7px; background:var(--game-surface); color:inherit; }
+.vpet-war__rankings { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.vpet-war__rankings section { min-width:0; padding:10px; border:1px solid var(--game-line); border-radius:9px; }
+.vpet-war__rankings ol { display:grid; gap:5px; margin:8px 0 0; padding:0; list-style:none; }
+.vpet-war__rankings li { display:flex; justify-content:space-between; gap:8px; font-size:12px; }
+.vpet-war__rankings li span { color:var(--game-muted); text-align:right; }
+.vpet-war__reward { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:10px; border:1px solid #dfb45c; border-radius:9px; background:#fff7dc; color:#624914; }
+@media (max-width:760px) {
+  .vpet-war__territory-list { grid-template-columns:1fr; }
+  .vpet-war__rankings { grid-template-columns:1fr; }
+  .vpet-territory__node { width:64px; min-height:48px; }
+  .vpet-territory__node b { max-width:54px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+}
