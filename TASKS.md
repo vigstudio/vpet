@@ -68,7 +68,7 @@
 
 - Đã viết: thông báo SSE chỉ refresh state và hiện nội dung, không tự điều hướng theo `tab/duel`. Giữ lịch sử PvP, replay chủ động, nhớ tab và chat cursor; không sửa backend/DB.
 - Đã tái hiện: regression Playwright trên image cũ thất bại vì thông báo PvP ép Chợ sang Đấu trường ở 375px. Script local `scripts/smoke-notification-navigation.py` kiểm tra reload/reconnect, toast/refresh và xem lại trận chủ động.
-- Đã kiểm thử bản sửa: frontend 81/81 và build đạt (ba cảnh báo kích thước). Playwright 375/1440: reload Chợ/Thành phố, phát thông báo PvP cũ và reconnect đều không chuyển màn hoặc tự mở replay; toast và refresh vẫn hoạt động, chủ động vào Lịch sử xem lại trận vẫn đạt, không pageerror. Mock EventSource để kiểm tra frontend; không coi đây là E2E đường truyền SSE thật. Deploy đang chờ phát hành.
+- Đã kiểm thử bản sửa: frontend 81/81 và build đạt (ba cảnh báo kích thước). Playwright 375/1440: reload Chợ/Thành phố, phát thông báo PvP cũ và reconnect đều không chuyển màn hoặc tự mở replay; toast và refresh vẫn hoạt động, chủ động vào Lịch sử xem lại trận vẫn đạt, không pageerror. Mock EventSource để kiểm tra frontend; không coi đây là E2E đường truyền SSE thật. Regression sáu trạng thái pet và toàn bộ smoke mobile/Halloween (gồm vuốt cảm ứng) vẫn đạt. Đã push/deploy app `ab5e960` ngày 31/10/2026; app/DB healthy, backup DB qua `pg_restore -l`, giữ image rollback. Bundle local/origin/public cùng 779.638 byte, SHA-256 `70f5071c0f6e2512b6c622cc1c182cec3f644af9622c451b810737d3bf1d7118`. Login public 375/1440 không pageerror/tràn ngang; không tạo tài khoản production.
 
 ## Kiểm chứng artwork production
 
