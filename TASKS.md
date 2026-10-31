@@ -25,13 +25,13 @@
 | Tinh Hồn | Drop boss/đất tier 3, khóa giao dịch đã viết | War drop, boss settlement/claim idempotence |
 | Nhạc nền | Có sẵn | Regression toggle/nhớ lựa chọn/ẩn tab |
 | Replay tự hiện thưởng | Có sẵn và tích hợp tháp | Callback một lần, pause/skip/reduced-motion |
-| Landscape | CSS đã viết | Assert CTA trong viewport 740×375 và 844×390 |
+| Landscape | Đã sửa, CTA trong viewport 740×375 và 844×390 qua Playwright | Nhãn ải trên cảnh nhỏ còn dày, cần tinh chỉnh mỹ thuật |
 | Bộ asset fantasy | Chưa hoàn tất | Tranh đảo sạch, icon/khung đồng bộ, nguồn hợp lệ; nền low-poly hiện tại không đạt ảnh mẫu |
 | Vỏ / Thành phố / Nhiệm vụ | Đã áp nav gỗ, nền trời, giấy; mobile có 9 lối vào, nhiệm vụ có điều hướng | Chưa đạt bộ tranh/icon mẫu; chưa đủ bố cục pet và nhiệm vụ ba cột |
 | Chat / hồ sơ | Đổi khung giấy, giữ nguyên logic | Tên/tin dài, keyboard mobile, reconnect chưa regression đầy đủ |
 | Go / frontend | Go toàn suite xanh; frontend 76/76 xanh; webpack build thành công | Store DB integration không bật, tự skip; còn cảnh báo bundle khoảng 1,24 MiB |
 | Browser smoke | Desktop 1024/mobile 375: Alliance, săn đội, tháp, nhiệm vụ, pet, thành phố, shop xanh; gacha và đổi skill xanh | CTA ngang đã sửa và assert xanh ở 740×375, 844×390; tổng 18 kiểm tra smoke xanh |
-| Git / deploy đợt này | Đang chốt bản gameplay để phát hành nhanh theo yêu cầu | Commit/push, backup/rollback, health/cache/smoke; không coi mỹ thuật đã hoàn tất |
+| Git / deploy đợt này | Commit `37d3716` đã push và deploy; backup DB được kiểm tra, có image rollback | Origin/public healthy, checksum bundle khớp, Cache-Control no-cache, login desktop/mobile xanh; mỹ thuật chưa hoàn tất |
 
 ## Tham chiếu UI bổ sung #5–#7
 
