@@ -33,6 +33,17 @@
 | Browser smoke | Desktop 1024/mobile 375: Alliance, săn đội, tháp, nhiệm vụ, pet, thành phố, shop xanh; gacha và đổi skill xanh | CTA ngang đã sửa và assert xanh ở 740×375, 844×390; tổng 18 kiểm tra smoke xanh |
 | Git / deploy đợt này | Artwork `4fac173` đã push và deploy; app/DB healthy; backup DB đã kiểm tra bằng pg_restore, có image rollback riêng | Smoke local 9 tổ hợp và 2 landscape đạt; mỹ thuật cảnh HD vẫn chưa hoàn tất; kiểm tra public ghi bên dưới |
 
+## Chợ / Thú cưng theo ảnh #24–#25
+
+- Đã viết: Chợ hai quầy giấy/gỗ, mái bạt đỏ kem, icon vàng, kho chọn món, số lượng/tổng giá lô và CTA xanh. Giữ bán/cần mua, rút tin, trao đổi và luật phí 5 vàng/thuế 10% từ server.
+- Đã viết: một selector pet chuyển ngang/dọc; cảnh pet thật với tám slot đồ và bệ đứng, chăm sóc/khay đồ, skill có tranh theo ID, bộ đồ/XP chuyển xuống dưới. Một pet kín slot không bị bó vào cột sidebar; không pet không tạo selector rỗng.
+- Đã kiểm thử local: chợ hai tài khoản đăng/mua/rút, fulfill/cancel đơn cần mua; phí, thuế, vàng/kho đúng, mua lại tin đã bán bị từ chối. Dùng đồ/nâng skill/mặc-tháo gear đúng pet thứ hai.
+- Render: 1672/1440/1024/375, không tràn ngang hoặc pageerror; pet chết/nghỉ dưỡng/kho trống/no-pet/một slot, locale en/ja đạt smoke. Đã xem ảnh chợ có hàng và pet; nền pet vẫn từ thumbnail, chưa phải tranh HD như mẫu.
+- Landscape 740×375, 844×390: CTA truy cập được khi cuộn vào giữa; có thông báo + selector pet thì CTA chưa hiện ngay khi mở màn. Không ghi nhận kiểm tra này là đạt yêu cầu luôn nằm sẵn trong viewport.
+- Test lưu lại: `python -I scripts/smoke-pet-layout.py`, cần Python Playwright và stack local `vpet-ui-test` cổng 18099; chỉ tạo tài khoản test, giả lập response trạng thái biên, không sửa DB production. Dọn stack bằng compose `down -v` sau chạy.
+- Frontend 78/78, Go suite và Docker build đạt; DB repository integration vẫn tự skip, webpack còn ba cảnh báo kích thước (~738 KiB JS).
+- Phát hành đợt này: chờ xác nhận bản build cuối và deploy; các task gameplay cũ bên trên giữ nguyên.
+
 ## Kiểm chứng artwork production
 
 - Bản app: `4fac173`, 31/10/2026; không thay backend hoặc dữ liệu người chơi.

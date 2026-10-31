@@ -8,6 +8,13 @@ import PetCanvas from './PetCanvas';
 import Realm, {REALMS} from './Realm';
 import {Parties} from './Campaign';
 import {itemOf, useNow} from './store';
+import fireArt from '../assets/fantasy/skill-fire.png';
+import shieldArt from '../assets/fantasy/skill-shield.png';
+import healArt from '../assets/fantasy/skill-heal.png';
+import lightningArt from '../assets/fantasy/skill-lightning.png';
+import poisonArt from '../assets/fantasy/skill-poison.png';
+
+const SKILL_ART = {lua: fireArt, khien: shieldArt, hoi: healArt, set: lightningArt, bom: poisonArt};
 
 export const RARITY = ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6'];
 
@@ -127,7 +134,7 @@ function gemText(gems) {
   return Object.entries(sum).map(([icon, v]) => `${icon}+${Math.round(v * 10) / 10}`).join(' ');
 }
 
-export function GearBox({state, sel, busy, act, children, onInventory}) {
+export function GearBox({state, sel, busy, act, children, onInventory, showSet = true}) {
   const [pick, setPick] = useState('');
   const pet = state.pets[sel];
   const slots = state.gear_slots || [];
@@ -214,14 +221,14 @@ export function GearBox({state, sel, busy, act, children, onInventory}) {
         </div>
         <div className='vpet-doll__col'>{slots.slice(4).map(frame)}</div>
       </div>
-      {set ? (
+      {showSet && (set ? (
         <p className='vpet-set is-on' role='status'>
           <b>{`✨ ${set.name}`}</b>
           <span>{t('hunt.set', set.parts, slots.length, set.atk.toFixed(1), set.def.toFixed(1), set.hp)}</span>
         </p>
       ) : (
         <p className='vpet-set'>{t('hunt.setHint', SET_MIN)}</p>
-      )}
+      ))}
     </div>
   );
 }
@@ -255,7 +262,7 @@ export function Skills({state, sel, busy, act}) {
           const rank = (pet.skill_lv || {})[id] || 1;
           return (
             <div key={id} className='vpet-skill'>
-              <b>{`${sk?.emoji || ''} ${sk?.name || id}`}</b>
+              <b className='vpet-skill__name'>{SKILL_ART[id] ? <img src={SKILL_ART[id]} alt='' aria-hidden='true'/> : <span aria-hidden='true'>{sk?.emoji || ''}</span>}{sk?.name || id}</b>
               <span className='vpet-skill__pips' aria-label={tr(`Cấp ${rank}`, `Rank ${rank}`, `ランク${rank}`)}>
                 {[1, 2, 3, 4, 5].map((n) => <i key={n} className={n <= rank ? 'is-on' : ''}/>)}
               </span>

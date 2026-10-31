@@ -193,6 +193,80 @@
   .vpet-chat__messages { scroll-behavior: auto; }
 }
 
+/* The market is a pair of stalls, not a stock-management table. */
+.vpet-world-shell .vpet-market { height:auto; overflow:visible; }
+.vpet-world-shell .vpet-market__body { grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); align-items:start; }
+.vpet-world-shell .vpet-market__board,
+.vpet-world-shell .vpet-market__stall { position:relative; padding:0 16px 18px; border:5px solid #a57443; border-radius:24px; background:#fff2dc; box-shadow:inset 0 0 0 3px #fff9ec,0 5px 0 #79502d40; overflow:visible; max-height:none; }
+.vpet-world-shell .vpet-market__stall { gap:12px; }
+.vpet-market__sign { display:flex; align-items:center; justify-content:center; gap:12px; min-height:76px; margin:0 -16px 16px; padding:12px 20px; border-radius:17px 17px 8px 8px; background:#996038; border-image:url('../assets/library/panel-wood.png') 22 fill / 22px / 0 stretch; color:#fff7df; font-size:22px; text-shadow:0 2px #633b24; }
+.vpet-market__sign img { width:44px; height:44px; object-fit:contain; }
+.vpet-world-shell .vpet-market__board > .vpet-market__sign { background:repeating-linear-gradient(105deg,#c94e42 0 52px,#ffe5ac 52px 104px); border-image:none; color:#fff; text-shadow:0 2px 3px #62311f,1px 0 #62311f,-1px 0 #62311f; border-bottom:5px solid #a57443; }
+.vpet-world-shell .vpet-market__modes { background:transparent; gap:10px; }
+.vpet-world-shell .vpet-market__modes button { min-height:48px; border:2px solid #bc915d; background:#fff7e7; color:#634124; }
+.vpet-world-shell .vpet-market__modes button[aria-selected='true'] { background:#ffe08a; border-color:#d69a26; }
+.vpet-world-shell .vpet-market__list { max-height:560px; padding:3px; }
+.vpet-world-shell .vpet-market__row { grid-template-columns:48px minmax(0,1fr) auto auto; min-height:96px; border:2px solid #ddc6aa; border-left:4px solid var(--rar); border-radius:16px; background:#fffdf6; padding:10px; }
+.vpet-world-shell .vpet-market__row > .vpet-item-icon { width:48px; height:48px; }
+.vpet-world-shell .vpet-market__what b { white-space:normal; font-size:15px; }
+.vpet-world-shell .vpet-market__price b { display:flex; align-items:center; gap:5px; font-size:18px; }
+.vpet-world-shell .vpet-market__tools .vpet-inv__search-label { flex:1; min-width:160px; }
+.vpet-world-shell .vpet-market__tools .vpet-btn,
+.vpet-world-shell .vpet-market__stall > .vpet-btn--primary { background:url('../assets/fantasy/button-green.png') center/100% 100% no-repeat; color:#fff; border-color:transparent; min-height:48px; text-shadow:0 1px #36532b; }
+.vpet-world-shell .vpet-market__stall > .vpet-btn--primary { min-height:58px; font-size:20px; font-weight:800; }
+.vpet-world-shell .vpet-market__picker { grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); gap:7px; max-height:240px; padding:8px; background:#fff9ef; border-color:#d6b98d; }
+.vpet-world-shell .vpet-market__picker .vpet-slot { min-height:74px; border-radius:13px; background:#fffdf9; color:#263b4b; }
+.vpet-world-shell .vpet-market__picker .vpet-slot.is-picked { outline:3px solid #e5ac32; outline-offset:-2px; background:#fff0b9; }
+.vpet-world-shell .vpet-market__field input { min-height:44px; background:#fffdf9; border:2px solid #d5bfa0; border-radius:12px; font-size:16px; }
+.vpet-market__fees { margin:0; color:#855820; font-size:12px; }
+.vpet-world-shell .vpet-market .vpet-inv__warning { color:#8d4326; }
+@media (min-width:761px) {
+  .vpet-world-shell .vpet-market__stall > .vpet-market__field:has(input) { display:grid; grid-template-columns:145px minmax(0,1fr); align-items:center; }
+}
+.vpet-world-shell .vpet-market__stall > .vpet-btn--primary:disabled { color:#4d5149; text-shadow:none; opacity:.7; }
+
+/* One roster changes direction; no duplicate pet selectors. */
+.vpet-pet-layout, .vpet-pet-layout > * { min-width:0; }
+.vpet-world-shell .vpet-pet-layout .vpet-sheet { grid-template-columns:minmax(0,1fr) minmax(0,1fr); grid-template-areas:'hero care' 'skills skills' 'progress progress' 'more more'; grid-template-rows:auto; }
+.vpet-world-shell .vpet-pet-layout .vpet-sheet__hero,
+.vpet-world-shell .vpet-pet-layout .vpet-sheet__care,
+.vpet-world-shell .vpet-pet-layout .vpet-sheet__gear { max-height:none; overflow:visible; }
+.vpet-world-shell .vpet-sheet__progress { grid-area:progress; padding:12px 18px; border:2px solid #d4e5f1; border-radius:18px; background:#fffdf5; }
+.vpet-world-shell .vpet-sheet__progress .vpet-badges { margin:0; border:0; padding:0; background:none; box-shadow:none; color:inherit; }
+.vpet-switch--roster button > span { min-width:0; overflow-wrap:anywhere; }
+.vpet-switch--roster small { display:block; margin-top:4px; font-size:11px; }
+.vpet-world-shell .vpet-sheet__use .vpet-items { height:130px; background:#252c38; border-radius:15px; }
+.vpet-world-shell .vpet-sheet__use .vpet-item { background:#343d49; color:#fff; border-radius:12px; }
+.vpet-world-shell .vpet-sheet__use .vpet-item__use { color:#fff; }
+.vpet-world-shell .vpet-sheet__use .vpet-supply-tabs button { min-height:44px; }
+.vpet-skill__name { display:flex; align-items:center; gap:10px; }
+.vpet-skill__name img { width:52px; height:52px; object-fit:contain; }
+.vpet-world-shell .vpet-pet-layout .vpet-doll__mid { align-self:flex-end; padding-bottom:36px; }
+.vpet-world-shell .vpet-pet-layout .vpet-pettab__pet { position:relative; isolation:isolate; }
+.vpet-world-shell .vpet-pet-layout .vpet-pettab__pet::before { content:''; position:absolute; z-index:-1; width:150%; height:24px; bottom:-3px; left:-25%; border:4px solid #b5b8b2; border-radius:50%; background:#e6e2d5; box-shadow:0 8px #8c938b; }
+.vpet-world-shell .vpet-pet-layout .vpet-skills { grid-template-columns:1fr; }
+.vpet-world-shell .vpet-pet-layout .vpet-skill { padding:14px; border-radius:16px; background:#edf1ff; }
+@media (min-width:1400px) {
+  .vpet-pet-layout:has(> .vpet-switch--roster) { display:grid; grid-template-columns:190px minmax(0,1fr); gap:14px; align-items:start; }
+  .vpet-world-shell .vpet-switch--roster { display:flex; flex-direction:column; gap:10px; padding:14px; border:2px solid #d4e5f1; border-radius:20px; background:#f8faff; margin:0; }
+  .vpet-world-shell .vpet-switch--roster button { display:flex; align-items:center; gap:12px; width:100%; min-height:78px; padding:10px; border-radius:14px; white-space:normal; text-align:left; }
+  .vpet-world-shell .vpet-pet-layout .vpet-sheet { grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) minmax(240px,.85fr); grid-template-areas:'hero care skills' 'progress progress progress' 'more more more'; gap:12px; }
+  .vpet-world-shell .vpet-sheet__hero .vpet-doll { min-height:420px; }
+}
+@media (max-width:1000px) {
+  .vpet-world-shell .vpet-market__body { grid-template-columns:1fr; }
+}
+@media (max-width:760px) {
+  .vpet-world-shell .vpet-pet-layout .vpet-sheet { grid-template-columns:1fr; grid-template-areas:'hero' 'care' 'skills' 'progress' 'more'; }
+  .vpet-world-shell .vpet-market__board, .vpet-world-shell .vpet-market__stall { padding:0 10px 12px; border-width:3px; border-radius:18px; }
+  .vpet-market__sign { margin:0 -10px 12px; font-size:19px; min-height:64px; }
+  .vpet-world-shell .vpet-market__row { grid-template-columns:44px minmax(0,1fr) auto; gap:7px; }
+  .vpet-world-shell .vpet-market__price { grid-column:2; align-items:start; }
+  .vpet-world-shell .vpet-market__row .vpet-btn { grid-column:3; grid-row:2; }
+  .vpet-world-shell .vpet-market__list { max-height:480px; }
+  .vpet-world-shell .vpet-market__filter { white-space:normal; min-height:44px; }
+}
+
 .vpet-music.is-on { border-color:#4f91bd; background:#e8f5ff; color:#1d6ba3; }
 
 @media (max-width:900px) and (orientation:landscape) and (max-height:500px) {

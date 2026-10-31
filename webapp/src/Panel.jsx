@@ -96,17 +96,17 @@ export function ItemGrid({inv, filter, onUse, busy, empty, onEmptyAction, emptyA
   );
 }
 
-function Switcher({state, sel, onCreate}) {
+function Switcher({state, sel, onCreate, sidebar = false}) {
   const free = state.pets.length < state.slots;
-  if (state.pets.length < 2 && !free) {
+  if (!state.pets.length || (state.pets.length < 2 && !free)) {
     return null;
   }
   return (
-    <div className='vpet-switch' role='tablist' aria-label={t('pet.select')}>
+    <div className={`vpet-switch${sidebar ? ' vpet-switch--roster' : ''}`} role='tablist' aria-label={t('pet.select')}>
       {state.pets.map((p, i) => (
         <button key={`${i}-${p.born}`} type='button' role='tab' aria-selected={i === sel} className={i === sel ? 'is-active' : ''} onClick={() => select(i)}>
           <PetCanvas pet={p} parts={p.parts} scale={1} still={true}/>
-          {p.dead ? `🪦 ${p.name}` : p.name}
+          <span>{p.dead ? `🪦 ${p.name}` : p.name}{sidebar && <small>{`Lv ${p.lv || 1}`}</small>}</span>
         </button>
       ))}
       {free && state.pets.length > 0 && <button type='button' onClick={onCreate}>{t('pet.hatchMore', state.pets.length, state.slots)}</button>}
@@ -210,15 +210,14 @@ function PetTab({state, sel, busy, act, onCreate, onReskin, onInventory, onGo}) 
             {pet.care_until > state.now && <span className='vpet-tag'>{t('pet.careUntil', new Date(pet.care_until).toLocaleString(dateLocale()))}</span>}
             {pet.acc && <button type='button' className='vpet-tag' disabled={busy} onClick={() => act(() => api.unequip(sel))} title={t('pet.removeAcc')}>{`${itemOf(pet.acc)?.name || ''} ×`}</button>}
           </div>
-          <GearBox state={state} sel={sel} busy={busy} act={act} onInventory={onInventory}>
+          <GearBox state={state} sel={sel} busy={busy} act={act} onInventory={onInventory} showSet={false}>
             <button type='button' className='vpet-pettab__pet' disabled={busy} onClick={() => act(() => api.interact(sel, 'vuot'))} title={t('pet.stroke')}>
               <PetCanvas pet={pet} parts={pet.parts} scale={4}/>
             </button>
           </GearBox>
-          <Badges state={state} sel={sel}/>
         </section>
         <section className='vpet-sheet__care'>
-          <header className='vpet-section-head'><h4>{t('pet.care')}</h4><span className='vpet-muted'>{pet.sick ? t('pet.needCure') : pet.health < 40 ? t('pet.needRecovery') : pet.hunger < 25 ? t('pet.needFood') : t('pet.ready')}</span></header>
+          <header className='vpet-section-head'><h4>{t('pet.care')}</h4><span className='vpet-muted'>{pet.care_until > state.now ? t('pet.careUntil', new Date(pet.care_until).toLocaleString(dateLocale())) : pet.frozen_until > state.now ? t('pet.vacationUntil', new Date(pet.frozen_until).toLocaleString(dateLocale())) : pet.effect === 'ngu' ? t(EFFECT_KEYS.ngu) : pet.sick ? t('pet.needCure') : pet.health < 40 ? t('pet.needRecovery') : pet.hunger < 25 ? t('pet.needFood') : t('pet.ready')}</span></header>
           <div className='vpet-vitals'>
             <Bar label={t('pet.health')} value={pet.health} color='#39b976'/>
             <Bar label={t('pet.hunger')} value={pet.hunger} color='#e5a243'/>
@@ -269,6 +268,12 @@ function PetTab({state, sel, busy, act, onCreate, onReskin, onInventory, onGo}) 
             <button type='button' role='tab' aria-selected={sheetTab === 'stats'} onClick={() => setSheetTab('stats')}>{t('pet.stats')}</button>
           </nav>
           {sheetTab === 'skills' ? <><header className='vpet-section-head'><h4>{t('pet.combatSkills')}</h4><span className='vpet-muted'>{t('pet.skillStones', state.inv.ngoc || 0)}</span></header><Skills state={state} sel={sel} busy={busy} act={act}/></> : sheetTab === 'build' ? <Build state={state} sel={sel} busy={busy} act={act}/> : <StatSheet state={state} sel={sel}/>}
+        </section>
+        <section className='vpet-sheet__progress'>
+          <p className={`vpet-set${state.sets?.[sel] ? ' is-on' : ''}`}>
+            {state.sets?.[sel] ? <><b>{state.sets[sel].name}</b><span>{t('hunt.set', state.sets[sel].parts, state.gear_slots.length, state.sets[sel].atk.toFixed(1), state.sets[sel].def.toFixed(1), state.sets[sel].hp)}</span></> : t('hunt.setHint', 3)}
+          </p>
+          <Badges state={state} sel={sel}/>
         </section>
         <section className='vpet-sheet__more'>
           <details>
@@ -522,7 +527,7 @@ export default function Panel({account, profile}) {
             </div>
           )}
           {state && !creating && tab === 'city' && state.pets.length === 0 && <Creator/>}
-          {state && !creating && ['pet', 'hunt', 'world', 'duel'].includes(tab) && <Switcher state={state} sel={sel} onCreate={() => setCreating('new')}/>}
+          {state && !creating && ['hunt', 'world', 'duel'].includes(tab) && <Switcher state={state} sel={sel} onCreate={() => setCreating('new')}/>}
           {state && creating === 'new' && (
             <Creator
               onDone={() => {
@@ -532,7 +537,7 @@ export default function Panel({account, profile}) {
             />
           )}
           {state && creating === 'reskin' && state.pets[sel] && <Creator key={sel} reskin={sel} pet={state.pets[sel]} onDone={() => setCreating(false)}/>}
-          {state && !creating && tab === 'pet' && <PetTab state={state} sel={sel} busy={busy} act={act} onCreate={() => setCreating('new')} onReskin={() => setCreating('reskin')} onInventory={() => go('bag')} onGo={go}/>}
+          {state && !creating && tab === 'pet' && <div className='vpet-pet-layout'><Switcher state={state} sel={sel} sidebar onCreate={() => setCreating('new')}/><PetTab state={state} sel={sel} busy={busy} act={act} onCreate={() => setCreating('new')} onReskin={() => setCreating('reskin')} onInventory={() => go('bag')} onGo={go}/></div>}
           {state && !creating && tab === 'world' && <Campaign state={state} sel={sel} busy={busy} act={act}/>}
           {state && !creating && tab === 'hunt' && <HuntTab state={state} sel={sel} busy={busy} act={act}/>}
           {state && !creating && tab === 'shop' && <ShopTab state={state} busy={busy} act={act}/>}

@@ -4,6 +4,9 @@ import * as api from './api';
 import {t} from './i18n';
 import {RARITY} from './Hunt';
 import ItemIcon from './ItemIcon';
+import marketArt from '../assets/fantasy/nav-market.png';
+import requestArt from '../assets/fantasy/scroll.png';
+import coinArt from '../assets/fantasy/coin.png';
 import {itemOf, refresh} from './store';
 
 // The player market: two halves of one screen. The left is the board everyone can buy from,
@@ -126,7 +129,7 @@ function Row({row, state, busy, onBuy, onCancel}) {
         <Detail state={state} row={row}/>
       </div>
       <div className='vpet-market__price'>
-        <b>{`${row.price} 🪙`}</b>
+        <b>{row.price}<img src={coinArt} width='24' height='24' alt='🪙'/></b>
         <small>{t('market.perItem', unit(row))}</small>
       </div>
       {row.mine ? (
@@ -151,7 +154,7 @@ function WantRow({row, state, busy, onFulfill, onCancel}) {
         <Detail state={state} row={row}/>
       </div>
       <div className='vpet-market__price'>
-        <b>{`${row.price} 🪙`}</b>
+        <b>{row.price}<img src={coinArt} width='24' height='24' alt='🪙'/></b>
         <small>{row.mine ? t('market.held') : t('market.earns', earns)}</small>
       </div>
       {row.mine ? (
@@ -286,6 +289,7 @@ export default function MarketTab({state, busy, act, children, sellItem, onSellI
       {view === 'sell' && (
         <div className='vpet-market__body'>
         <section className='vpet-market__board' aria-label={t('market.board')}>
+          <h3 className='vpet-market__sign'><img src={marketArt} alt='' aria-hidden='true'/>{t('market.selling', (state.market || []).length)}</h3>
           <div className='vpet-market__tools'>
             <button type='button' className='vpet-btn' disabled={busy} onClick={() => { setConfirm(null); refresh(); }}>{t('app.refresh')}</button>
             <label className='vpet-inv__search-label'>
@@ -305,7 +309,8 @@ export default function MarketTab({state, busy, act, children, sellItem, onSellI
           <small className='vpet-muted'>{t('market.count', rows.length)}</small>
         </section>
         <aside className='vpet-market__stall' aria-label={t('market.post')}>
-          <h4>{t('market.post')}</h4>
+          <h3 className='vpet-market__sign'><img src={requestArt} alt='' aria-hidden='true'/>{t('market.post')}</h3>
+          <p className='vpet-market__fees'>{`${t('market.fee')}: ${fee} 🪙 · ${t('market.tax', tax)}`}</p>
           {chosen && <small>{t('market.maxPrice', maxPrice)}</small>}
           <div className='vpet-market__field'>
             {t('market.itemToSell')}
@@ -352,6 +357,7 @@ export default function MarketTab({state, busy, act, children, sellItem, onSellI
       {view === 'want' && (
         <div className='vpet-market__body'>
           <section className='vpet-market__board' aria-label={t('market.wantBoard')}>
+            <h3 className='vpet-market__sign'><img src={requestArt} alt='' aria-hidden='true'/>{t('market.wanted', (state.buy_orders || []).length)}</h3>
             <div className='vpet-market__tools'>
               <button type='button' className='vpet-btn' disabled={busy} onClick={() => refresh()}>{t('app.refresh')}</button>
               <label className='vpet-inv__search-label'>{t('market.searchWant')}<input className='vpet-inv__search' type='search' placeholder={t('market.searchWantHint')} value={query} onChange={(e) => setQuery(e.target.value)}/></label>
@@ -361,7 +367,7 @@ export default function MarketTab({state, busy, act, children, sellItem, onSellI
             <small className='vpet-muted'>{t('market.wantCount', orders.length)}</small>
           </section>
           <aside className='vpet-market__stall' aria-label={t('market.postWant')}>
-            <h4>{t('market.postWant')}</h4>
+            <h3 className='vpet-market__sign'><img src={requestArt} alt='' aria-hidden='true'/>{t('market.postWant')}</h3>
             <small>{t('market.wantHint')}</small>
             <div className='vpet-market__field'>
               {t('market.itemWanted')}
