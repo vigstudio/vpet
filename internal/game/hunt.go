@@ -20,7 +20,7 @@ const (
 )
 
 // rarity 0 trắng, 1 xanh, 2 tím, 3 hoàng kim, 4 thần thoại (chỉ rèn ra được)
-var rarityNames = []string{"Thường", "Hiếm", "Sử thi", "Hoàng kim", "Thần thoại", "Thần cấp"}
+var rarityNames = []string{"Thường", "Hiếm", "Sử thi", "Hoàng kim", "Thần thoại", "Thần cấp", "Tối Thượng"}
 
 // mythicRarity is forge-only: no map, bag, shop or blind box ever hands one out. Everything
 // at or above this rung is earned at the forge, which keeps the top of the ladder a goal
@@ -30,6 +30,7 @@ const mythicRarity = 4
 // divineRarity sits one rung above mythic: three mythic pieces fuse into it. It is the only
 // reason to keep playing once a full mythic set is worn.
 const divineRarity = 5
+const supremeRarity = 6
 
 type gearDef struct {
 	// json tags: the client shows the worn totals on the paper doll
@@ -84,7 +85,7 @@ var huntItems = []itemDef{
 	{ID: "nhanthan", Name: "Nhẫn thần", Emoji: "💫", Kind: "gear", Desc: "Nhẫn: +7 sát thương, +46 máu", Rarity: 4},
 	{ID: "khienthan", Name: "Khiên thần", Emoji: "🛑", Kind: "gear", Desc: "Khiên: giảm 10 sát thương, +30 máu", Rarity: 4},
 	{ID: "aothan", Name: "Thiên y", Emoji: "👼", Kind: "gear", Desc: "Áo khoác: +5 sát thương, +5 giáp, +32 máu", Rarity: 4},
-	// Thần cấp: forged from three mythic pieces, the last rung on every ladder.
+	// Thần cấp: forged from three mythic pieces, the sixth rung on every ladder.
 	{ID: "kiemthanlong", Name: "Kiếm Thần Long", Emoji: "🗡️", Kind: "gear", Desc: "Vũ khí: +30 sát thương", Rarity: 5},
 	{ID: "giapthanlong", Name: "Giáp Thần Long", Emoji: "🛡️", Kind: "gear", Desc: "Giáp: giảm 17 sát thương mỗi đòn", Rarity: 5},
 	{ID: "muthiende", Name: "Mũ Thiên Đế", Emoji: "🔆", Kind: "gear", Desc: "Mũ: +9 giáp, +48 máu", Rarity: 5},
@@ -93,6 +94,16 @@ var huntItems = []itemDef{
 	{ID: "nhanthienmenh", Name: "Nhẫn Thiên Mệnh", Emoji: "🔮", Kind: "gear", Desc: "Nhẫn: +10 sát thương, +64 máu", Rarity: 5},
 	{ID: "khienthienha", Name: "Khiên Thiên Hà", Emoji: "🌌", Kind: "gear", Desc: "Khiên: giảm 14 sát thương, +42 máu", Rarity: 5},
 	{ID: "aothienmenh", Name: "Thiên Mệnh Bào", Emoji: "🎆", Kind: "gear", Desc: "Áo khoác: +7 sát thương, +7 giáp, +46 máu", Rarity: 5},
+	// Supreme gear and bound souls never enter ordinary loot pools.
+	{ID: "kiemhongmong", Name: "Kiếm Hồng Mông", Emoji: "🗡️", Kind: "gear", Desc: "sát thương +42", Rarity: 6},
+	{ID: "giaphongmong", Name: "Giáp Hồng Mông", Emoji: "🛡️", Kind: "gear", Desc: "giáp +23.8", Rarity: 6},
+	{ID: "muhongmong", Name: "Mũ Hồng Mông", Emoji: "👑", Kind: "gear", Desc: "giáp +12.6, máu +67.2", Rarity: 6},
+	{ID: "ganghongmong", Name: "Găng Hồng Mông", Emoji: "🧤", Kind: "gear", Desc: "sát thương +22.4, giáp +9.8", Rarity: 6},
+	{ID: "hiahongmong", Name: "Hia Hồng Mông", Emoji: "🌠", Kind: "gear", Desc: "giáp +9.8, máu +64.4", Rarity: 6},
+	{ID: "nhanhongmong", Name: "Nhẫn Hồng Mông", Emoji: "💍", Kind: "gear", Desc: "sát thương +14, máu +89.6", Rarity: 6},
+	{ID: "khienhongmong", Name: "Khiên Hồng Mông", Emoji: "🔰", Kind: "gear", Desc: "giáp +19.6, máu +58.8", Rarity: 6},
+	{ID: "aohongmong", Name: "Áo Hồng Mông", Emoji: "🧥", Kind: "gear", Desc: "sát thương +9.8, giáp +9.8, máu +64.4", Rarity: 6},
+	{ID: "tinhhon", Name: "Tinh Hồn", Emoji: "🔆", Kind: "material", Desc: "Vật liệu khóa: cần 3 để rèn Tối Thượng. Boss bị hạ: 15% nếu góp ít nhất 60% mức bình quân; thắng lãnh thổ bậc 3: 5%. Không mua bán hay trao đổi", Rarity: 6},
 	{ID: "ngoc", Name: "Ngọc kỹ năng", Emoji: "💠", Kind: "stone", Desc: "Nâng 1 cấp cho một kỹ năng tỷ thí", Rarity: 2},
 	{ID: "da", Name: "Đá thường", Emoji: "🪨", Kind: "junk", Desc: "Nhặt được khi đi săn. Bán không ai mua", Rarity: 0},
 	{ID: "thaomoc", Name: "Thảo mộc", Emoji: "🌿", Kind: "med", Desc: "Hồi 12 sức khỏe", Health: 12, Rarity: 0},

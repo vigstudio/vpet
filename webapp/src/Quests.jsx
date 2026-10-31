@@ -10,8 +10,9 @@ import {itemOf, select} from './store';
 
 // Quests are the first thing a new player can finish, so dailies lead and the longer
 // achievements sit underneath rather than competing for the top of the screen.
-function Row({q, busy, act, rung}) {
+function Row({q, busy, act, rung, onGo}) {
   const ready = q.have >= q.need && !q.done;
+  const destination = {d_feed:'pet', d_hunt:'hunt', d_stage:'world', d_duel:'duel'}[q.id];
   return (
     <li className={`vpet-quest-row${q.done ? ' is-done' : ''}${ready ? ' is-ready' : ''}`}>
       <div className='vpet-quest-row__text'>
@@ -26,9 +27,9 @@ function Row({q, busy, act, rung}) {
         <span>{`${q.gold} 🪙`}</span>
         {q.item && <span className='vpet-quest-row__item'><ItemIcon id={q.item} size={18}/>{`×${q.count}`}</span>}
       </div>
-      <button type='button' className={`vpet-btn${ready ? ' vpet-btn--primary' : ''}`} disabled={busy || !ready}
-        onClick={() => act(() => api.claimQuest(q.id))}>
-        {q.done ? t('quest.claimed') : ready ? t('quest.claim') : t('quest.notDone')}
+      <button type='button' className={`vpet-btn${ready ? ' vpet-btn--primary' : ''}`} disabled={busy || q.done || (!ready && !destination)}
+        onClick={() => ready ? act(() => api.claimQuest(q.id)) : onGo(destination)}>
+        {q.done ? t('quest.claimed') : ready ? t('quest.claim') : destination ? tr('Thực hiện','Go','移動') : t('quest.notDone')}
       </button>
     </li>
   );
@@ -87,7 +88,7 @@ function Titles({state, sel, busy, act}) {
   );
 }
 
-export default function Quests({state, sel, busy, act}) {
+export default function Quests({state, sel, busy, act, onGo}) {
   const [view, setView] = useState('daily');
   const all = state.quests || [];
   const daily = all.filter((q) => q.daily);
@@ -114,8 +115,8 @@ export default function Quests({state, sel, busy, act}) {
           </p>
           <ul className='vpet-quest-list'>
             {view === 'daily'
-              ? daily.map((q) => <Row key={q.id} q={q} busy={busy} act={act}/>)
-              : rungs.map((l) => <Row key={l.quest.id} q={l.quest} busy={busy} act={act} rung={l.tiers > 1 ? `${l.cleared}/${l.tiers}` : ''}/>)}
+              ? daily.map((q) => <Row key={q.id} q={q} busy={busy} act={act} onGo={onGo}/>)
+              : rungs.map((l) => <Row key={l.quest.id} q={l.quest} busy={busy} act={act} onGo={onGo} rung={l.tiers > 1 ? `${l.cleared}/${l.tiers}` : ''}/>)}
           </ul>
           {view === 'feats' && <p className='vpet-muted'>{t('quest.ladderHint')}</p>}
         </>

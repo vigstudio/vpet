@@ -1,0 +1,62 @@
+# VPet — checklist phát hành 31/10/2026
+
+Đã viết ≠ đã kiểm thử ≠ đã deploy. Giữ mọi task bên dưới khi đổi hướng mỹ thuật. Chỉ đóng sau kiểm thử; không đưa secret, dữ liệu người chơi hoặc thông tin vận hành vào đây.
+
+## Yêu cầu đã duyệt
+
+- UI fantasy sáng: ảnh Thành phố làm chuẩn đảo bay/thanh gỗ/chat giấy; ảnh Nhiệm vụ làm chuẩn nội dung giấy, tiến độ và thưởng.
+- Thành phố đủ 9 công trình đúng đích; 11 tab desktop, mobile 4 tab + Thêm. Không biến game trở lại modal.
+- Chữ/nút là DOM thật, vi/en/ja, focus rõ, target ≥44px, reduced-motion, cảnh 16:9, không tràn ngang 375px.
+- Ảnh tham chiếu không phải asset sạch. Không chép tên/chat/số dư trong ảnh vào game. Không thêm nạp tiền hay tính năng mới chỉ vì icon trong ảnh.
+- Giữ gameplay cũ, an toàn giao dịch, replay/cursor SSE, tài khoản và dữ liệu hiện có.
+
+## Tiến độ
+
+| Hạng mục | Trạng thái | Điều kiện còn thiếu |
+|---|---|---|
+| Alliance / lãnh thổ / thưởng mùa | Backend nền đã phát hành; UI mới đã viết | Mỹ thuật, E2E quyền/đánh/settlement/claim |
+| Săn đội | UI đội hình đã viết | Mỹ thuật, tạo/vào/xuất phát/nhận quà |
+| Cửa hàng | Quầy/card đã viết | Kiểm tra mua/stock và responsive |
+| Gacha | Reel 5,12 giây + helper/test đã viết | Winner dưới kim, trừ tiền một lần, unmount, reduced-motion |
+| Chiến dịch | 12 ải/vùng, 60 ải; code/test đã viết | Browser hai chặng, sao cũ, khóa/mở, i18n |
+| Leo tháp | 50 tầng, 10 lượt/ngày; backend/UI/test đã viết | Browser/persistence, thông báo đủ sách/ngọc/skill, không thưởng lặp |
+| Giấy đổi skill | Chọn skill cũ/mới; giữ cấp và skill khác | E2E, request lỗi không mất sách |
+| Tối Thượng / Hồng Mông | Rarity 6 đã viết; chưa kiểm tra độc lập toàn diff | 4 divine + 5000 vàng + 3 Tinh Hồn; forge/stats/nguồn thưởng |
+| Tinh Hồn | Drop boss/đất tier 3, khóa giao dịch đã viết | War drop, boss settlement/claim idempotence |
+| Nhạc nền | Có sẵn | Regression toggle/nhớ lựa chọn/ẩn tab |
+| Replay tự hiện thưởng | Có sẵn và tích hợp tháp | Callback một lần, pause/skip/reduced-motion |
+| Landscape | CSS đã viết | Assert CTA trong viewport 740×375 và 844×390 |
+| Bộ asset fantasy | Chưa hoàn tất | Tranh đảo sạch, icon/khung đồng bộ, nguồn hợp lệ; nền low-poly hiện tại không đạt ảnh mẫu |
+| Vỏ / Thành phố / Nhiệm vụ | Đã áp nav gỗ, nền trời, giấy; mobile có 9 lối vào, nhiệm vụ có điều hướng | Chưa đạt bộ tranh/icon mẫu; chưa đủ bố cục pet và nhiệm vụ ba cột |
+| Chat / hồ sơ | Đổi khung giấy, giữ nguyên logic | Tên/tin dài, keyboard mobile, reconnect chưa regression đầy đủ |
+| Go / frontend | Go toàn suite xanh; frontend 76/76 xanh; webpack build thành công | Store DB integration không bật, tự skip; còn cảnh báo bundle khoảng 1,24 MiB |
+| Browser smoke | Desktop 1024/mobile 375: Alliance, săn đội, tháp, nhiệm vụ, pet, thành phố, shop xanh; gacha và đổi skill xanh | CTA ngang đã sửa và assert xanh ở 740×375, 844×390; tổng 18 kiểm tra smoke xanh |
+| Git / deploy đợt này | Đang chốt bản gameplay để phát hành nhanh theo yêu cầu | Commit/push, backup/rollback, health/cache/smoke; không coi mỹ thuật đã hoàn tất |
+
+## Tham chiếu UI bổ sung #5–#7
+
+- Ảnh #5: cảm giác chăm thú trong thế giới sống; tham khảo pet selector và hành động, không lặp cả bản đồ Thành phố trong màn Thú cưng.
+- Ảnh #7: bố cục Thú cưng chính — một bộ chọn pet, cảnh pet + trang bị, chăm sóc/đồ dùng, kỹ năng/tiềm năng/chỉ số, bộ đồ/XP. Reuse `PetTab`, `GearBox`, `ItemGrid`, `Skills`, `Build`, `StatSheet`; không đổi API chăm sóc.
+- Ảnh #6: bố cục Nhiệm vụ chính — nhóm trái, nhiệm vụ giữa, gợi ý phải; mobile tab và dòng hai hàng. Reuse `Row`, `Titles`, `ladders`.
+- Nút nhiệm vụ: Thực hiện chỉ điều hướng đúng đích; Nhận thưởng gọi claim khi đủ; Đã nhận disabled. Mapping theo ID thật, không theo tên dịch.
+- Không thêm rương mốc 2/4/6, thưởng hoàn thành tất cả, cấp nhà, giới tính hoặc tăng cấp thủ công chỉ vì xuất hiện trong ảnh. Mọi số liệu/giới hạn/chi phí lấy từ game thật.
+- Nav xanh/panel sáng trong ảnh là tham khảo phân cấp; chưa thay hướng nav gỗ chung đã duyệt. Giữ selected vàng và một bộ icon/trạng thái xuyên các màn; không tạo hai theme.
+- Asset bổ sung: cảnh sân chăm pet, bệ pet, icon care/quest/skill và slot gear đồng bộ. Giữ pet thật bằng `PetCanvas`.
+- Nghiệm thu thêm: đổi pet tác động đúng đối tượng, pet bệnh/chết/no-pet, kho trống, skill max/thiếu vật liệu; nhiệm vụ đủ/chưa đủ/đã nhận, Thành tựu/Danh hiệu, vi/en/ja, desktop/mobile. Chưa triển khai/kiểm thử các bố cục mới.
+
+## Thứ tự tiếp tục
+
+1. Rà thay đổi đang dở; hoàn thiện thông báo thưởng tháp và test gear còn thiếu.
+2. Chốt asset hợp lệ. Làm vỏ + Thành phố + Nhiệm vụ; screenshot, sửa trước khi áp các màn khác.
+3. Kiểm tra chức năng và mỹ thuật riêng: desktop 1672×941/1440×900/1024×768, mobile 375×740, landscape 740×375/844×390.
+4. Chạy Go, frontend, DB integration cô lập, Playwright bắt `pageerror`; test no-pet, i18n, reload, SSE, giao dịch.
+5. Dọn test local đúng phạm vi; rà diff và file public; commit/push/deploy bản hoàn chỉnh theo yêu cầu.
+
+## Điểm cần chú ý
+
+- Giữ boss chiến dịch ải 6 và 12; vùng cũ vẫn mở sau ải 6, không khóa tiến độ cũ sau mở rộng.
+- Tower dùng phần vàng còn lại của trần hoạt động, không nhầm `payout` là hàm giới hạn ngày.
+- `/use` sách phải chọn nguồn/đích; không phục hồi random fallback cho client cũ.
+- Tinh Hồn chiến tranh là nguồn tiến trình vĩnh viễn mới, khác thiết kế buff mùa ban đầu; test giới hạn và nguyên tử rõ ràng.
+- Các test đang xanh trước thay đổi cuối không thay thế xác minh bản phát hành.
+- Nếu thiếu tranh phù hợp: để task asset pending, không gọi nền low-poly/gradient là UI hoàn tất.

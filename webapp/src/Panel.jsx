@@ -543,7 +543,7 @@ export default function Panel({account, profile}) {
             </MarketTab>
           )}
           {state && !creating && tab === 'duel' && <DuelTab state={state} sel={sel} busy={busy} act={act} replay={replay} onReplayed={() => setReplay('')}/>}
-          {state && !creating && tab === 'quest' && <Quests state={state} sel={sel} busy={busy} act={act}/>}
+          {state && !creating && tab === 'quest' && <Quests state={state} sel={sel} busy={busy} act={act} onGo={go}/>}
           {state && !creating && tab === 'clinic' && <Clinic state={state} sel={sel} busy={busy} act={act}/>}
           {state && !creating && tab === 'grave' && <GraveTab state={state}/>}
           </Boundary>

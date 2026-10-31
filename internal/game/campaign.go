@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	chapterStages = 6
+	chapterStages = 12
 	replayDropCap = 0.15
 )
 
@@ -106,6 +106,21 @@ func grantReplayReward(st *userState, difficulty int, boss bool, rnd rng) (huntF
 	return huntFind{Item: picked.item, Rarity: rarity, Amount: picked.amount}, true
 }
 
+var extendedStageNames = map[string][]string{
+	"vuon":   {"Đầm sương", "Vườn bỏ hoang", "Mê cung gai", "Đền mộc", "Cổng rễ", "Cổ thụ thức tỉnh"},
+	"rung":   {"Rừng nguyệt", "Dấu chân cổ", "Thác bạc", "Đền sói", "Tán rừng sâu", "Lang vương"},
+	"hang":   {"Hầm pha lê", "Mạch độc", "Vực sâu", "Cổng đá", "Mộ cổ", "Chúa vực thẳm"},
+	"nui":    {"Cầu băng", "Bão tuyết", "Thành băng", "Đền gió", "Ngai tuyết", "Băng long"},
+	"nuilua": {"Lò tro", "Cầu dung nham", "Đền lửa", "Cổng địa ngục", "Ngai hỏa", "Long đế"},
+}
+
+func campaignStageName(mapID string, stage int) string {
+	if stage <= 6 {
+		return stageNames[mapID][stage-1]
+	}
+	return extendedStageNames[mapID][stage-7]
+}
+
 func stageKey(mapID string, stage int) string { return fmt.Sprintf("%s_%d", mapID, stage) }
 
 func campaignReward(st *userState, m *huntMap, stage, difficulty int, cleared, boss bool, now int64) campaignRewardPreview {
@@ -133,9 +148,9 @@ func (p *pet) campaignViews(st *userState, now int64) []stageView {
 			if i > 1 {
 				open = open && p.Campaign[stageKey(m.ID, i-1)][0] > 0
 			} else if chapter > 0 {
-				open = open && p.Campaign[stageKey(huntMaps[chapter-1].ID, chapterStages)][0] > 0
+				open = open && p.Campaign[stageKey(huntMaps[chapter-1].ID, 6)][0] > 0
 			}
-			view := stageView{ID: key, Map: m.ID, Stage: i, Name: stageNames[m.ID][i-1], MinLv: m.MinLv, Stars: p.Campaign[key], Open: open, Boss: i == chapterStages}
+			view := stageView{ID: key, Map: m.ID, Stage: i, Name: campaignStageName(m.ID, i), MinLv: m.MinLv, Stars: p.Campaign[key], Open: open, Boss: i%6 == 0}
 			for difficulty := range difficultyNames {
 				view.Rewards[difficulty] = campaignReward(st, &huntMaps[chapter], i, difficulty, view.Stars[difficulty] > 0, view.Boss, now)
 			}
@@ -178,7 +193,7 @@ func campaign(st *userState, i int, mapID string, stage, difficulty int, now int
 		return nil, errors.New("cần 5 độ no để vào ải")
 	}
 	cost := energyStage
-	if stage == chapterStages {
+	if stage%6 == 0 {
 		cost = energyBoss
 	}
 	if err := p.spendEnergy(cost, now); err != nil {
@@ -193,9 +208,9 @@ func campaign(st *userState, i int, mapID string, stage, difficulty int, now int
 	foe.Lv = min(maxLv, max(m.MinLv, petLv)+(stage-1)*2+difficulty*3)
 	// Easy stays beatable while under-geared; Hard assumes gear, points and gems.
 	mult := []float64{0.45, 0.85, 1.25}[difficulty] * (1 + float64(stage-1)*.1)
-	if stage == chapterStages {
+	if stage%6 == 0 {
 		mult *= 1.3
-		foe.Name = stageNames[mapID][stage-1]
+		foe.Name = campaignStageName(mapID, stage)
 	}
 	foe.HP = math.Round((70 + float64(foe.Lv)*4.5) * mult)
 	foe.Atk = (float64(foe.Lv)*0.26 + float64(difficulty*2)) * []float64{0.65, 1.0, 1.25}[difficulty]
@@ -247,7 +262,7 @@ func campaign(st *userState, i int, mapID string, stage, difficulty int, now int
 		// Drop quality follows the difficulty, and the chapter boss pays one rung better
 		// still, so the last stage on Hard is the best thing in the chapter.
 		rarity := difficulty
-		if stage == chapterStages {
+		if stage%6 == 0 {
 			rarity++
 		}
 		rarity = min(rarity, mythicRarity-1) // mythic and divine stay forge-only
@@ -269,7 +284,7 @@ func campaign(st *userState, i int, mapID string, stage, difficulty int, now int
 		result.XP = max(1, int(float64(m.XP/3+stage)*scale))
 		result.Coin = st.payout(max(1, int(float64(3+stage)*scale)), now)
 		st.Coin += result.Coin
-		if bonus, ok := grantReplayReward(st, difficulty, stage == chapterStages, rnd); ok {
+		if bonus, ok := grantReplayReward(st, difficulty, stage%6 == 0, rnd); ok {
 			result.Finds = append(result.Finds, bonus)
 			result.ReplayBonus = true
 		}

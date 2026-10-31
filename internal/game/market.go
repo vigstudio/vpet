@@ -74,6 +74,8 @@ func checkListing(st *userState, id string, qty, price int) error {
 	switch {
 	case def == nil:
 		return errors.New("không có món này")
+	case id == "tinhhon":
+		return errors.New("Tinh Hồn không thể giao dịch")
 	case def.Kind == "junk":
 		return errors.New("món này không ai mua")
 	case qty < 1 || qty > 99:
@@ -100,6 +102,8 @@ func checkBuyOrder(st *userState, id string, qty, price int) error {
 	switch {
 	case def == nil:
 		return errors.New("không có món này")
+	case id == "tinhhon":
+		return errors.New("Tinh Hồn không thể giao dịch")
 	case def.Kind == "junk":
 		return errors.New("không thể đăng mua đồ bỏ")
 	case qty < 1 || qty > 99:

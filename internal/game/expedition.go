@@ -155,7 +155,7 @@ func bossCrates(mine, pool, fighters int) int {
 	}
 }
 
-func bossReward(st *userState, b *worldBoss, user string, now int64) string {
+func bossReward(st *userState, b *worldBoss, user string, now int64, rnd rng) string {
 	mine := b.Damage[user]
 	pool := max(1, b.maxHP()-b.HP)
 	share := mine * 100 / pool
@@ -165,7 +165,14 @@ func bossReward(st *userState, b *worldBoss, user string, now int64) string {
 	gold := st.earnBoss(st.payout(bossGold(mine, pool, fighters), now), now)
 	crates := bossCrates(mine, pool, fighters)
 	st.add("tui_vukhi", crates)
-	return fmt.Sprintf("Nhận thưởng boss: %d sát thương (%d%%), %d vàng và %d hòm vũ khí.", mine, share, gold, crates)
+	// One roll per settled boss, only for a meaningful contribution. The existing
+	// claimed marker and inventory commit together; retries cannot mint extra souls.
+	souls := 0
+	if b.HP <= 0 && crates >= 2 && rnd() < 0.15 {
+		st.add("tinhhon", 1)
+		souls = 1
+	}
+	return fmt.Sprintf("Nhận thưởng boss: %d sát thương (%d%%), %d vàng, %d hòm vũ khí và %d Tinh Hồn.", mine, share, gold, crates, souls)
 }
 
 // settleBoss pays everybody when the boss dies. Manual claiming remains as a fallback, but a
@@ -193,7 +200,7 @@ func (p *Engine) settleBoss(b *worldBoss, now int64) error {
 			}
 			continue
 		}
-		msg := bossReward(st, b, user, now)
+		msg := bossReward(st, b, user, now, p.random)
 		b.Claimed[user] = true
 		if err = p.commitRows(map[string]any{userPrefix + user: st, "boss_" + b.Day: b}); err != nil {
 			if first == nil {
@@ -232,7 +239,7 @@ func (p *Engine) bossAction(user string, st *userState, petIndex int, claim bool
 		if b.HP > 0 || b.Damage[user] <= 0 || b.Claimed[user] {
 			return "", errors.New("boss chưa bị hạ, chưa đóng góp hoặc đã nhận thưởng")
 		}
-		msg := bossReward(st, b, user, now)
+		msg := bossReward(st, b, user, now, p.random)
 		b.Claimed[user] = true
 		if err := p.commitRows(map[string]any{userPrefix + user: st, "boss_" + b.Day: b}); err != nil {
 			return "", err

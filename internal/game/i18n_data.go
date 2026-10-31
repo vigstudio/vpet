@@ -38,6 +38,15 @@ func localeOf(raw string) string {
 var catalogByLocale = map[string]catalogWords{
 	"en": {
 		Items: map[string]words{
+			"kiemhongmong":       {Name: "Primordial Sword"},
+			"giaphongmong":       {Name: "Primordial Armour"},
+			"muhongmong":         {Name: "Primordial Helm"},
+			"ganghongmong":       {Name: "Primordial Gauntlets"},
+			"hiahongmong":        {Name: "Primordial Boots"},
+			"nhanhongmong":       {Name: "Primordial Ring"},
+			"khienhongmong":      {Name: "Primordial Shield"},
+			"aohongmong":         {Name: "Primordial Cloak"},
+			"tinhhon":            {"Soul Essence", "Bound material: 3 forge Supreme gear. Defeated world boss: 15% with at least 60% of average contribution; tier-3 territory victory: 5%. Cannot be bought, sold or traded"},
 			"tui":                {"Food bag", "Opens into 1-2 random items"},
 			"tui_y":              {"Medic bag", "Medicine and herbs"},
 			"tui_vukhi":          {"Weapon crate", "One random piece of gear"},
@@ -69,7 +78,7 @@ var catalogByLocale = map[string]catalogWords{
 			"kinh":               {"Sunglasses", "Accessory: effortlessly cool"},
 			"no":                 {"Red bow", "Accessory: adorable"},
 			"khan":               {"Scarf", "Accessory: cosy"},
-			"sach":               {"Martial manual", "Relearn two random duel skills"},
+			"sach":               {"Martial manual", "Swap one chosen skill for another, keeping its trained rank"},
 			"the_ten":            {"Rename card", "Rename a pet, keeping looks and stats"},
 			"the_quen":           {"Skill reset card", "Clears skill ranks, refunds half the stones"},
 			"phieu_hoan_diem":    {"Respec voucher", "Returns every attack, defence and vitality point"},
@@ -158,10 +167,19 @@ var catalogByLocale = map[string]catalogWords{
 			"khien":   "Shield",
 			"aokhoac": "Cloak",
 		},
-		Rarities: []string{"Common", "Rare", "Epic", "Golden", "Mythic", "Divine"},
+		Rarities: []string{"Common", "Rare", "Epic", "Golden", "Mythic", "Divine", "Supreme"},
 	},
 	"ja": {
 		Items: map[string]words{
+			"kiemhongmong":       {Name: "鴻蒙の剣"},
+			"giaphongmong":       {Name: "鴻蒙の鎧"},
+			"muhongmong":         {Name: "鴻蒙の兜"},
+			"ganghongmong":       {Name: "鴻蒙の篭手"},
+			"hiahongmong":        {Name: "鴻蒙の靴"},
+			"nhanhongmong":       {Name: "鴻蒙の指輪"},
+			"khienhongmong":      {Name: "鴻蒙の盾"},
+			"aohongmong":         {Name: "鴻蒙のマント"},
+			"tinhhon":            {"精魂", "専用素材：至高装備の鍛造に3個。討伐ボスで平均の60%以上貢献すると15%、段階3領土勝利で5%。売買・交換不可"},
 			"tui":                {"食料袋", "ランダムで1〜2個"},
 			"tui_y":              {"救急袋", "薬と薬草"},
 			"tui_vukhi":          {"武器箱", "装備が1つ"},
@@ -193,7 +211,7 @@ var catalogByLocale = map[string]catalogWords{
 			"kinh":               {"サングラス", "かっこいい装飾品"},
 			"no":                 {"赤いリボン", "かわいい装飾品"},
 			"khan":               {"マフラー", "暖かい装飾品"},
-			"sach":               {"武術書", "対戦スキルを2つ引き直す"},
+			"sach":               {"武術書", "選んだスキル1つを別のスキルに変更、熟練度は維持"},
 			"the_ten":            {"改名カード", "姿と能力はそのまま改名"},
 			"the_quen":           {"スキル初期化カード", "スキル熟練を戻し半分返還"},
 			"phieu_hoan_diem":    {"再振りチケット", "振った能力値を全て返還"},
@@ -282,7 +300,7 @@ var catalogByLocale = map[string]catalogWords{
 			"khien":   "盾",
 			"aokhoac": "マント",
 		},
-		Rarities: []string{"並", "レア", "エピック", "黄金", "神話", "神級"},
+		Rarities: []string{"並", "レア", "エピック", "黄金", "神話", "神級", "至高"},
 	},
 }
 
@@ -470,8 +488,8 @@ func translateMedals(locale string, in []medal) []medal {
 }
 
 var setNamesByLocale = map[string][]string{
-	"en": {"Rookie Set", "Traveller Set", "Warrior Set", "Golden Set", "Mythic Set"},
-	"ja": {"新人セット", "旅人セット", "戦士セット", "黄金セット", "神話セット"},
+	"en": {"Rookie Set", "Traveller Set", "Warrior Set", "Golden Set", "Mythic Set", "Divine Set", "Supreme Set"},
+	"ja": {"新人セット", "旅人セット", "戦士セット", "黄金セット", "神話セット", "神級セット", "至高セット"},
 }
 
 func translateSet(locale string, in *setBonusDef) *setBonusDef {

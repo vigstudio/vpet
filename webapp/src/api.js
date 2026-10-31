@@ -53,6 +53,8 @@ export const unequipSlot = (pet, slot) => game('/unequip-slot', {pet, slot});
 export const enhance = (pet, slot) => game('/enhance', {pet, slot});
 export const restoreEnhanced = (item, level) => game('/enhance/restore', {item, level});
 export const skillUp = (pet, skill) => game('/skill-up', {pet, skill});
+export const swapSkill = (pet, skill, to) => game('/use', {pet, item: 'sach', skill, to});
+export const tower = (pet, stage = 0) => game('/tower', {pet, stage});
 export const fuse = (item) => game('/fuse', {item});
 export const fuseAll = () => game('/fuse-all', {});
 export const equipBest = (pet) => game('/equip-best', {pet});

@@ -2,12 +2,13 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 import * as api from './api';
 import Alliance from './Alliance';
+import Tower from './Tower';
 import {dateLocale, t, tr} from './i18n';
 import {Replay} from './Duel';
 import {RARITY} from './Hunt';
 import ItemIcon from './ItemIcon';
 import PetCanvas from './PetCanvas';
-import Realm from './Realm';
+import Realm, {REALMS} from './Realm';
 import WorldTab from './World';
 import {itemOf, refresh, useNow} from './store';
 
@@ -81,6 +82,8 @@ export default function Campaign({state, sel, busy, act}) {
   const refill = energy.next ? Math.max(0, Math.ceil((energy.next - now)/1000)) : 0;
   const map = maps.find((m) => m.id === chapter);
   const nodes=ROUTES[chapter] || ROUTES.vuon;
+  const page = Math.floor((stage - 1) / 6);
+  const visibleRows = rows.slice(page * 6, page * 6 + 6);
   const closeResult = useCallback(() => setResult(null), []);
   if (replay) return <Replay duel={replay} state={state} onClose={() => setReplay(null)} onComplete={() => setReplay(null)}/>;
   const cleared = Boolean(picked?.stars[difficulty]);
@@ -93,9 +96,9 @@ export default function Campaign({state, sel, busy, act}) {
   };
   return <div className='vpet-campaign'>
     <nav className='vpet-inv__tabs' aria-label={t('campaign.activity')}>
-      {[['campaign',t('campaign.campaign')],['boss',t('campaign.boss')],['party',t('campaign.party')],['wild',t('campaign.free')],['alliance',t('alliance.title')]].map(([id,label]) => <button key={id} type='button' aria-pressed={view===id} className={view===id?'is-active':''} onClick={() => {setView(id); refresh();}}>{label}</button>)}
+      {[['campaign',t('campaign.campaign')],['tower',tr('Leo tháp','Tower','塔')],['boss',t('campaign.boss')],['party',t('campaign.party')],['wild',t('campaign.free')],['alliance',t('alliance.title')]].map(([id,label]) => <button key={id} type='button' aria-pressed={view===id} className={view===id?'is-active':''} onClick={() => {setView(id); refresh();}}>{label}</button>)}
     </nav>
-    {view === 'alliance' ? <Alliance state={state} sel={sel} busy={busy} act={act}/> : (!pet || pet.dead) ? <p className='vpet-empty'>{t('campaign.needAlive')}</p> : view === 'wild' ? <WorldTab state={state} sel={sel} busy={busy} act={act}/> : view === 'boss' ? <Boss state={state} sel={sel} busy={busy} act={act} now={now}/> : view === 'party' ? <Parties state={state} sel={sel} busy={busy} act={act} mapID={chapter} now={now}/> : <>
+    {view === 'alliance' ? <Alliance state={state} sel={sel} busy={busy} act={act}/> : (!pet || pet.dead) ? <p className='vpet-empty'>{t('campaign.needAlive')}</p> : view === 'tower' ? <Tower state={state} sel={sel} busy={busy} act={act}/> : view === 'wild' ? <WorldTab state={state} sel={sel} busy={busy} act={act}/> : view === 'boss' ? <Boss state={state} sel={sel} busy={busy} act={act} now={now}/> : view === 'party' ? <Parties state={state} sel={sel} busy={busy} act={act} mapID={chapter} now={now}/> : <>
       {/* One toolbar: where you are, how hard, and what it costs. Everything else is the map. */}
       <div className='vpet-campaign__setup'>
       <div className='vpet-campaign__bar'>
@@ -105,15 +108,16 @@ export default function Campaign({state, sel, busy, act}) {
             const got=progress.reduce((n,r)=>n+r.stars.reduce((a,b)=>a+b,0),0);
             const open=progress.some((r)=>r.open);
             return <button key={m.id} type='button' aria-pressed={chapter===m.id} className={open?'':'is-locked'}
-              title={open ? `${m.name} · ${got}/54 ★` : tr(`${m.name} · cần cấp ${m.min_lv}`, `${m.name} · needs level ${m.min_lv}`, `${m.name} · レベル${m.min_lv}必要`)}
+              title={open ? `${m.name} · ${got}/${progress.length * 9} ★` : tr(`${m.name} · cần cấp ${m.min_lv}`, `${m.name} · needs level ${m.min_lv}`, `${m.name} · レベル${m.min_lv}必要`)}
               onClick={() => {setChapter(m.id);setStage(1);setDifficulty(0);setResult(null);}}>
               <span aria-hidden='true'>{m.emoji || '🗺️'}</span>
               <b>{m.name}</b>
-              <small>{open ? `${got}/54 ★` : `Lv ${m.min_lv}+`}</small>
-              <i style={{width:`${Math.round(got/54*100)}%`}}/>
+              <small>{open ? `${got}/${progress.length * 9} ★` : `Lv ${m.min_lv}+`}</small>
+              <i style={{width:`${Math.round(got/Math.max(1, progress.length * 9)*100)}%`}}/>
             </button>;
           })}
         </nav>
+      <nav className='vpet-campaign__pages' aria-label={tr('Chặng chiến dịch', 'Campaign sections', '冒険の区間')}>{Array.from({length: Math.ceil(rows.length / 6)}, (_, n) => <button key={n} type='button' className='vpet-btn' aria-pressed={page === n} onClick={() => setStage(n * 6 + 1)}>{tr(`Chặng ${n + 1}`, `Section ${n + 1}`, `第${n + 1}区間`)} · {n * 6 + 1}–{Math.min(rows.length, n * 6 + 6)}</button>)}</nav>
         <div className='vpet-difficulties' role='group' aria-label={t('campaign.difficulty')}>
           {[t('difficulty.easy'),t('difficulty.medium'),t('difficulty.hard')].map((label,i)=><button key={label} type='button' aria-pressed={difficulty===i} onClick={()=>setDifficulty(i)}>{label}</button>)}
         </div>
@@ -124,10 +128,11 @@ export default function Campaign({state, sel, busy, act}) {
           <b>{`⚡ ${energy.now}/${energy.max}`}</b>
         </div>
       </div>
+
       <Realm id={chapter} className='vpet-campaign__map'>
         <div className='vpet-realm__heading'><b>{map?.name}</b><small>{t('campaign.mapSub')}</small></div>
         <svg className='vpet-route' viewBox='0 0 100 100' preserveAspectRatio='none' aria-hidden='true'><polyline points={nodes.map(([x,y])=>`${x},${y}`).join(' ')}/></svg>
-        {rows.map((r,i)=><button key={r.id} type='button' className={`vpet-stage${r.stage===stage?' is-picked':''}${r.open?'':' is-locked'}`} style={{left:`${nodes[i][0]}%`,top:`${nodes[i][1]}%`}} aria-pressed={r.stage===stage} onClick={()=>{setStage(r.stage);setResult(null);}}><span>{r.boss?'BOSS':r.stage}</span><b>{r.name}</b><small>{r.open?starsText(r.stars[difficulty] || 0):tr(`Cấp ${r.min_lv} · khóa`, `Level ${r.min_lv} · locked`, `レベル${r.min_lv} · ロック`)}</small></button>)}
+        {visibleRows.map((r,i)=><button key={r.id} type='button' className={`vpet-stage${r.stage===stage?' is-picked':''}${r.open?'':' is-locked'}`} style={{left:`${nodes[i][0]}%`,top:`${nodes[i][1]}%`}} aria-pressed={r.stage===stage} onClick={()=>{setStage(r.stage);setResult(null);}}><span>{r.boss?'BOSS':r.stage}</span><b>{r.name}</b><small>{r.open?starsText(r.stars[difficulty] || 0):tr(`Cấp ${r.min_lv} · khóa`, `Level ${r.min_lv} · locked`, `レベル${r.min_lv} · ロック`)}</small></button>)}
       </Realm>
       <section className='vpet-expedition-bar' aria-label={t('campaign.prepare')}>
         <div>
@@ -208,6 +213,8 @@ export function Parties({state,sel,busy,act,mapID='vuon',now=Date.now()}) {
   const available=active ? [] : rooms.filter((room)=>!room.done && !memberOf(room) && room.members.length<4);
   const create=()=>act(()=>api.party('create',sel,'',map));
 
+  // A party is a muster board, not a form: the region it marches on behind it, four banner
+  // slots that fill as people join, and one bar that says whether the march can leave.
   const PartyCard=({room})=>{
     const member=memberOf(room);
     const mapInfo=state.maps.find((candidate)=>candidate.id===room.map);
@@ -218,24 +225,42 @@ export function Parties({state,sel,busy,act,mapID='vuon',now=Date.now()}) {
     const expires=Math.max(0,Math.ceil((room.created+30*60*1000-now)/60000));
     const status=room.done ? (room.won ? tr('Chiến thắng','Victory','勝利') : tr('Thất bại','Defeat','敗北')) : enough ? tr('Đủ lực','Ready','戦力十分') : tr('Đang tập hợp','Recruiting','募集中');
     const rewardCoin=20+(mapInfo?.min_lv || 1)*2;
-    return <article className={`vpet-party${member?' is-mine':''}${room.done?room.won?' is-won':' is-lost':''}`} key={room.id}>
-      <header className='vpet-party__head'>
-        <div><span className='vpet-party__status'>{status}</span><b>{mapInfo?.name || room.map}</b><small>{room.done?tr(`${room.members.length} thành viên`,`${room.members.length} members`,`${room.members.length}人`):tr(`Còn ${expires} phút`,`Expires in ${expires} min`,`残り${expires}分`)}</small></div>
-        <strong>{`${room.members.length}/4`}</strong>
+    return <article className={`vpet-muster${member?' is-mine':''}${room.done?room.won?' is-won':' is-lost':''}`} key={room.id}>
+      <div className='vpet-muster__scene' style={{backgroundImage:`url(${REALMS[room.map] || REALMS.vuon})`}} aria-hidden='true'/>
+      <header className='vpet-muster__head'>
+        <span className={`vpet-muster__status${enough && !room.done?' is-ready':''}`}>{status}</span>
+        <b>{mapInfo?.name || room.map}</b>
+        <small>{room.done?tr(`${room.members.length} thành viên`,`${room.members.length} members`,`${room.members.length}人`):tr(`Còn ${expires} phút`,`Expires in ${expires} min`,`残り${expires}分`)}</small>
       </header>
-      <div className='vpet-party__power'>
-        <div><span>{tr('Sức mạnh đội','Team power','パーティ戦力')}</span><b>{`${shownPower} / ${room.target}`}</b></div>
-        <div className='vpet-party__meter' role='meter' aria-valuenow={shownPower} aria-valuemin={0} aria-valuemax={room.target}><i style={{width:`${percent}%`}}/></div>
-        {!room.done && <small>{enough?tr('Đã đủ lực để thắng — chủ đội có thể xuất phát.','Enough power to win — the leader can depart.','勝利に十分な戦力です。リーダーが出発できます。'):member?tr(`Cần thêm ${room.target-shownPower} lực. Mời thêm người hoặc tăng lực thú.`,`Need ${room.target-shownPower} more power. Invite another player or strengthen a pet.`,`あと${room.target-shownPower}戦力。仲間を増やすかペットを強化。`):projected>=room.target?tr('Bạn vào là đội đủ lực.','Your pet will make this team ready.','参加すれば戦力が足ります。'):tr(`Sau khi bạn vào còn thiếu ${room.target-projected} lực.`,`After joining, the team still needs ${room.target-projected} power.`,`参加後もあと${room.target-projected}戦力必要。`)}</small>}
+
+      {/* The march bar: filled by everyone's power, with the threshold marked on it. */}
+      <div className='vpet-muster__bar'>
+        <div className='vpet-muster__gauge' role='meter' aria-valuenow={shownPower} aria-valuemin={0} aria-valuemax={room.target} aria-label={tr('Sức mạnh đội','Team power','パーティ戦力')}>
+          <i style={{width:`${percent}%`}} className={enough?'is-ready':''}/>
+          <b>{`${shownPower} / ${room.target}`}</b>
+        </div>
+        {!room.done && <small>{enough?tr('Đủ lực — chủ đội bấm Xuất phát.','Ready — the leader can depart.','戦力十分。リーダーが出発できます。'):member?tr(`Thiếu ${room.target-shownPower} lực.`,`Need ${room.target-shownPower} more power.`,`あと${room.target-shownPower}戦力。`):projected>=room.target?tr('Bạn vào là đủ lực.','Your pet makes this team ready.','参加すれば戦力が足ります。'):tr(`Vào rồi vẫn thiếu ${room.target-projected} lực.`,`Still ${room.target-projected} short after you join.`,`参加後もあと${room.target-projected}戦力。`)}</small>}
       </div>
-      <ol className='vpet-party__members' aria-label={tr('Thành viên đội','Party members','メンバー')}>
-        {room.members.map((row,index)=><li key={row.user}><i aria-hidden='true'>{row.pet?.slice(0,1) || index+1}</i><span><b>{row.pet}</b><small>{row.name}{row.user===room.host?tr(' · Chủ đội',' · Leader',' · リーダー'):''}</small></span><strong>{tr(`Lực ${row.power || '?'}`,`Power ${row.power || '?'}`,`戦力 ${row.power || '?'}`)}</strong></li>)}
-        {Array.from({length:4-room.members.length},(_,index)=><li className='is-empty' key={`empty-${index}`}><i aria-hidden='true'>{'+'}</i><span>{tr('Chờ đồng đội','Open slot','空き枠')}</span></li>)}
+
+      {/* Four banner slots. An empty one is an invitation, not a blank row. */}
+      <ol className='vpet-muster__slots' aria-label={tr('Thành viên đội','Party members','メンバー')}>
+        {room.members.map((row)=><li key={row.user} className={row.user===room.host?'is-host':''}>
+          <span className='vpet-muster__pennant' aria-hidden='true'>{row.user===room.host?'👑':'🗡️'}</span>
+          <b>{row.pet}</b>
+          <small>{row.name}</small>
+          <strong>{row.power || '?'}</strong>
+        </li>)}
+        {Array.from({length:4-room.members.length},(_,index)=><li className='is-empty' key={`empty-${index}`}>
+          <span className='vpet-muster__pennant' aria-hidden='true'>{'+'}</span>
+          <small>{tr('Chờ đồng đội','Open slot','空き枠')}</small>
+        </li>)}
       </ol>
-      {room.done && room.won && <div className='vpet-party__reward'><b>{tr('Quà mỗi người','Reward per player','一人分の報酬')}</b><span>{tr(`Tối đa ${rewardCoin} vàng`,`Up to ${rewardCoin} coins`,`最大${rewardCoin}コイン`)}</span><span>{`+${(mapInfo?.xp || 0)+12} XP`}</span><span>{tr('1 túi thức ăn','1 food bag','食料袋1個')}</span></div>}
-      {room.done && !room.won && <p className='vpet-party__result'>{tr('Đội chưa đủ lực. Thú mất 12 sức khỏe; không có quà.','Not enough power. Pets lose 12 health; no reward.','戦力不足。ペットは体力を12失い、報酬なし。')}</p>}
-      <div className='vpet-party__actions'>
-        {room.done ? <button type='button' className='vpet-btn vpet-btn--primary' disabled={busy || !member || member.claimed} onClick={()=>act(()=>api.party('claim',sel,room.id))}>{member?.claimed?tr('Đã nhận','Claimed','受取済み'):room.won?tr('Nhận quà','Claim reward','報酬を受取る'):tr('Xác nhận kết quả','Acknowledge result','結果を確認')}</button> : member ? <><button type='button' className='vpet-btn' disabled={busy} onClick={()=>act(()=>api.party('leave',sel,room.id))}>{room.host===state.user?tr('Giải tán đội','Disband','解散'):tr('Rời đội','Leave','退出')}</button>{room.host===state.user ? <button type='button' className='vpet-btn vpet-btn--primary' disabled={busy || room.members.length<2 || !enough} onClick={()=>act(()=>api.party('start',sel,room.id))}>{room.members.length<2?tr('Cần thêm 1 người','Need 1 more player','あと1人必要'):!enough?tr(`Thiếu ${room.target-shownPower} lực`,`Need ${room.target-shownPower} power`,`あと${room.target-shownPower}戦力`):tr('Xuất phát','Depart','出発')}</button> : <span className='vpet-party__waiting'>{tr('Chờ chủ đội xuất phát','Waiting for leader','リーダーを待っています')}</span>}</> : <button type='button' className='vpet-btn vpet-btn--primary' disabled={busy || room.members.length>=4} onClick={()=>act(()=>api.party('join',sel,room.id))}>{tr('Vào đội này','Join this party','このパーティに参加')}</button>}
+
+      {room.done && room.won && <div className='vpet-muster__spoils'><b>{tr('Quà mỗi người','Reward per player','一人分の報酬')}</b><span>{tr(`Tối đa ${rewardCoin} vàng`,`Up to ${rewardCoin} coins`,`最大${rewardCoin}コイン`)}</span><span>{`+${(mapInfo?.xp || 0)+12} XP`}</span><span>{tr('1 túi thức ăn','1 food bag','食料袋1個')}</span></div>}
+      {room.done && !room.won && <p className='vpet-muster__fallen'>{tr('Đội chưa đủ lực. Thú mất 12 sức khỏe; không có quà.','Not enough power. Pets lose 12 health; no reward.','戦力不足。ペットは体力を12失い、報酬なし。')}</p>}
+
+      <div className='vpet-muster__acts'>
+        {room.done ? <button type='button' className='vpet-btn vpet-btn--primary' disabled={busy || !member || member.claimed} onClick={()=>act(()=>api.party('claim',sel,room.id))}>{member?.claimed?tr('Đã nhận','Claimed','受取済み'):room.won?tr('Nhận quà','Claim reward','報酬を受取る'):tr('Xác nhận kết quả','Acknowledge result','結果を確認')}</button> : member ? <><button type='button' className='vpet-btn' disabled={busy} onClick={()=>act(()=>api.party('leave',sel,room.id))}>{room.host===state.user?tr('Giải tán đội','Disband','解散'):tr('Rời đội','Leave','退出')}</button>{room.host===state.user ? <button type='button' className='vpet-btn vpet-btn--primary' disabled={busy || room.members.length<2 || !enough} onClick={()=>act(()=>api.party('start',sel,room.id))}>{room.members.length<2?tr('Cần thêm 1 người','Need 1 more player','あと1人必要'):!enough?tr(`Thiếu ${room.target-shownPower} lực`,`Need ${room.target-shownPower} power`,`あと${room.target-shownPower}戦力`):tr('⚔ Xuất phát','⚔ Depart','⚔ 出発')}</button> : <span className='vpet-muster__waiting'>{tr('Chờ chủ đội xuất phát','Waiting for leader','リーダーを待っています')}</span>}</> : <button type='button' className='vpet-btn vpet-btn--primary' disabled={busy || room.members.length>=4} onClick={()=>act(()=>api.party('join',sel,room.id))}>{tr('Vào đội này','Join this party','このパーティに参加')}</button>}
       </div>
     </article>;
   };
@@ -247,12 +272,21 @@ export function Parties({state,sel,busy,act,mapID='vuon',now=Date.now()}) {
     </header>
     {mine.length>0 && <section className='vpet-party-list'><h3>{tr('Đội của bạn','Your party','自分のパーティ')}</h3>{mine.map((room)=><PartyCard room={room} key={room.id}/>)}</section>}
     {!active && available.length>0 && <section className='vpet-party-list'><h3>{tr('Đội đang chờ — vào bằng 1 nút','Open parties — join in one tap','募集中 — ワンタップ参加')}</h3>{available.map((room)=><PartyCard room={room} key={room.id}/>)}</section>}
-    {!active && <section className='vpet-party-create'>
+    {!active && <section className='vpet-muster-new'>
       <header><div><b>{tr('Không thấy đội phù hợp? Tạo đội mới','No suitable party? Create one','合うパーティがない？新規作成')}</b><small>{tr(`Thú đang chọn: ${pet?.name} · Lv ${pet?.lv || 1} · Lực ${petPower}`,`Selected pet: ${pet?.name} · Lv ${pet?.lv || 1} · Power ${petPower}`,`選択中：${pet?.name} · Lv ${pet?.lv || 1} · 戦力 ${petPower}`)}</small></div></header>
-      <div className='vpet-party-create__maps' role='group' aria-label={tr('Chọn vùng săn','Choose hunt region','狩場を選択')}>
-        {state.maps.map((candidate)=><button key={candidate.id} type='button' aria-pressed={map===candidate.id} disabled={(pet?.lv || 1)<candidate.min_lv} onClick={()=>setMap(candidate.id)}><b>{candidate.name}</b><small>{`Lv ${candidate.min_lv}+ · ${110+candidate.min_lv*12} ${tr('lực','power','戦力')}`}</small></button>)}
+      {/* Picking the region shows the region, so the choice is a place rather than a row. */}
+      <div className='vpet-muster-new__maps' role='group' aria-label={tr('Chọn vùng săn','Choose hunt region','狩場を選択')}>
+        {state.maps.map((candidate)=>{
+          const locked=(pet?.lv || 1)<candidate.min_lv;
+          return <button key={candidate.id} type='button' aria-pressed={map===candidate.id} disabled={locked} className={locked?'is-locked':''} style={{backgroundImage:`url(${REALMS[candidate.id] || REALMS.vuon})`}} onClick={()=>setMap(candidate.id)}>
+            <span>
+              <b>{candidate.name}</b>
+              <small>{locked?tr(`Cần cấp ${candidate.min_lv}`,`Needs level ${candidate.min_lv}`,`レベル${candidate.min_lv}必要`):`${110+candidate.min_lv*12} ${tr('lực','power','戦力')}`}</small>
+            </span>
+          </button>;
+        })}
       </div>
-      <div className='vpet-party-create__footer'><div><b>{selectedMap?.desc}</b><small>{tr('Mỗi người tốn 10 độ no · đội tồn tại 30 phút','Each player costs 10 fullness · party lasts 30 minutes','一人満腹度10消費 · 30分間有効')}</small></div><button type='button' className='vpet-btn vpet-btn--primary' disabled={busy || !selectedMap || (pet?.lv || 1)<selectedMap.min_lv} onClick={create}>{tr(`Tạo đội tại ${selectedMap?.name || ''}`,`Create party at ${selectedMap?.name || ''}`,`${selectedMap?.name || ''}で作成`)}</button></div>
+      <div className='vpet-muster-new__go'><div><b>{selectedMap?.desc}</b><small>{tr('Mỗi người tốn 10 độ no · đội tồn tại 30 phút','Each player costs 10 fullness · party lasts 30 minutes','一人満腹度10消費 · 30分間有効')}</small></div><button type='button' className='vpet-btn vpet-btn--primary' disabled={busy || !selectedMap || (pet?.lv || 1)<selectedMap.min_lv} onClick={create}>{tr(`Tạo đội tại ${selectedMap?.name || ''}`,`Create party at ${selectedMap?.name || ''}`,`${selectedMap?.name || ''}で作成`)}</button></div>
     </section>}
     {!active && !available.length && !mine.length && <p className='vpet-empty'>{tr('Chưa có đội nào. Tạo đội mới, đồng nghiệp sẽ thấy và vào ngay.','No parties yet. Create one so coworkers can join.','パーティはまだありません。作成すると仲間が参加できます。')}</p>}
   </section>;

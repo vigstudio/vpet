@@ -7,19 +7,36 @@ import (
 	"sort"
 )
 
-// Eight equipment slots and the forge. Gear comes in five tiers per slot; three of the same
+// Eight equipment slots and the forge. Gear comes in seven tiers per slot; three of the same
 // piece can be fused into the next tier up, which is the only way to create mythic pieces.
 // Wearing several pieces of the same tier pays a set bonus, so a matched outfit beats a
 // mixed outfit may trade the set bonus for stronger individual pieces.
 const (
-	fuseCount       = 3  // how many copies one fusion eats
 	fuseBase        = 40 // the smith charges this for the bottom rung and doubles each step up
 	setMin          = 3  // pieces of one tier before the set bonus wakes up
 	maxEnhanceLevel = 10
 )
 
-// fuseCostOf is the fee for melting three copies of a piece: 40, 80, 160, 320, 640 up the ladder.
-func fuseCostOf(id string) int { return fuseBase * (1 << tierOf(id)) }
+// Lower recipes stay unchanged. Supreme costs ~4x the extrapolated 1,280 fee:
+// a long-term gold sink, with bound souls separately gating playtime.
+func fuseCountOf(id string) int {
+	if tierOf(id) == divineRarity {
+		return 4
+	}
+	return 3
+}
+func fuseSoulsOf(id string) int {
+	if tierOf(id) == divineRarity {
+		return 3
+	}
+	return 0
+}
+func fuseCostOf(id string) int {
+	if tierOf(id) == divineRarity {
+		return 5000
+	}
+	return fuseBase * (1 << tierOf(id))
+}
 
 func enhanceCost(id string, next int) (coin, shards int) {
 	tier := tierOf(id) + 1
@@ -94,18 +111,27 @@ var gearByID = map[string]gearDef{
 	"muthiende": {Slot: "mu", Def: 9, HP: 48}, "gangthienloi": {Slot: "gang", Atk: 16, Def: 7},
 	"hiathienvuong": {Slot: "giay", Def: 7, HP: 46}, "nhanthienmenh": {Slot: "nhan", Atk: 10, HP: 64},
 	"khienthienha": {Slot: "khien", Def: 14, HP: 42}, "aothienmenh": {Slot: "aokhoac", Atk: 7, Def: 7, HP: 46},
+	// Supreme: exactly 1.4x Divine, preserving slot profiles.
+	"kiemhongmong":  {Slot: "vukhi", Atk: 42},
+	"giaphongmong":  {Slot: "giap", Def: 23.8},
+	"muhongmong":    {Slot: "mu", Def: 12.6, HP: 67.2},
+	"ganghongmong":  {Slot: "gang", Atk: 22.4, Def: 9.8},
+	"hiahongmong":   {Slot: "giay", Def: 9.8, HP: 64.4},
+	"nhanhongmong":  {Slot: "nhan", Atk: 14, HP: 89.6},
+	"khienhongmong": {Slot: "khien", Def: 19.6, HP: 58.8},
+	"aohongmong":    {Slot: "aokhoac", Atk: 9.8, Def: 9.8, HP: 64.4},
 }
 
-// forgeTiers lists each ladder from scrap to mythic; fusing walks up one step.
+// forgeTiers lists each ladder from scrap to Supreme; fusing walks up one step.
 var forgeTiers = map[string][]string{
-	"vukhi":   {"dao", "kiem", "dinhba", "gaythan", "kiemrong", "kiemthanlong"},
-	"giap":    {"aovai", "giapda", "giapthep", "longbao", "giaprong", "giapthanlong"},
-	"mu":      {"nonre", "muda", "muthep", "vuongmien", "muthan", "muthiende"},
-	"gang":    {"gangvai", "gangda", "gangthep", "gangrong", "gangthan", "gangthienloi"},
-	"giay":    {"depco", "giayda", "giaythep", "hiabay", "hiathan", "hiathienvuong"},
-	"nhan":    {"nhandong", "chuoingoc", "nhanbac", "nhanrong", "nhanthan", "nhanthienmenh"},
-	"khien":   {"motnap", "khiengo", "khiensat", "khienbac", "khienthan", "khienthienha"},
-	"aokhoac": {"aotoi", "aogam", "aolong", "aosao", "aothan", "aothienmenh"},
+	"vukhi":   {"dao", "kiem", "dinhba", "gaythan", "kiemrong", "kiemthanlong", "kiemhongmong"},
+	"giap":    {"aovai", "giapda", "giapthep", "longbao", "giaprong", "giapthanlong", "giaphongmong"},
+	"mu":      {"nonre", "muda", "muthep", "vuongmien", "muthan", "muthiende", "muhongmong"},
+	"gang":    {"gangvai", "gangda", "gangthep", "gangrong", "gangthan", "gangthienloi", "ganghongmong"},
+	"giay":    {"depco", "giayda", "giaythep", "hiabay", "hiathan", "hiathienvuong", "hiahongmong"},
+	"nhan":    {"nhandong", "chuoingoc", "nhanbac", "nhanrong", "nhanthan", "nhanthienmenh", "nhanhongmong"},
+	"khien":   {"motnap", "khiengo", "khiensat", "khienbac", "khienthan", "khienthienha", "khienhongmong"},
+	"aokhoac": {"aotoi", "aogam", "aolong", "aosao", "aothan", "aothienmenh", "aohongmong"},
 }
 
 // tierOf is the rung this piece sits on, 0 for scrap. Unknown ids answer 0.
@@ -120,7 +146,7 @@ func tierOf(id string) int {
 	return 0
 }
 
-// nextTier returns what three of this item fuse into, or "" when it is already the best.
+// nextTier returns what this item fuses into, or "" when it is already the best.
 func nextTier(id string) string {
 	tiers := forgeTiers[gearByID[id].Slot]
 	for i, t := range tiers {
@@ -143,8 +169,8 @@ type setBonusDef struct {
 	HP    float64 `json:"hp,omitempty"`
 }
 
-// setNames label the five ladders; the bonus scales with how high the matched tier is.
-var setNames = []string{"Bộ Tân binh", "Bộ Lữ hành", "Bộ Chiến binh", "Bộ Hoàng kim", "Bộ Thần thoại", "Bộ Thần cấp"}
+// setNames label the ladders; the bonus scales with how high the matched tier is.
+var setNames = []string{"Bộ Tân binh", "Bộ Lữ hành", "Bộ Chiến binh", "Bộ Hoàng kim", "Bộ Thần thoại", "Bộ Thần cấp", "Bộ Tối Thượng"}
 
 // setOf reports the best matched-tier bonus a pet is wearing, or nil when nothing matches.
 func setOf(gear map[string]string) *setBonusDef {
@@ -172,12 +198,15 @@ func setOf(gear map[string]string) *setBonusDef {
 }
 
 type forgeRecipe struct {
-	From  string `json:"from"`
-	To    string `json:"to"`
-	Need  int    `json:"need"`
-	Have  int    `json:"have"`
-	Cost  int    `json:"cost"`
-	Ready bool   `json:"ready"`
+	From         string `json:"from"`
+	To           string `json:"to"`
+	Need         int    `json:"need"`
+	Have         int    `json:"have"`
+	Cost         int    `json:"cost"`
+	Ready        bool   `json:"ready"`
+	Material     string `json:"material,omitempty"`
+	MaterialNeed int    `json:"material_need,omitempty"`
+	MaterialHave int    `json:"material_have,omitempty"`
 }
 
 // forgeList is what the smith offers right now: every ladder step the user owns a copy of.
@@ -188,15 +217,18 @@ func (st *userState) forgeList() []forgeRecipe {
 		if to == "" || st.Inv[id] <= 0 {
 			continue
 		}
-		have, cost := st.Inv[id], fuseCostOf(id)
-		out = append(out, forgeRecipe{From: id, To: to, Need: fuseCount, Have: have, Cost: cost,
-			Ready: have >= fuseCount && st.Coin >= cost})
+		have, cost, need, souls := st.Inv[id], fuseCostOf(id), fuseCountOf(id), fuseSoulsOf(id)
+		recipe := forgeRecipe{From: id, To: to, Need: need, Have: have, Cost: cost,
+			Ready: have >= need && st.Coin >= cost && st.Inv["tinhhon"] >= souls}
+		if souls > 0 {
+			recipe.Material, recipe.MaterialNeed, recipe.MaterialHave = "tinhhon", souls, st.Inv["tinhhon"]
+		}
+		out = append(out, recipe)
 	}
 	sort.Slice(out, func(a, b int) bool { return out[a].From < out[b].From })
 	return out
 }
 
-// fuse melts three copies into one of the next tier.
 // fuseAll consumes every affordable recipe in ladder order. Outputs from one rung may
 // immediately feed the next rung; worn gear is never part of the inventory pool.
 func fuseAll(st *userState) (string, error) {
@@ -204,7 +236,7 @@ func fuseAll(st *userState) (string, error) {
 	for tier := 0; tier < len(forgeTiers[gearSlots[0].ID])-1; tier++ {
 		for _, slot := range gearSlots {
 			id := forgeTiers[slot.ID][tier]
-			for st.Inv[id] >= fuseCount && st.Coin >= fuseCostOf(id) {
+			for st.Inv[id] >= fuseCountOf(id) && st.Coin >= fuseCostOf(id) && st.Inv["tinhhon"] >= fuseSoulsOf(id) {
 				if _, err := fuse(st, id); err != nil {
 					return "", err
 				}
@@ -213,12 +245,7 @@ func fuseAll(st *userState) (string, error) {
 		}
 	}
 	if total == 0 {
-		for id := range gearByID {
-			if nextTier(id) != "" && st.Inv[id] >= fuseCount {
-				return "", errors.New("không đủ vàng để ghép món nào")
-			}
-		}
-		return "", fmt.Errorf("chưa có đủ %d món trang bị giống nhau", fuseCount)
+		return "", errors.New("chưa đủ trang bị, vàng hoặc Tinh Hồn để ghép")
 	}
 	return fmt.Sprintf("🔨 Ghép nhanh %d lần, dùng %d vàng.", total, before-st.Coin), nil
 }
@@ -231,18 +258,25 @@ func fuse(st *userState, id string) (string, error) {
 		}
 		return "", errors.New("món này đã ở bậc cao nhất")
 	}
-	if st.Inv[id] < fuseCount {
-		return "", fmt.Errorf("cần %d× %s, bạn có %d", fuseCount, itemByID[id].Name, st.Inv[id])
+	need, souls := fuseCountOf(id), fuseSoulsOf(id)
+	if st.Inv[id] < need {
+		return "", fmt.Errorf("cần %d× %s, bạn có %d", need, itemByID[id].Name, st.Inv[id])
+	}
+	if st.Inv["tinhhon"] < souls {
+		return "", fmt.Errorf("cần %d× %s, bạn có %d", souls, itemByID["tinhhon"].Name, st.Inv["tinhhon"])
 	}
 	cost := fuseCostOf(id)
 	if st.Coin < cost {
 		return "", fmt.Errorf("cần %d vàng tiền công, bạn còn %d", cost, st.Coin)
 	}
 	st.Coin -= cost
-	st.add(id, -fuseCount)
+	st.add(id, -need)
+	if souls > 0 {
+		st.add("tinhhon", -souls)
+	}
 	st.add(to, 1)
 	st.bump("forge", 1)
-	return fmt.Sprintf("🔨 Rèn %d× %s thành %s %s!", fuseCount, itemByID[id].Name, itemByID[to].Emoji, itemByID[to].Name), nil
+	return fmt.Sprintf("🔨 Rèn %d× %s thành %s %s!", need, itemByID[id].Name, itemByID[to].Emoji, itemByID[to].Name), nil
 }
 
 func (st *userState) enhancedCount(id string, level int) int {
@@ -371,7 +405,7 @@ func equipBest(st *userState, i int) (string, error) {
 		gear   map[string]string
 		levels map[string]int
 	}
-	states := map[[6]uint8]outfit{{}: {gear: map[string]string{}, levels: map[string]int{}}}
+	states := map[[supremeRarity + 1]uint8]outfit{{}: {gear: map[string]string{}, levels: map[string]int{}}}
 	for _, slot := range gearSlots {
 		candidates := []choice{}
 		for _, id := range forgeTiers[slot.ID] {
@@ -390,7 +424,7 @@ func equipBest(st *userState, i int) (string, error) {
 		if len(candidates) == 0 {
 			candidates = []choice{{}}
 		}
-		next := map[[6]uint8]outfit{}
+		next := map[[supremeRarity + 1]uint8]outfit{}
 		for counts, current := range states {
 			for _, selected := range candidates {
 				c, score := counts, current.score

@@ -646,7 +646,12 @@ func (p *Engine) ServeHTTP(w http.ResponseWriter, r *http.Request, userID string
 			msg = "Trứng nở rồi! Chào " + st.Pets[len(st.Pets)-1].Name + "!"
 		}
 	case "/use":
-		msg, err = useItem(st, body.Pet, body.Item, now, p.random)
+		// Reject stale clients without a selection rather than destroying random skills.
+		if body.Item == "sach" {
+			msg, err = swapSkill(st, body.Pet, body.Skill, body.To)
+		} else {
+			msg, err = useItem(st, body.Pet, body.Item, now, p.random)
+		}
 	case "/interact":
 		msg, err = interact(st, body.Pet, body.Act, now)
 	case "/reskin":
@@ -721,7 +726,19 @@ func (p *Engine) ServeHTTP(w http.ResponseWriter, r *http.Request, userID string
 				p.writeError(w, userID, 500, "không lưu được tiến độ")
 				return
 			}
-			p.respondAll(w, userID, "", nil, nil, res, nil, nil, true)
+			p.respondAll(w, userID, "", nil, nil, res, nil, nil, nil, true)
+			return
+		}
+	case "/tower":
+		var duel *duelResult
+		duel, msg, err = tower(st, body.Pet, body.Stage, now, p.random)
+		if err == nil {
+			p.rewardActivity(st, "/tower", now)
+			if err = p.save(userID, st); err != nil {
+				p.writeError(w, userID, http.StatusInternalServerError, "không lưu được")
+				return
+			}
+			p.respondAll(w, userID, msg, nil, nil, nil, nil, nil, duel, true)
 			return
 		}
 	case "/boss/hit", "/boss/claim":
@@ -741,7 +758,7 @@ func (p *Engine) ServeHTTP(w http.ResponseWriter, r *http.Request, userID string
 			var war *duelResult
 			msg, war, err = p.allianceWarAction(userID, st, body.Act, body.ID, body.Pet, now)
 			if err == nil {
-				p.respondAll(w, userID, msg, nil, nil, nil, nil, war, true)
+				p.respondAll(w, userID, msg, nil, nil, nil, nil, war, nil, true)
 				return
 			}
 		} else if body.Act == "claim-season" {
@@ -762,7 +779,7 @@ func (p *Engine) ServeHTTP(w http.ResponseWriter, r *http.Request, userID string
 				p.writeError(w, userID, http.StatusInternalServerError, "không lưu được")
 				return
 			}
-			p.respondAll(w, userID, res.Note, nil, res, nil, nil, nil, true)
+			p.respondAll(w, userID, res.Note, nil, res, nil, nil, nil, nil, true)
 			return
 		}
 	case "/buy":
@@ -775,7 +792,7 @@ func (p *Engine) ServeHTTP(w http.ResponseWriter, r *http.Request, userID string
 				p.writeError(w, userID, http.StatusInternalServerError, "không lưu được")
 				return
 			}
-			p.respondAll(w, userID, res.Note, nil, nil, nil, res, nil, true)
+			p.respondAll(w, userID, res.Note, nil, nil, nil, res, nil, nil, true)
 			return
 		}
 	case "/fuse":
@@ -887,8 +904,10 @@ type stateView struct {
 	Parties        []huntParty         `json:"parties"`
 	Alliance       allianceView        `json:"alliance"`
 	User           string              `json:"user"`
+	Tower          towerView           `json:"tower"`
 	CampaignResult *campaignResult     `json:"campaign_result,omitempty"`
 	WarResult      *duelResult         `json:"war_result,omitempty"`
+	TowerResult    *duelResult         `json:"tower_result,omitempty"`
 	GachaResult    *gachaResult        `json:"gacha_result,omitempty"`
 	Now            int64               `json:"now"`
 	Pets           []*pet              `json:"pets"`
@@ -939,18 +958,18 @@ type offerView struct {
 
 // respondHunt answers a hunt with the usual state plus what the pet brought home.
 func (p *Engine) respondHunt(w http.ResponseWriter, userID string, res *huntResult) {
-	p.respondAll(w, userID, res.Note, res, nil, nil, nil, nil, true)
+	p.respondAll(w, userID, res.Note, res, nil, nil, nil, nil, nil, true)
 }
 
 func (p *Engine) respondState(w http.ResponseWriter, userID, msg string) {
-	p.respondAll(w, userID, msg, nil, nil, nil, nil, nil, true)
+	p.respondAll(w, userID, msg, nil, nil, nil, nil, nil, nil, true)
 }
 
 // respondStateFast serves local pet changes without scanning every user's market and arena.
 // Those global boards are not touched by a build click; omitting the scans removes the
 // unrelated KV work from a one-point allocation.
 func (p *Engine) respondStateFast(w http.ResponseWriter, userID, msg string) {
-	p.respondAll(w, userID, msg, nil, nil, nil, nil, nil, false)
+	p.respondAll(w, userID, msg, nil, nil, nil, nil, nil, nil, false)
 }
 
 func globalStateChanged(path string) bool {
@@ -959,7 +978,7 @@ func globalStateChanged(path string) bool {
 }
 
 // respondAll answers with the full state, optionally carrying a hunt trip or a wild encounter.
-func (p *Engine) respondAll(w http.ResponseWriter, userID, msg string, hunt *huntResult, wild *wildResult, campaign *campaignResult, gacha *gachaResult, war *duelResult, global bool) {
+func (p *Engine) respondAll(w http.ResponseWriter, userID, msg string, hunt *huntResult, wild *wildResult, campaign *campaignResult, gacha *gachaResult, war, tower *duelResult, global bool) {
 	st, err := p.load(userID)
 	if err != nil {
 		p.writeError(w, userID, http.StatusInternalServerError, "không đọc được dữ liệu")
@@ -991,6 +1010,11 @@ func (p *Engine) respondAll(w http.ResponseWriter, userID, msg string, hunt *hun
 		localized := localizeDuel(lang, *war)
 		v.WarResult = &localized
 	}
+	if tower != nil {
+		localized := localizeDuel(lang, *tower)
+		localized.B.Name = localizeNames(lang, tower.B.Name)
+		v.TowerResult = &localized
+	}
 	v.GachaResult = gacha
 	if v.Hunt != nil {
 		v.Hunt.Note = localizeText(lang, v.Hunt.Note)
@@ -1006,6 +1030,10 @@ func (p *Engine) respondAll(w http.ResponseWriter, userID, msg string, hunt *hun
 	}
 	v.Quests = translateQuestViews(lang, st.questViews(now))
 	v.Checkin = st.checkinView(now)
+	v.Tower = st.towerView(now)
+	if v.Tower.Foe != nil {
+		v.Tower.Foe.Name = translatedTowerName(lang, v.Tower.Next)
+	}
 	v.WelcomeGift = st.welcomeGiftView()
 	v.Clinic = clinicInfo()
 	v.Lang = lang
@@ -1034,7 +1062,11 @@ func (p *Engine) respondAll(w http.ResponseWriter, userID, msg string, hunt *hun
 		v.Sockets = append(v.Sockets, cp.socketViews())
 		v.Enhance = append(v.Enhance, cp.enhanceViews(st))
 		v.Stats = append(v.Stats, boostedStatsOf(&cp, st, now))
-		v.Campaign = append(v.Campaign, cp.campaignViews(st, now))
+		stages := cp.campaignViews(st, now)
+		for i := range stages {
+			stages[i].Name = translatedStageName(lang, stages[i].Map, stages[i].Stage)
+		}
+		v.Campaign = append(v.Campaign, stages)
 		v.GearTotals = append(v.GearTotals, cp.gearOf())
 		v.Sets = append(v.Sets, translateSet(lang, setOf(cp.Gear)))
 	}
@@ -1475,7 +1507,7 @@ func (p *Engine) rewardActivity(st *userState, path string, now int64) {
 	switch path {
 	case "/interact", "/use", "/clinic/treat":
 		group = "care"
-	case "/hunt", "/wild", "/campaign", "/boss/hit", "/party", "/duel", "/alliance/attack":
+	case "/hunt", "/wild", "/campaign", "/boss/hit", "/party", "/duel", "/alliance/attack", "/tower":
 		group = "adventure"
 	case "/checkin":
 		group = "daily"

@@ -135,3 +135,18 @@ func TestEqualEffortPaysEquallyWhateverTheCrowd(t *testing.T) {
 		t.Fatalf("a 1/N share paid %d with five fighters and %d with 160", small, large)
 	}
 }
+
+func TestSoulEssenceBossDropRequiresKillContributionAndLowRoll(t *testing.T) {
+	for _, tc := range []struct {
+		hp, mine int
+		roll     float64
+		want     int
+	}{{0, 300, 0.149, 1}, {0, 300, 0.15, 0}, {1, 300, 0, 0}, {0, 299, 0, 0}, {0, 0, 0, 0}} {
+		st := newUserState()
+		b := &worldBoss{HP: tc.hp, Max: 1000, Damage: map[string]int{"u": tc.mine, "v": 1000 - tc.mine}}
+		bossReward(st, b, "u", 1700000000000, func() float64 { return tc.roll })
+		if st.Inv["tinhhon"] != tc.want {
+			t.Fatalf("case %+v: %v", tc, st.Inv)
+		}
+	}
+}

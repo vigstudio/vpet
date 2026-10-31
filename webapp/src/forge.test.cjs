@@ -107,3 +107,9 @@ test('a maxed piece and a full socket row both say so', () => {
 test('no selection yields no actions', () => {
   assert.deepEqual(benchActions(null, {}), []);
 });
+
+test('top tier explains missing material rather than missing gold', () => {
+  const recipe = {...recipes[0], ready: false, material: 'tinhhon', material_have: 2, material_need: 3};
+  const result = benchActions(bagRow, {recipes: [recipe], coin: 99999, catalog}).find((a) => a.kind === 'fuse');
+  assert.equal(result.blocked, 'material');
+});

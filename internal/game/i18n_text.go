@@ -15,8 +15,10 @@ type textRule struct {
 }
 
 var exactText = map[string][2]string{
-	`🎁 Đã nhận quà 3.000 vàng!`:       {`🎁 Claimed the 3,000-gold gift!`, `🎁 3,000ゴールドのギフトを受け取りました！`},
-	`quà 3.000 vàng đã được nhận rồi`: {`the 3,000-gold gift was already claimed`, `3,000ゴールドのギフトは受取済みです`},
+	`Tinh Hồn không thể giao dịch`:                 {`Soul Essence cannot be traded`, `精魂は売買・交換できません`},
+	`chưa đủ trang bị, vàng hoặc Tinh Hồn để ghép`: {`not enough equipment, gold or Soul Essence to forge`, `鍛造に必要な装備・金貨・精魂が足りません`},
+	`🎁 Đã nhận quà 3.000 vàng!`:                    {`🎁 Claimed the 3,000-gold gift!`, `🎁 3,000ゴールドのギフトを受け取りました！`},
+	`quà 3.000 vàng đã được nhận rồi`:              {`the 3,000-gold gift was already claimed`, `3,000ゴールドのギフトは受取済みです`},
 
 	`bấm 🎴 Biến hình ở thẻ Thú cưng để dùng thẻ này`:      {`use the 🎴 Reshape button on the Pet tab`, `ペット画面の🎴変身ボタンから使ってください`},
 	`bấm 🏷️ Đổi tên ở thẻ Thú cưng để dùng thẻ này`:       {`use the 🏷️ Rename button on the Pet tab`, `ペット画面の🏷️改名ボタンから使ってください`},
@@ -57,6 +59,11 @@ var exactText = map[string][2]string{
 	`chọn Công, Thủ hoặc Sinh lực`:                              {`choose Attack, Defence or Vitality`, `攻撃・防御・生命力から選んでください`},
 	`chưa có thú nào, hãy ấp trứng trước`:                       {`hatch a pet first`, `先にペットを孵してください`},
 	`thú còn sống, để dành lông phượng hoàng nhé`:               {`the pet is alive; save the phoenix feather`, `ペットは生きています。不死鳥の羽は取っておきましょう`},
+	`bạn đã chinh phục toàn bộ tháp`:                            {`you have already conquered the whole tower`, `塔はすべて制覇済みです`},
+	`tầng tháp không hợp lệ`:                                    {`invalid tower floor`, `無効な階層です`},
+	`hết lượt leo tháp hôm nay`:                                 {`no tower attempts left today`, `本日の塔の挑戦回数がありません`},
+	`thú đã có kỹ năng này`:                                     {`the pet already knows this skill`, `このスキルはすでに覚えています`},
+	`không có kỹ năng này`:                                      {`this skill does not exist`, `このスキルは存在しません`},
 	`thú không có kỹ năng này`:                                  {`the pet does not have this skill`, `このスキルを覚えていません`},
 	`thú không đeo gì`:                                          {`the pet is not wearing anything`, `装備していません`},
 	`khung này đang trống`:                                      {`this slot is empty`, `この枠は空です`},
@@ -127,6 +134,10 @@ var exactText = map[string][2]string{
 
 var formattedText = []*textRule{
 
+	newTextRule(`🔨 Ghép nhanh %d lần, dùng %d vàng.`, `🔨 Forged $1 times, spent $2 gold.`, `🔨 $1回鍛造し、$2金貨を使用。`),
+	newTextRule(`Nhận thưởng boss: %d sát thương (%d%%), %d vàng, %d hòm vũ khí và %d Tinh Hồn.`, `Boss reward: $1 damage ($2%), $3 gold, $4 weapon crates and $5 Soul Essence.`, `ボス報酬：$1ダメージ（$2%）、$3金貨、武器箱$4個、精魂$5個。`),
+	newTextRule(`Trận lãnh thổ thắng: +%d ảnh hưởng, +%d Tinh Hồn.`, `Territory victory: +$1 influence, +$2 Soul Essence.`, `領土勝利：影響力+$1、精魂+$2。`),
+	newTextRule(`Trận lãnh thổ thua: +%d ảnh hưởng, +%d Tinh Hồn.`, `Territory defeat: +$1 influence, +$2 Soul Essence.`, `領土敗北：影響力+$1、精魂+$2。`),
 	newTextRule(` (%.0f%% giữ ẩn sau khi né)`, ` ($1% chance to stay hidden after dodging)`, `（回避後$1%で隠れ続ける）`),
 	newTextRule(` · ✨ %s (%d món)`, ` · ✨ $1 ($2 pieces)`, ` · ✨ $1（$2個）`),
 	newTextRule(`%s quên hết kỹ năng đã luyện, nhận lại %d 💠 ngọc kỹ năng.`, `$1 forgot all trained skills and recovered $2 💠 Skill stones.`, `$1はスキル熟練を忘れ、💠スキル玉を$2個取り戻した。`),
@@ -245,6 +256,16 @@ _敗者は負傷し、死亡することもあります。_`),
 	newTextRule(`%s hạ gục %s, nhặt %d 🪙! %s`, `$1 defeated $2 and found $3 🪙! $4`, `$1は$2を倒し$3 🪙獲得！$4`),
 	newTextRule(`%s thắng trận! 🏆 Thưởng 1 🎁 túi thức ăn và %d 🪙.`, `$1 won! 🏆 Reward: one 🎁 food bag and $2 🪙.`, `$1の勝利！🏆 🎁食料袋1個と$2 🪙。`),
 	newTextRule(`%s thua trận, mất %.0f sức khỏe.`, `$1 lost and took $2 health damage.`, `$1は敗北し体力を$2失った。`),
+	newTextRule(`%s tầng %d`, `$1, floor $2`, `$1（$2階）`),
+	newTextRule(`Thua %s ở tầng %d, mất %d sức khỏe.`, `Lost to $1 on floor $2 and took $3 health damage.`, `$2階の$1に敗北し、体力を$3失った。`),
+	newTextRule(`Hạ %s ở tầng %d, tầng đã qua nên không có thưởng.`, `Beat $1 on floor $2; the floor was already cleared, so there is no reward.`, `$2階の$1を撃破。クリア済みのため報酬はありません。`),
+	newTextRule(`Hạ %s, chinh phục tầng %d! +%d vàng, %s %s và %d 💠 ngọc kỹ năng. +1 giấy đổi kỹ năng. %s`, `Beat $1 and conquered floor $2! +$3 gold, $4 $5, $6 💠 skill stones and 1 skill manual. $7`, `$1を倒し$2階を制覇！+$3金貨、$4 $5、💠スキル玉$6個とスキル変更書1個。$7`),
+	newTextRule(`Hạ %s, chinh phục tầng %d! +%d vàng, %s %s và %d 💠 ngọc kỹ năng. +1 giấy đổi kỹ năng.`, `Beat $1 and conquered floor $2! +$3 gold, $4 $5, $6 💠 skill stones and 1 skill manual.`, `$1を倒し$2階を制覇！+$3金貨、$4 $5、💠スキル玉$6個とスキル変更書1個。`),
+	newTextRule(`Hạ %s, chinh phục tầng %d! +%d vàng, %s %s và %d 💠 ngọc kỹ năng. %s`, `Beat $1 and conquered floor $2! +$3 gold, $4 $5 and $6 💠 skill stones. $7`, `$1を倒し$2階を制覇！+$3金貨、$4 $5と💠スキル玉$6個。$7`),
+	newTextRule(`Hạ %s, chinh phục tầng %d! +%d vàng, %s %s và %d 💠 ngọc kỹ năng.`, `Beat $1 and conquered floor $2! +$3 gold, $4 $5 and $6 💠 skill stones.`, `$1を倒し$2階を制覇！+$3金貨、$4 $5と💠スキル玉$6個。`),
+	newTextRule(`Hạ %s, chinh phục tầng %d! +%d vàng và %s %s. %s`, `Beat $1 and conquered floor $2! +$3 gold and $4 $5. $6`, `$1を倒し$2階を制覇！+$3金貨と$4 $5。$6`),
+	newTextRule(`Hạ %s, chinh phục tầng %d! +%d vàng và %s %s.`, `Beat $1 and conquered floor $2! +$3 gold and $4 $5.`, `$1を倒し$2階を制覇！+$3金貨と$4 $5。`),
+	newTextRule(`%s đổi sang %s %s, giữ nguyên cấp %d.`, `$1 switched to $2 $3, keeping rank $4.`, `$1は$2 $3に変更、ランク$4を維持。`),
 	newTextRule(`💀 %s trúng đòn chí mạng và đã tử trận…`, `💀 $1 suffered a crushing blow and died…`, `💀 $1は致命傷で死亡…`),
 }
 
@@ -333,6 +354,15 @@ func localizeText(locale, msg string) string {
 func localizeNames(locale, msg string) string {
 	if locale == "vi" || msg == "" {
 		return msg
+	}
+	for _, m := range huntMaps {
+		for stage := 1; stage <= chapterStages; stage++ {
+			msg = strings.ReplaceAll(msg, campaignStageName(m.ID, stage), translatedStageName(locale, m.ID, stage))
+		}
+	}
+	// Descending prevents floor 1 from matching the prefix of floor 10.
+	for floor := towerFloors; floor >= 1; floor-- {
+		msg = strings.ReplaceAll(msg, towerName(floor), translatedTowerName(locale, floor))
 	}
 	targets := translatedCatalog(locale)
 	type pair struct{ from, to string }

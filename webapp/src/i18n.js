@@ -207,6 +207,7 @@ const STRINGS = {
 
     // shop
     'shop.note': (left) => `🪙 Hành động chăm thú, đi săn và phiêu lưu thành công cấp vàng theo hồi chiêu. Hôm nay còn kiếm được ${left} vàng hoạt động. Đồ ăn luôn có; vật phẩm khác đổi ngẫu nhiên mỗi ngày.`,
+    'shop.keeper': 'Lão Mẹt — chủ tiệm',
     'shop.food': 'Quầy đồ ăn',
     'shop.food.desc': 'Luôn đủ hàng · mua bao nhiêu tuỳ nhu cầu',
     'shop.daily': 'Hàng hiếm hôm nay',
@@ -226,6 +227,9 @@ const STRINGS = {
     'wheel.idle': 'Bấm Quay ngay — vật phẩm chạy qua kim và dừng đúng giải trúng.',
     'wheel.won': (name) => `Trúng ${name}`,
     'wheel.prizes': (n) => `Xem ${n} vật phẩm có thể trúng`,
+    'wheel.rolling': 'Bánh xe đang chạy…',
+    'wheel.almost': '⚡ Sắp dừng rồi…',
+    'wheel.idleHint': 'Giải thưởng được server chốt trước khi bánh xe chạy — quay chỉ là để xem.',
 
     // pet sheet
     'pet.select': 'Chọn thú', 'pet.hatchMore': (n, max) => `🥚 Ấp thêm (${n}/${max})`,
@@ -360,6 +364,14 @@ const STRINGS = {
     'alliance.rankAlliance': 'Xếp hạng Alliance', 'alliance.rankPersonal': 'Xếp hạng cá nhân',
     'alliance.rankPoints': (points,lands) => `${points} điểm · ${lands} vùng`, 'alliance.contribution': (points,wins) => `${points} đóng góp · ${wins} thắng`,
     'alliance.reward': (pct) => `Thưởng mùa: +${pct}% ATK/DEF/HP`, 'alliance.claim': 'Nhận buff mùa', 'alliance.claimed': 'Đã nhận buff',
+    'alliance.ranks': 'Bảng xếp hạng', 'alliance.hallTab': 'Sảnh hội', 'alliance.noRanks': 'Chưa có ai ghi điểm mùa này.',
+    'alliance.pickLand': 'Chọn một lãnh thổ trên bản đồ để xem tình hình và ra lệnh.',
+    'alliance.yourInfluence': 'Ảnh hưởng của hội', 'alliance.leading': 'Phe dẫn đầu', 'alliance.needed': 'Cần để chiếm',
+    'alliance.heldDays': (n) => `giữ ${n} ngày`, 'alliance.landsHeld': (n) => `${n} lãnh thổ`,
+    'alliance.notTargetable': 'Vùng này chưa nằm trong tầm đánh hôm nay. Phải kề vùng đang giữ, hoặc là cửa vào nếu hội chưa có đất.',
+    'alliance.defenceTitle': 'Phòng thủ ngày mai', 'alliance.defenceSub': 'Thú đề cử được chụp ảnh chỉ số và khóa khi sang ngày mới.',
+    'alliance.textMap': 'Xem bản đồ dạng danh sách', 'alliance.inspect': 'Xem',
+    'alliance.rewardSub': 'Có hiệu lực hết mùa kế tiếp, không cộng dồn.',
     'boss.hpLabel': 'Máu boss', 'boss.fighters': (n) => `${n} người đang đánh`,
     'boss.mine': (dmg, pct) => `Bạn: ${dmg} sát thương · ${pct}% tổng`,
     'boss.cost': 'Cần Lv 5 · tốn 10 độ no + 5 sức khỏe · nghỉ 3 phút',
@@ -605,6 +617,7 @@ STRINGS.en = {
   'kind.revive': 'Revival', 'kind.junk': 'Scrap',
 
   'shop.note': (left) => `🪙 Successful care, hunts and adventures grant cooldown-limited gold. You can still earn ${left} activity gold today. Food is always stocked; everything else rotates daily.`,
+  'shop.keeper': 'Old Met, shopkeeper',
   'shop.food': 'Food counter',
   'shop.food.desc': 'Always in stock · buy as much as you need',
   'shop.daily': "Today's rare goods",
@@ -624,6 +637,9 @@ STRINGS.en = {
   'wheel.idle': 'Press Spin — the items run past the needle and stop on what you won.',
   'wheel.won': (name) => `You won ${name}`,
   'wheel.prizes': (n) => `See all ${n} possible prizes`,
+  'wheel.rolling': 'The reel is running…',
+  'wheel.almost': '⚡ About to stop…',
+  'wheel.idleHint': 'The server picks the prize before the reel moves — the spin is only for show.',
 
   // pet sheet
   'pet.select': 'Choose pet', 'pet.hatchMore': (n, max) => `🥚 Hatch another (${n}/${max})`,
@@ -758,6 +774,14 @@ STRINGS.en = {
   'alliance.rankAlliance': 'Alliance ranking', 'alliance.rankPersonal': 'Individual ranking',
   'alliance.rankPoints': (points,lands) => `${points} points · ${lands} lands`, 'alliance.contribution': (points,wins) => `${points} contribution · ${wins} wins`,
   'alliance.reward': (pct) => `Season reward: +${pct}% ATK/DEF/HP`, 'alliance.claim': 'Claim season boost', 'alliance.claimed': 'Boost claimed',
+  'alliance.ranks': 'Rankings', 'alliance.hallTab': 'Hall', 'alliance.noRanks': 'Nobody has scored this season yet.',
+  'alliance.pickLand': 'Pick a territory on the map to see how it stands and give orders.',
+  'alliance.yourInfluence': 'Your alliance', 'alliance.leading': 'Leading side', 'alliance.needed': 'Needed to capture',
+  'alliance.heldDays': (n) => `held ${n} days`, 'alliance.landsHeld': (n) => `${n} territories`,
+  'alliance.notTargetable': 'Out of reach today. It must border a territory you hold, or be a gate if your alliance holds none.',
+  'alliance.defenceTitle': "Tomorrow's defence", 'alliance.defenceSub': 'The nominated pet is snapshotted and locked when the day turns.',
+  'alliance.textMap': 'View the map as a list', 'alliance.inspect': 'View',
+  'alliance.rewardSub': 'Lasts through the next season. It does not stack.',
   'boss.hpLabel': 'Boss HP', 'boss.fighters': (n) => `${n} fighting`,
   'boss.mine': (dmg, pct) => `You: ${dmg} damage · ${pct}% of the total`,
   'boss.cost': 'Level 5 · costs 10 fullness + 5 health · 3 min rest',
@@ -1001,6 +1025,7 @@ STRINGS.ja = {
   'kind.revive': '蘇生', 'kind.junk': '素材',
 
   'shop.note': (left) => `🪙 世話・狩り・冒険の成功で、クールダウン付きの金貨を獲得できます。本日はあと ${left} 金貨を活動で獲得できます。食べ物は常備、その他は日替わりです。`,
+  'shop.keeper': '店主メット',
   'shop.food': '食料コーナー',
   'shop.food.desc': '常に在庫あり · 必要な分だけ',
   'shop.daily': '本日のレア品',
@@ -1020,6 +1045,9 @@ STRINGS.ja = {
   'wheel.idle': '「回す」を押すと、アイテムが針を通り当たりで止まります。',
   'wheel.won': (name) => `${name} が当たりました`,
   'wheel.prizes': (n) => `当たる可能性のある${n}品を見る`,
+  'wheel.rolling': 'リールが回っています…',
+  'wheel.almost': '⚡ まもなく停止…',
+  'wheel.idleHint': '景品はリールが回る前にサーバーが決定します。回転は演出だけです。',
 
   // pet sheet
   'pet.select': 'ペットを選ぶ', 'pet.hatchMore': (n, max) => `🥚 もう1匹孵す（${n}/${max}）`,
@@ -1154,6 +1182,14 @@ STRINGS.ja = {
   'alliance.rankAlliance': '同盟ランキング', 'alliance.rankPersonal': '個人ランキング',
   'alliance.rankPoints': (points,lands) => `${points}点 · ${lands}領地`, 'alliance.contribution': (points,wins) => `貢献${points} · ${wins}勝`,
   'alliance.reward': (pct) => `シーズン報酬：ATK/DEF/HP +${pct}%`, 'alliance.claim': 'シーズン強化を受取', 'alliance.claimed': '受取済み',
+  'alliance.ranks': 'ランキング', 'alliance.hallTab': 'ホール', 'alliance.noRanks': '今シーズンはまだ記録がありません。',
+  'alliance.pickLand': 'マップで領地を選ぶと状況の確認と指示ができます。',
+  'alliance.yourInfluence': '自同盟の影響力', 'alliance.leading': '首位の勢力', 'alliance.needed': '占領に必要',
+  'alliance.heldDays': (n) => `${n}日保持`, 'alliance.landsHeld': (n) => `領地${n}ヶ所`,
+  'alliance.notTargetable': '本日は攻撃範囲外です。保持中の領地に隣接するか、領地が無い場合は入口である必要があります。',
+  'alliance.defenceTitle': '明日の防衛', 'alliance.defenceSub': '指名したペットは日付が変わる時に能力を記録して固定されます。',
+  'alliance.textMap': 'マップをリストで表示', 'alliance.inspect': '表示',
+  'alliance.rewardSub': '次シーズン終了まで有効。累積しません。',
   'boss.hpLabel': 'ボスHP', 'boss.fighters': (n) => `${n}人が交戦中`,
   'boss.mine': (dmg, pct) => `あなた：${dmg}ダメージ · 全体の${pct}%`,
   'boss.cost': 'レベル5 · 満腹10＋体力5 · 休憩3分',

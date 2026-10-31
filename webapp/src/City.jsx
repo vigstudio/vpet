@@ -88,6 +88,9 @@ export default function City({state, sel, onGo}) {
         {HOUSES.map((h, i) => <House key={h.tab} h={h} i={i} badge={badges[h.tab] || 0} onGo={onGo}/>)}
         {pet && !pet.dead && <Resident pet={pet}/>}
       </Realm>
+      <nav className='vpet-city__doors' aria-label={t('tab.city')}>
+        {HOUSES.map((h) => <button key={h.tab} type='button' onClick={() => onGo(h.tab)}>{t(`house.${h.tab}`)}{badges[h.tab] > 0 ? ` (${badges[h.tab]})` : ''}</button>)}
+      </nav>
       <p className='vpet-muted'>{t('city.hint')}</p>
     </div>
   );

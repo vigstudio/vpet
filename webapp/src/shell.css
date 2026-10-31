@@ -1,19 +1,26 @@
 /* Standalone shell: the town is the application, not a modal floating over an empty page. */
-.vpet-world-shell { min-height: 100dvh; background: #edf5fb; color: #213047; }
-.vpet-world-shell .vpet-panel { position: relative; display: flex; flex-direction: column; width: 100%; min-height: 100dvh; border: 0; border-radius: 0; box-shadow: none; background: #f8fbfd; }
-.vpet-world-shell .vpet-panel__head { z-index: 20; min-height: 68px; border-bottom: 1px solid #d8e4ed; background: rgba(255,255,255,.96); }
-.vpet-world-shell .vpet-panel__title h2 { color: #17324d; font-size: 22px; }
-.vpet-world-shell .vpet-panel__title span { color: #557087; }
+.vpet-world-shell { --sky:#83cbf5; --wood:#805031; --paper:#fff0d2; --gold:#f4bd45; --ink:#213653; min-height:100dvh; background:var(--sky); color:var(--ink); }
+.vpet-world-shell .vpet-panel { position:relative; display:flex; flex-direction:column; width:100%; min-height:100dvh; border:0; border-radius:0; box-shadow:none; background:radial-gradient(ellipse at 12% 0%,#ffffffa6,transparent 35%),linear-gradient(#83cbf5,#c7ecf4 70%,#e0eed2); }
+.vpet-world-shell .vpet-panel__head { z-index:20; min-height:76px; border:0; background:transparent; }
+.vpet-world-shell .vpet-panel__title { padding:8px 24px; border:2px solid #d5a15c; border-radius:12px 24px 14px 24px; background:linear-gradient(#a87546,#73472d); box-shadow:inset 0 2px #e9bf78,0 4px 0 #4f3628; }
+.vpet-world-shell .vpet-panel__title h2 { color:#fff3c9; font-size:24px; font-weight:900; text-shadow:0 2px #4f3628; }
+.vpet-world-shell .vpet-panel__title span { color:#ffebc0; }
 .vpet-world-shell .vpet-panel__body { flex: 1; min-height: 0; padding: 18px 24px 28px; overflow: auto; }
 .vpet-world-shell .vpet-panel__body.is-city { overflow: hidden; }
-.vpet-world-shell .vpet-tabs { background: #fff; border-bottom: 1px solid #d8e4ed; }
-.vpet-world-shell .vpet-tabs button { min-height: 52px; }
+.vpet-world-shell .vpet-tabs { margin:0 16px; width:calc(100% - 32px); padding:5px; border:2px solid #dbad6b; border-radius:16px; background:linear-gradient(#a87546,#805031); box-shadow:inset 0 2px #f1ce8c,0 4px 0 #5c3d2a; }
+.vpet-world-shell .vpet-tabs button { min-height:64px; color:#fff6dc; border-radius:11px; text-shadow:0 1px #513a29; }
+.vpet-world-shell .vpet-tabs button.is-active, .vpet-world-shell .vpet-tabs .vpet-tabs__more.is-active { color:#422d1c; background:linear-gradient(#fff9cc,#f4bd45); box-shadow:inset 0 0 0 2px #fff2a5,0 2px 8px #41251366; text-shadow:none; }
+.vpet-world-shell .vpet-tabs button:hover { background-color:#fff1bf24; }
+.vpet-world-shell .vpet-tabs button:focus-visible { outline:3px solid #fff; outline-offset:-3px; }
 .vpet-world-shell .vpet-tabs .vpet-tabs__more { display: none; }
 
 /* Desktop: the map keeps the room it had, chat takes the column beside it. */
 .vpet-home { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 380px); gap: 18px; width: min(1500px, 100%); height: 100%; margin: 0 auto; }
 .vpet-home .vpet-city { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
-.vpet-home .vpet-city__map { margin: auto; box-shadow: 0 16px 40px rgba(37,72,98,.14); }
+.vpet-home .vpet-city__map { flex:none; min-height:0; max-height:none; margin:0 auto; border:3px solid #f2d998; border-radius:22px; box-shadow:0 8px 0 #80503126,0 16px 40px #25486224; }
+.vpet-city__doors { display:none; }
+.vpet-world-shell .vpet-city .vpet-house small { padding:4px 9px; border:1px solid #e6bf75; border-radius:12px; background:#66442ee8; color:#fff7db; text-shadow:0 1px #38281d; }
+.vpet-world-shell .vpet-city .vpet-house { min-width:44px; min-height:44px; }
 .vpet-home .vpet-muted { margin: 8px 0 0; text-align: center; }
 
 .vpet-profile { position: relative; margin-left: 2px; }
@@ -42,13 +49,14 @@
 .vpet-profile .vpet-connection.is-online { background: #2c9b61; }
 .vpet-airdrop { position: relative; }
 
-.vpet-chat { display: flex; flex-direction: column; min-height: 0; border: 1px solid #cfdee8; border-radius: 14px; background: #fff; box-shadow: 0 12px 32px rgba(37,72,98,.1); overflow: hidden; }
+.vpet-chat { display:flex; flex-direction:column; min-height:0; max-height:680px; border:5px solid #99683f; border-radius:20px; background:#fff4dd; box-shadow:inset 0 0 0 2px #f6d99d,0 8px 20px #54382026; overflow:hidden; }
 .vpet-chat__head { display: flex; align-items: center; justify-content: space-between; min-height: 60px; padding: 10px 16px; border-bottom: 1px solid #dbe6ed; background: #f4f9fc; }
 .vpet-chat__head h3 { margin: 0; color: #17324d; font-size: 17px; }
 .vpet-chat__head small { color: #61798d; }
 .vpet-chat__head > button { width: 44px; height: 44px; border: 0; border-radius: 8px; background: transparent; color: #334e66; font-size: 26px; cursor: pointer; }
 .vpet-chat__messages { flex: 1; min-height: 100px; margin: 0; padding: 12px; overflow-y: auto; list-style: none; overscroll-behavior: contain; }
-.vpet-chat__message { position: relative; display: grid; grid-template-columns: 38px minmax(0,1fr) 26px; gap: 8px; margin: 0 0 14px; }
+.vpet-chat__message { position:relative; display:grid; grid-template-columns:38px minmax(0,1fr) 44px; gap:6px; margin:0 0 10px; }
+.vpet-chat__message > div:not(.vpet-chat__actions) { padding:7px 9px; border-radius:12px; background:#f6ead3; }
 .vpet-chat__message.is-mine > div { padding: 8px 10px; border-radius: 10px; background: #e9f4ff; }
 .vpet-chat__avatar { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 9px; background: #e6eef4; color: #35536b; font-weight: 800; overflow: hidden; }
 .vpet-chat__avatar canvas { width: 32px; height: 32px; }
@@ -57,7 +65,7 @@
 .vpet-chat__message time { color: #8194a3; font-size: 11px; }
 .vpet-chat__message p { margin: 3px 0 0; color: #273b4d; overflow-wrap: anywhere; white-space: pre-wrap; }
 .vpet-chat__actions { position: relative; }
-.vpet-chat__actions summary { display: grid; place-items: center; min-width: 26px; min-height: 40px; color: #70879a; cursor: pointer; list-style: none; }
+.vpet-chat__actions summary { display:grid; place-items:center; min-width:44px; min-height:44px; color:#536b7b; cursor:pointer; list-style:none; }
 .vpet-chat__actions summary::-webkit-details-marker { display: none; }
 .vpet-chat__actions button { position: relative; z-index: 2; width: 120px; min-height: 40px; margin-left: -94px; border: 1px solid #cad8e2; background: #fff; color: #334e66; cursor: pointer; }
 .vpet-chat__form { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; padding: 10px 12px; border-top: 1px solid #dbe6ed; background: #fff; }
@@ -79,6 +87,34 @@
 .vpet-more__grid button { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 78px; padding: 8px 4px; border: 1px solid #d7e3ec; border-radius: 12px; background: #fff; color: #2b4258; font: inherit; font-size: 12px; cursor: pointer; }
 .vpet-more__grid button.is-active { border-color: #246fa8; background: #eaf4fc; color: #17324d; font-weight: 700; }
 
+/* Shared game surfaces; chrome stays separate from item rarity colors. */
+.vpet-world-shell .vpet-sheet > .vpet-sheet__hero,
+.vpet-world-shell .vpet-sheet > .vpet-sheet__care,
+.vpet-world-shell .vpet-sheet > .vpet-sheet__gear { border:2px solid #d4e5f1; border-radius:20px; background:linear-gradient(#fffefa,#eef3ff); box-shadow:inset 0 2px #fff,0 4px 0 #51748d26; }
+.vpet-world-shell .vpet-sheet__hero .vpet-doll { background:linear-gradient(#112d3d80,#112d3dcc),url('../assets/realm-vuon.webp') center/cover; border:2px solid #d4bc80; border-radius:18px; }
+.vpet-world-shell .vpet-sheet__care .vpet-actions button { min-height:44px; border-radius:12px; }
+.vpet-world-shell .vpet-sheet-tabs button { min-height:44px; }
+.vpet-world-shell .vpet-sheet-tabs button[aria-selected='true'] { color:#49321d; background:linear-gradient(#fff6b8,#f4bd45); border-color:#d7a039; }
+.vpet-world-shell .vpet-quests { display:grid; grid-template-columns:200px minmax(0,1fr); gap:20px; max-width:1440px; margin:0 auto; padding:22px; border:3px solid #b88653; border-radius:24px; background:linear-gradient(#fff8e8,#f8e7c6); box-shadow:inset 0 0 0 3px #fff3ce,0 6px 0 #80503140; }
+.vpet-world-shell .vpet-quests > .vpet-sheet-tabs { grid-column:1; grid-row:1/5; display:flex; flex-direction:column; align-self:start; gap:10px; border:0; }
+.vpet-world-shell .vpet-quests > .vpet-sheet-tabs button { min-height:62px; padding:12px; text-align:left; border:1px solid #d4ba8a; border-radius:14px; background:#fff9ed; font-weight:800; }
+.vpet-world-shell .vpet-quests > :not(.vpet-sheet-tabs) { grid-column:2; min-width:0; }
+.vpet-world-shell .vpet-quest-list { margin:0; padding:0; }
+.vpet-world-shell .vpet-quest-row { gap:12px; margin-bottom:10px; padding:14px; border:2px solid #e0c9a5; border-radius:16px; background:#fffbf2; }
+.vpet-world-shell .vpet-quest-row__text b { font-size:15px; }
+.vpet-world-shell .vpet-quest-row__text small { margin-top:4px; font-size:12px; }
+.vpet-world-shell .vpet-quest-row__bar { height:20px; background:#d9d1c4; }
+.vpet-world-shell .vpet-quest-row__bar span { color:#152d46; text-shadow:0 1px #ffffffb3; }
+.vpet-world-shell .vpet-quest-row .vpet-btn { min-height:44px; border-radius:12px; }
+.vpet-world-shell .vpet-quest-row.is-ready { background:#edf9d9; border-color:#91bc63; }
+.vpet-world-shell .vpet-quest-row.is-done { opacity:1; background:#e2f3dc; border-color:#b6d1a2; }
+.vpet-world-shell .vpet-quest-row.is-done .vpet-quest-row__bar i { background:#75be64; }
+.vpet-world-shell .vpet-chat__head, .vpet-world-shell .vpet-chat__form { background:#fff0d4; border-color:#dfc89f; }
+@media (min-width:761px) and (max-width:1199px) {
+  .vpet-home { grid-template-columns:minmax(0,1fr); height:auto; }
+  .vpet-home > .vpet-chat { height:360px; }
+}
+
 /* Phone: map on top, chat underneath, five nav slots with the rest behind "More". */
 @media (max-width: 760px) {
   .vpet-world-shell .vpet-panel__head { min-height: 58px; gap: 7px; padding: max(7px, env(safe-area-inset-top)) 10px 7px; }
@@ -94,7 +130,19 @@
   .vpet-world-shell .vpet-tabs__label { font-size: 10px; }
   .vpet-home { display: flex; flex-direction: column; gap: 10px; height: 100%; }
   .vpet-home .vpet-city { flex: none; }
-  .vpet-home .vpet-city__map { max-height: 38dvh; }
+  .vpet-home .vpet-city__map { min-height:0; max-height:none; }
+  .vpet-world-shell .vpet-panel__title { padding:5px 10px; }
+  .vpet-world-shell .vpet-panel__head { flex-wrap:wrap; }
+  .vpet-world-shell .vpet-tabs { margin:0; width:100%; border-radius:14px 14px 0 0; }
+  .vpet-world-shell .vpet-tabs .vpet-tabs__more { color:#fff6dc; }
+  .vpet-world-shell .vpet-quests { grid-template-columns:minmax(0,1fr); gap:10px; padding:12px; border-radius:18px; }
+  .vpet-world-shell .vpet-quests > .vpet-sheet-tabs { grid-column:1; grid-row:auto; flex-direction:row; flex-wrap:wrap; gap:5px; }
+  .vpet-world-shell .vpet-quests > .vpet-sheet-tabs button { flex:1; min-height:44px; padding:7px; font-size:12px; text-align:center; }
+  .vpet-world-shell .vpet-quests > :not(.vpet-sheet-tabs) { grid-column:1; }
+  .vpet-world-shell .vpet-quest-row { padding:10px; gap:8px; }
+  .vpet-world-shell .vpet-city .vpet-house { display:none; }
+  .vpet-city__doors { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; margin-top:8px; }
+  .vpet-city__doors button { min-height:44px; border:1px solid #bc8c56; border-radius:10px; background:#fff1cc; color:#49321d; font:inherit; font-size:12px; font-weight:700; }
   .vpet-home .vpet-muted { display: none; }
   .vpet-home > .vpet-chat { flex: 1; min-height: 180px; }
   .vpet-chat__head { min-height: 48px; padding: 7px 12px; }
@@ -123,7 +171,10 @@
     grid-template-columns:repeat(5,1fr);
     padding:3px 4px max(3px,env(safe-area-inset-bottom));
     border-top:1px solid #cad8e2;
-    background:#fff;
+    margin:0;
+    width:100%;
+    border-radius:12px 12px 0 0;
+    background:linear-gradient(#a87546,#805031);
   }
   .vpet-world-shell .vpet-tabs button { min-height:48px; }
   .vpet-world-shell .vpet-tabs button.is-overflow { display:none; }

@@ -85,7 +85,7 @@ var catalog = []itemDef{
 	{ID: "kinh", Name: "Kính râm", Emoji: "🕶️", Kind: "acc", Desc: "Phụ kiện: ngầu hết nấc", Weight: 2},
 	{ID: "no", Name: "Nơ đỏ", Emoji: "🎀", Kind: "acc", Desc: "Phụ kiện: dễ thương", Weight: 2},
 	{ID: "khan", Name: "Khăn quàng", Emoji: "🧣", Kind: "acc", Desc: "Phụ kiện: ấm áp", Weight: 2},
-	{ID: "sach", Name: "Bí kíp võ công", Emoji: "📜", Kind: "card", Desc: "Học lại 2 kỹ năng tỷ thí ngẫu nhiên", Weight: 3},
+	{ID: "sach", Name: "Bí kíp võ công", Emoji: "📜", Kind: "card", Desc: "Chọn một kỹ năng để đổi sang kỹ năng khác, giữ nguyên cấp đã luyện", Weight: 3},
 	{ID: "the_ten", Name: "Thẻ đổi tên", Emoji: "🏷️", Kind: "card", Desc: "Đặt lại tên cho một con thú, giữ nguyên hình dáng và chỉ số", Weight: 3},
 	{ID: "the_quen", Name: "Thẻ tẩy kỹ năng", Emoji: "🫗", Kind: "card", Desc: "Xoá cấp đã nâng của mọi kỹ năng, hoàn lại một nửa số ngọc đã dùng", Weight: 2, Rarity: 1},
 	{ID: "phieu_hoan_diem", Name: "Phiếu hoàn điểm", Emoji: "♻️", Kind: "card", Desc: "Trả toàn bộ điểm Công/Thủ/Sinh lực về quỹ để cộng lại", Rarity: 3},
@@ -247,6 +247,9 @@ type userState struct {
 	Streak            int                    `json:"streak,omitempty"`
 	BestStreak        int                    `json:"best_streak,omitempty"`
 	WelcomeGift       bool                   `json:"welcome_gift_3000,omitempty"`
+	TowerFloor        int                    `json:"tower_floor,omitempty"` // highest floor cleared, kept for the account
+	TowerToday        int                    `json:"tower_today,omitempty"`
+	TowerDay          string                 `json:"tower_day,omitempty"`
 	SeasonBoostBPS    int                    `json:"season_boost_bps,omitempty"`
 	SeasonBoostUntil  int64                  `json:"season_boost_until,omitempty"`
 	SeasonBoostSource string                 `json:"season_boost_source,omitempty"`
@@ -1081,6 +1084,9 @@ func validateBundle(m map[string]int) error {
 		return errors.New("tối đa 6 loại món mỗi lần")
 	}
 	for id, n := range m {
+		if id == "tinhhon" {
+			return errors.New("Tinh Hồn không thể giao dịch")
+		}
 		if itemByID[id] == nil || n < 1 || n > 99 {
 			return errors.New("món giao dịch không hợp lệ")
 		}

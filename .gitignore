@@ -17,6 +17,9 @@ webapp/node_modules/
 webapp/dist/
 cmd/vpet/static/main.js
 
+# Local assistant configuration
+.claude/
+
 # Local test scaffolding
 compose.uitest.yml
 .smoke-*

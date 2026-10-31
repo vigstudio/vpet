@@ -78,7 +78,7 @@ function benchActions(row, {enhance = [], sockets = [], recipes = [], coin = 0, 
     out.push({
       kind: 'fuse', recipe, into: named(recipe.to),
       have: recipe.have, need: recipe.need, cost: recipe.cost,
-      blocked: recipe.ready ? '' : (recipe.have < recipe.need ? 'parts' : 'cost'),
+      blocked: recipe.ready ? '' : (recipe.have < recipe.need ? 'parts' : recipe.material && recipe.material_have < recipe.material_need ? 'material' : 'cost'),
       shortParts: Math.max(0, recipe.need - recipe.have),
       shortCoin: Math.max(0, recipe.cost - coin),
     });

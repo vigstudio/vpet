@@ -171,6 +171,7 @@ function ForgeBench({state, sel, busy, act, onReceipt}) {
                     <ItemIcon id={fuse.into?.id} size={32}/>
                     <div><small>{t('inv.receive')}</small><b>{fuse.into?.name}</b></div>
                   </div>
+                  {fuse.recipe?.material && <p className='vpet-bench__why'>{itemOf(fuse.recipe.material)?.name}: {fuse.recipe.material_have}/{fuse.recipe.material_need}</p>}
                   {confirm === 'fuse' ? (
                     <div className='vpet-fusion__confirm'>
                       <p>{t('forge.fuseConfirm', fuse.need, row.item.name, fuse.cost, fuse.into?.name)}</p>
@@ -205,6 +206,26 @@ function ForgeBench({state, sel, busy, act, onReceipt}) {
       </aside>
     </div>
   );
+}
+
+function SkillSwap({state, sel, busy, act, onReceipt}) {
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  const pet = state.pets?.[sel];
+  const known = pet?.skills || [];
+  const skills = state.skills || [];
+  const valid = known.includes(from) && !known.includes(to) && skills.some((skill) => skill.id === to);
+  const swap = async () => {
+    if (!valid || busy) return;
+    const next = await act(() => api.swapSkill(sel, from, to), true);
+    if (next) { onReceipt(next.message); setFrom(''); setTo(''); }
+  };
+  return <div className='vpet-skill-swap'>
+    <p>{tr('Chỉ đổi kỹ năng bạn chọn; giữ nguyên cấp và các kỹ năng khác. Tốn 1 giấy.', 'Replace only the chosen skill; keep its level and every other skill. Costs 1 manual.', '選択したスキルだけ変更。レベルと他のスキルは維持。変更書1枚消費。')}</p>
+    <fieldset><legend>{tr('Kỹ năng cần thay', 'Skill to replace', '変更するスキル')}</legend>{skills.filter((skill) => known.includes(skill.id)).map((skill) => <button key={skill.id} type='button' className='vpet-btn' aria-pressed={from === skill.id} onClick={() => setFrom(skill.id)}>{skill.emoji} {skill.name}</button>)}</fieldset>
+    <fieldset><legend>{tr('Kỹ năng muốn nhận', 'New skill', '新しいスキル')}</legend>{skills.filter((skill) => !known.includes(skill.id)).map((skill) => <button key={skill.id} type='button' className='vpet-btn' aria-pressed={to === skill.id} title={skill.desc} onClick={() => setTo(skill.id)}>{skill.emoji} {skill.name}</button>)}</fieldset>
+    <button type='button' className='vpet-btn vpet-btn--primary' disabled={busy || !valid || !pet || pet.dead || !state.inv.sach} onClick={swap}>{tr('Xác nhận đổi kỹ năng', 'Confirm skill replacement', 'スキル変更を確定')}</button>
+  </div>;
 }
 
 export default function Inventory({state, sel, busy, act, onReskin, onSkills, onSell}) {
@@ -378,7 +399,7 @@ export default function Inventory({state, sel, busy, act, onReskin, onSkills, on
               </div>
               <div className='vpet-inv__footer'>
                 {reason && <p className='vpet-inv__warning'>{reason}</p>}
-                {item.kind === 'stone' ? <button type='button' className='vpet-btn vpet-btn--primary vpet-inv__use' onClick={onSkills}>{t('inv.skillUpgrade')}</button> : (
+                {item.id === 'sach' ? <SkillSwap key={sel} state={state} sel={sel} busy={busy} act={act} onReceipt={setReceipt}/> : item.kind === 'stone' ? <button type='button' className='vpet-btn vpet-btn--primary vpet-inv__use' onClick={onSkills}>{t('inv.skillUpgrade')}</button> : (
                   <button type='button' className='vpet-btn vpet-btn--primary vpet-inv__use' disabled={busy || Boolean(reason)} onClick={use}>{busy ? t('inv.processing') : `${t(VERBS[item.kind] || 'pet.use')}${pet && !['bag', 'card'].includes(item.kind) ? ` cho ${pet.name}` : ''}`}</button>
                 )}
                 {recipe && <button type='button' className='vpet-btn vpet-inv__forge-link' onClick={() => { setMode('forge'); setConfirm(''); }}>{tr(`Ghép lên ${output.name}`, `Forge into ${output.name}`, `${output.name}へ鍛造`)}</button>}

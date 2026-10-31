@@ -1,6 +1,9 @@
 package game
 
 import (
+	"encoding/json"
+	"math"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -44,7 +47,7 @@ func TestFuseEatsThreeAndCharges(t *testing.T) {
 	if _, err := fuse(st, "dao"); err == nil {
 		t.Fatal("nothing to fuse")
 	}
-	st.add("dao", fuseCount)
+	st.add("dao", 3)
 	if _, err := fuse(st, "dao"); err == nil {
 		t.Fatal("the smith is not free")
 	}
@@ -60,7 +63,7 @@ func TestFuseEatsThreeAndCharges(t *testing.T) {
 		t.Fatalf("the smith says what came out: %q", msg)
 	}
 	// mythic is no longer the end of the ladder: three of them forge the divine rung
-	st.add("kiemrong", fuseCount)
+	st.add("kiemrong", 3)
 	st.Coin = 10000
 	if _, err := fuse(st, "kiemrong"); err != nil {
 		t.Fatalf("three mythic pieces should forge the divine rung: %v", err)
@@ -68,9 +71,9 @@ func TestFuseEatsThreeAndCharges(t *testing.T) {
 	if st.Inv["kiemthanlong"] != 1 {
 		t.Fatalf("divine weapon missing: %v", st.Inv)
 	}
-	st.add("kiemthanlong", fuseCount)
+	st.add("kiemthanlong", 3)
 	if _, err := fuse(st, "kiemthanlong"); err == nil {
-		t.Fatal("the top tier cannot be fused further")
+		t.Fatal("Supreme requires bound souls")
 	}
 	// the fee doubles every rung, so the last step costs far more than the first
 	if fuseCostOf("gaythan") <= fuseCostOf("dao") {
@@ -335,6 +338,185 @@ func TestEnhancementCostGrowsLinearly(t *testing.T) {
 			if got != first*level {
 				t.Fatalf("%s +%d costs %d, want linear %d", id, level, got, first*level)
 			}
+		}
+	}
+}
+
+func TestSupremeLaddersPreserveOldTiersAndStats(t *testing.T) {
+	old := map[string][]string{
+		"vukhi":   {"dao", "kiem", "dinhba", "gaythan", "kiemrong", "kiemthanlong"},
+		"giap":    {"aovai", "giapda", "giapthep", "longbao", "giaprong", "giapthanlong"},
+		"mu":      {"nonre", "muda", "muthep", "vuongmien", "muthan", "muthiende"},
+		"gang":    {"gangvai", "gangda", "gangthep", "gangrong", "gangthan", "gangthienloi"},
+		"giay":    {"depco", "giayda", "giaythep", "hiabay", "hiathan", "hiathienvuong"},
+		"nhan":    {"nhandong", "chuoingoc", "nhanbac", "nhanrong", "nhanthan", "nhanthienmenh"},
+		"khien":   {"motnap", "khiengo", "khiensat", "khienbac", "khienthan", "khienthienha"},
+		"aokhoac": {"aotoi", "aogam", "aolong", "aosao", "aothan", "aothienmenh"},
+	}
+	for slot, previous := range old {
+		ladder := forgeTiers[slot]
+		if len(ladder) != 7 || !reflect.DeepEqual(ladder[:6], previous) {
+			t.Fatalf("changed ladder %s: %v", slot, ladder)
+		}
+		for tier, id := range previous {
+			if tierOf(id) != tier {
+				t.Fatalf("changed old tier %s", id)
+			}
+			if tier < 5 {
+				st := newUserState()
+				st.Inv = map[string]int{id: 3}
+				st.Coin = 40 * (1 << tier)
+				if _, err := fuse(st, id); err != nil || st.Coin != 0 || st.Inv[ladder[tier+1]] != 1 {
+					t.Fatalf("old recipe %s: %v", id, err)
+				}
+			}
+		}
+		a, b := gearByID[ladder[5]], gearByID[ladder[6]]
+		for _, pair := range [][2]float64{{a.Atk, b.Atk}, {a.Def, b.Def}, {a.HP, b.HP}} {
+			if pair[0] == 0 {
+				if pair[1] != 0 {
+					t.Fatalf("changed slot profile %s", slot)
+				}
+				continue
+			}
+			if ratio := pair[1] / pair[0]; ratio < 1.35 || ratio > 1.45 {
+				t.Fatalf("bad ratio %s: %v", slot, ratio)
+			}
+		}
+	}
+}
+
+func TestSupremeForgeRequiresAllInputsWithoutPartialMutation(t *testing.T) {
+	for _, tc := range []struct {
+		copies, coin, souls int
+		ok                  bool
+	}{{3, 5000, 3, false}, {4, 4999, 3, false}, {4, 5000, 2, false}, {4, 5000, 3, true}} {
+		st := newUserState()
+		st.Inv = map[string]int{"kiemthanlong": tc.copies, "tinhhon": tc.souls}
+		st.Coin = tc.coin
+		before, _ := json.Marshal(st)
+		r := st.forgeList()[0]
+		if r.Need != 4 || r.Cost != 5000 || r.Material != "tinhhon" || r.MaterialNeed != 3 || r.MaterialHave != tc.souls || r.Ready != tc.ok {
+			t.Fatalf("bad recipe %+v", r)
+		}
+		_, err := fuse(st, "kiemthanlong")
+		if (err == nil) != tc.ok {
+			t.Fatalf("case %+v: %v", tc, err)
+		}
+		if !tc.ok {
+			after, _ := json.Marshal(st)
+			if string(before) != string(after) {
+				t.Fatal("failed forge mutated state")
+			}
+		} else if st.Coin != 0 || st.Inv["tinhhon"] != 0 || st.Inv["kiemthanlong"] != 0 || st.Inv["kiemhongmong"] != 1 {
+			t.Fatalf("bad consumption %+v", st)
+		}
+	}
+}
+
+func TestSupremeQuickForgeSkipsMissingSoulsAndKeepsLowerProgress(t *testing.T) {
+	st := newUserState()
+	st.Inv = map[string]int{"kiemthanlong": 8, "dao": 3}
+	st.Coin = 20000
+	if _, err := fuseAll(st); err != nil {
+		t.Fatal(err)
+	}
+	if st.Inv["kiemthanlong"] != 8 || st.Inv["kiemhongmong"] != 0 || st.Inv["kiem"] != 1 || st.Coin != 19960 {
+		t.Fatalf("bad quick forge %+v", st)
+	}
+	st.Inv["tinhhon"] = 3
+	if _, err := fuseAll(st); err != nil {
+		t.Fatal(err)
+	}
+	if st.Inv["kiemthanlong"] != 4 || st.Inv["kiemhongmong"] != 1 || st.Inv["tinhhon"] != 0 || st.Coin != 14960 {
+		t.Fatalf("overspent materials %+v", st)
+	}
+	before, _ := json.Marshal(st)
+	if _, err := fuseAll(st); err == nil {
+		t.Fatal("missing souls accepted")
+	}
+	after, _ := json.Marshal(st)
+	if string(before) != string(after) {
+		t.Fatal("no-op mutated state")
+	}
+}
+
+func TestSupremeSetAndAutoEquip(t *testing.T) {
+	st := huntPet(t)
+	for _, ladder := range forgeTiers {
+		st.add(ladder[6], 1)
+	}
+	if _, err := equipBest(st, 0); err != nil {
+		t.Fatal(err)
+	}
+	b := setOf(st.Pets[0].Gear)
+	if b == nil || b.Tier != 6 || b.Parts != 8 || b.Name != "Bộ Tối Thượng" || math.Abs(b.Atk-33.6) > 1e-9 || math.Abs(b.Def-25.2) > 1e-9 || b.HP != 210 {
+		t.Fatalf("bad Supreme set %+v", b)
+	}
+	for _, locale := range []string{"en", "ja"} {
+		if translateSet(locale, b).Name == b.Name {
+			t.Fatal("untranslated set")
+		}
+	}
+	coin, _ := enhanceCost("kiemhongmong", 10)
+	if coin != 560 {
+		t.Fatalf("nonlinear enhancement %d", coin)
+	}
+}
+
+func TestLegacyStateLoadsWithoutSupremeFields(t *testing.T) {
+	var st userState
+	if err := json.Unmarshal([]byte(`{"coin":6000,"inv":{"kiemthanlong":4},"pets":[]}`), &st); err != nil {
+		t.Fatal(err)
+	}
+	if st.Inv["tinhhon"] != 0 || st.forgeList()[0].Ready {
+		t.Fatal("legacy state conjured souls")
+	}
+	if _, err := fuse(&st, "kiemthanlong"); err == nil {
+		t.Fatal("legacy state bypassed souls")
+	}
+}
+
+func TestSoulEssenceCannotBeBoughtTradedOrFoundNormally(t *testing.T) {
+	st := newUserState()
+	st.Coin = 100000
+	st.Inv["tinhhon"] = 99
+	if checkListing(st, "tinhhon", 1, 1) == nil || checkBuyOrder(st, "tinhhon", 1, 1) == nil || validateBundle(map[string]int{"tinhhon": 1}) == nil || crushable("tinhhon") {
+		t.Fatal("bound material escaped")
+	}
+	if _, err := buy(st, "tinhhon", 1, 1700000000000); err == nil {
+		t.Fatal("shop sold bound material")
+	}
+	if itemByID["tinhhon"].Weight != 0 {
+		t.Fatal("food bag can drop soul")
+	}
+	for _, it := range sellable() {
+		if it.ID == "tinhhon" {
+			t.Fatal("shop/gacha can drop soul")
+		}
+	}
+	for r := 0; r < len(rarityNames); r++ {
+		for _, id := range lootOf(r) {
+			if id == "tinhhon" {
+				t.Fatal("hunt/wild can drop soul")
+			}
+		}
+	}
+	for _, m := range huntMaps {
+		for _, id := range m.Finds {
+			if id == "tinhhon" {
+				t.Fatal("ordinary map lists soul")
+			}
+		}
+	}
+	for _, locale := range []string{"en", "ja"} {
+		for _, it := range translatedCatalog(locale) {
+			if (tierOf(it.ID) == 6 || it.ID == "tinhhon") && (it.Name == itemByID[it.ID].Name || it.Desc == itemByID[it.ID].Desc) {
+				t.Fatalf("untranslated %s %s", locale, it.ID)
+			}
+		}
+		if translatedRarities(locale)[6] == rarityNames[6] {
+			t.Fatal("untranslated rarity")
 		}
 	}
 }

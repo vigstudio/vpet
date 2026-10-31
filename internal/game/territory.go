@@ -500,6 +500,13 @@ func (p *Engine) allianceWarAction(userID string, st *userState, action, territo
 	if !won {
 		pt.Health = max(1, pt.Health-5)
 	}
+	// Only wins on the hardest lands can yield a bound soul (5%). The existing
+	// three daily attempts and atomic user+season commit also bound this drop.
+	souls := 0
+	if won && def.Tier == 3 && p.random() < 0.05 {
+		st.add("tinhhon", 1)
+		souls = 1
+	}
 	p.rewardActivity(st, "/alliance/attack", now)
 	if err := p.commitRows(map[string]any{userPrefix + userID: st, warSeasonKeyPrefix + season.ID: season}); err != nil {
 		return "", nil, err
@@ -508,7 +515,7 @@ func (p *Engine) allianceWarAction(userID string, st *userState, action, territo
 	if won {
 		outcome = "thắng"
 	}
-	return fmt.Sprintf("Trận lãnh thổ %s: +%d ảnh hưởng.", outcome, influence), &result, nil
+	return fmt.Sprintf("Trận lãnh thổ %s: +%d ảnh hưởng, +%d Tinh Hồn.", outcome, influence, souls), &result, nil
 }
 
 func neutralTerritorySide(def *territoryDef) duelSide {

@@ -9,7 +9,7 @@ import Realm, {REALMS} from './Realm';
 import {Parties} from './Campaign';
 import {itemOf, useNow} from './store';
 
-export const RARITY = ['r0', 'r1', 'r2', 'r3', 'r4', 'r5'];
+export const RARITY = ['r0', 'r1', 'r2', 'r3', 'r4', 'r5', 'r6'];
 
 
 export function xpNeed(lv) {
