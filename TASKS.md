@@ -41,8 +41,8 @@
 - Render: 1672/1440/1024/375, không tràn ngang hoặc pageerror; pet chết/nghỉ dưỡng/kho trống/no-pet/một slot, locale en/ja đạt smoke. Đã xem ảnh chợ có hàng và pet; nền pet vẫn từ thumbnail, chưa phải tranh HD như mẫu.
 - Landscape 740×375, 844×390: CTA truy cập được khi cuộn vào giữa; có thông báo + selector pet thì CTA chưa hiện ngay khi mở màn. Không ghi nhận kiểm tra này là đạt yêu cầu luôn nằm sẵn trong viewport.
 - Test lưu lại: `python -I scripts/smoke-pet-layout.py`, cần Python Playwright và stack local `vpet-ui-test` cổng 18099; chỉ tạo tài khoản test, giả lập response trạng thái biên, không sửa DB production. Dọn stack bằng compose `down -v` sau chạy.
-- Frontend 78/78, Go suite và Docker build đạt; DB repository integration vẫn tự skip, webpack còn ba cảnh báo kích thước (~738 KiB JS).
-- Phát hành đợt này: chờ xác nhận bản build cuối và deploy; các task gameplay cũ bên trên giữ nguyên.
+- Frontend 78/78, Go suite và Docker build đạt; DB repository integration vẫn tự skip, webpack còn ba cảnh báo kích thước (~738 KiB JS). Skill max/thiếu vật liệu, toàn bộ trạng thái giá sai/thiếu vàng và buy-order UI chưa E2E đầy đủ trong đợt này.
+- Đã push/deploy app `93c93fc` ngày 31/10/2026. App/DB healthy; backup DB đã qua `pg_restore -l`, giữ image rollback riêng. Origin/public/local cùng bundle 755.756 byte, SHA-256 `9d749eaae9ac5464f2b8277aadd3693fbb54797a196f9392f2d774a37101c0b2`; 43 ảnh runtime public hợp lệ. Login public 1440/375 không pageerror/tràn ngang. Stack/volume và fixture test local đã dọn; task gameplay cũ giữ nguyên.
 
 ## Kiểm chứng artwork production
 
