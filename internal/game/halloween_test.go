@@ -26,7 +26,7 @@ func halloweenFixture(t *testing.T) (*userState, int64) {
 
 func TestHalloweenExchangeConservesEquipment(t *testing.T) {
 	st, now := halloweenFixture(t)
-	if _, err := resurrect(st, 11, now-1000, 22, now); err != nil {
+	if _, err := resurrect(st, 11, now-1000, 22, now+24*hour); err != nil {
 		t.Fatal(err)
 	}
 	p := st.Pets[0]
@@ -48,7 +48,7 @@ func TestHalloweenRejectsWithoutMutation(t *testing.T) {
 			when, donor := now, int64(22)
 			switch scenario {
 			case "outside":
-				when = now + 24*hour
+				when = now + 48*hour
 			case "dead":
 				st.Pets[0].Dead = true
 			case "stale":
@@ -90,7 +90,7 @@ func TestHalloweenCommitFailurePreservesStoredState(t *testing.T) {
 func TestHalloweenLegacyAndTimezone(t *testing.T) {
 	st, now := halloweenFixture(t)
 	st.Graves[0].Snapshot = nil
-	if _, err := resurrect(st, 11, now-1000, 22, now); err != nil {
+	if _, err := resurrect(st, 11, now-1000, 22, now+24*hour); err != nil {
 		t.Fatal(err)
 	}
 	if p := st.Pets[0]; p.Lv != 1 || len(p.Gear) != 0 || len(p.Skills) != 0 {
@@ -99,7 +99,9 @@ func TestHalloweenLegacyAndTimezone(t *testing.T) {
 	if st.enhancedCount("kiem", 3) != 1 {
 		t.Fatal("legacy revival consumed unrecorded gear")
 	}
-	if !halloweenOpen(time.Date(2026, 10, 30, 17, 0, 0, 0, time.UTC).UnixMilli()) || halloweenOpen(time.Date(2026, 10, 31, 17, 0, 0, 0, time.UTC).UnixMilli()) {
-		t.Fatal("event must use Vietnam midnight")
+	start := time.Date(2026, 10, 30, 17, 0, 0, 0, time.UTC).UnixMilli()
+	end := time.Date(2026, 11, 1, 17, 0, 0, 0, time.UTC).UnixMilli()
+	if halloweenOpen(start-1) || !halloweenOpen(start) || !halloweenOpen(end-1) || halloweenOpen(end) || halloweenOpen(time.Date(2027, 10, 31, 12, 0, 0, 0, vnZone).UnixMilli()) {
+		t.Fatal("event must end after November 1, 2026 in Vietnam time")
 	}
 }

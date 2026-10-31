@@ -8,8 +8,9 @@ import (
 )
 
 func halloweenOpen(now int64) bool {
-	d := time.UnixMilli(now).In(vnZone)
-	return d.Month() == time.October && d.Day() == 31
+	start := time.Date(2026, time.October, 31, 0, 0, 0, 0, vnZone).UnixMilli()
+	end := time.Date(2026, time.November, 2, 0, 0, 0, 0, vnZone).UnixMilli()
+	return now >= start && now < end
 }
 
 func copyPet(p *pet) (*pet, error) {
@@ -27,7 +28,7 @@ func copyPet(p *pet) (*pet, error) {
 // Work on a copy: a missing socket or enhanced item must not consume any other item.
 func resurrect(st *userState, born, died, sacrifice, now int64) (string, error) {
 	if !halloweenOpen(now) {
-		return "", errors.New("hồi sinh Halloween chỉ mở ngày 31/10 theo giờ Việt Nam")
+		return "", errors.New("hồi sinh Halloween mở từ 31/10 đến hết 01/11/2026 theo giờ Việt Nam")
 	}
 	raw, err := json.Marshal(st)
 	if err != nil {
@@ -108,7 +109,7 @@ func resurrect(st *userState, born, died, sacrifice, now int64) (string, error) 
 
 func (p *Engine) resurrectPet(userID string, st *userState, born, died, sacrifice, now int64) (string, error) {
 	if !halloweenOpen(now) {
-		return "", errors.New("hồi sinh Halloween chỉ mở ngày 31/10 theo giờ Việt Nam")
+		return "", errors.New("hồi sinh Halloween mở từ 31/10 đến hết 01/11/2026 theo giờ Việt Nam")
 	}
 	rooms, err := p.parties(now)
 	if err != nil {

@@ -48,7 +48,7 @@
 
 - Đã viết: header mobile một hàng, tiện ích gom menu; Thú cưng chia Chăm sóc/Trang bị/Phát triển, Chợ chia Xem chợ/Đăng tin/Tin của tôi. Landscape đổi cấu trúc controls, CTA ưu tiên hiển thị trước; giữ cảnh 16:9 và nút tối thiểu 44px.
 - Đã viết: ba arrangement Web Audio tự soạn cho thành phố/phiêu lưu/trận đấu, SFX theo lượt chiến đấu/gacha/thao tác thành công; nhạc và tiếng động có opt-in/âm lượng riêng. Scheduler giới hạn voice, dừng khi ẩn tab/unmount; không thêm thư viện hoặc nhạc bên ngoài.
-- Đã viết: Halloween mở ngày 31/10 theo giờ Việt Nam; đổi vĩnh viễn một thú sống để hồi sinh thú đã chôn. Lưu snapshot khi chôn mới, giữ cấp/kỹ năng/trang bị/cường hóa/ngọc/phụ kiện. Đồ vốn trả về kho khi chôn nên phải thu lại đúng món; thiếu đồ từ chối toàn bộ, không nhân bản. Chặn thú nghỉ dưỡng, lời mời tỷ thí và tổ đội chờ.
+- Đã viết: Halloween mở từ 31/10 đến hết 01/11/2026 theo giờ Việt Nam (đóng lúc 00:00 ngày 02/11); đổi vĩnh viễn một thú sống để hồi sinh thú đã chôn. Lưu snapshot khi chôn mới, giữ cấp/kỹ năng/trang bị/cường hóa/ngọc/phụ kiện. Đồ vốn trả về kho khi chôn nên phải thu lại đúng món; thiếu đồ từ chối toàn bộ, không nhân bản. Chặn thú nghỉ dưỡng, lời mời tỷ thí và tổ đội chờ.
 - Giới hạn dữ liệu: mộ trước bản này chỉ có tên/ngoại hình, không có lịch sử cấp/kỹ năng/đồ; chỉ hồi sinh cấp 1, không bịa dữ liệu. Thú hiến tế không tạo mộ, đồ còn lại trả kho. Không thưởng hoạt động khi hồi sinh.
 - Popup sự kiện dùng cờ từ server, hiện một lần mỗi tài khoản/năm trên trình duyệt; ưu tiên quà/điểm danh trước, Escape và focus bằng native dialog; CTA đến Nghĩa trang. Có vi/en/ja, cảnh báo hiến tế không hoàn tác và giới hạn mộ cũ.
 - Đã kiểm thử: Go toàn suite; test hồi sinh bảo toàn đồ, từ chối không mutate, lỗi commit không đổi DB, legacy và ranh giới múi giờ. HTTP local thật hồi sinh đủ đồ +3/ngọc/phụ kiện, từ chối gửi lại và giữ kết quả sau reload. Sáu repository integration test đã chạy thật trên DB local cô lập, không skip.
@@ -56,6 +56,13 @@
 - Chưa xác nhận chất lượng nghe bằng tai; nhạc vẫn là tổng hợp Web Audio, không phải bản thu orchestral. Chưa E2E đầy đủ pause/skip/replay/gacha/audio lifecycle trên mọi browser; nhãn ải landscape vẫn dày. Task gameplay cũ phía trên giữ nguyên.
 - Đã push/deploy app `380282d` ngày 31/10/2026; app/DB healthy. Backup DB đã qua `pg_restore -l`, giữ image rollback riêng. Bundle local đã test/origin/public cùng 779.715 byte, SHA-256 `022108fea5ad919dca357cdc296413b60869403447a9e6ee4d6899f4c412a48b`; public xác minh bằng browser vì HTTP client Python bị Cloudflare trả 403. Màn đăng nhập public 1440/375 không pageerror/tràn ngang; không tạo tài khoản production.
 - Smoke bổ sung đạt: bật/tắt nhạc và SFX bằng gesture, lưu âm lượng, menu Escape; CTA landscape có toast + hai pet vẫn trên nav. Regression 6 trạng thái pet (hai/một/chết/nghỉ dưỡng/kho trống/no-pet) ở 1440/1024/375 đạt. Stack/volume test local đã dọn, không đụng volume production.
+
+## Sửa cuộn mobile / gia hạn Halloween 31/10/2026
+
+- Đã viết: bỏ `body overflow:hidden` còn sót từ modal cũ; cuộn dọc native trở lại, giữ cuộn nội dung riêng ở landscape. Gia hạn sự kiện đến hết 01/11/2026 theo giờ Việt Nam; server, popup và Nghĩa trang đồng bộ vi/en/ja, không tự mở lại năm sau.
+- Đã kiểm thử: frontend 81/81, build đạt (ba cảnh báo kích thước); Go toàn suite đạt, store integration đợt sửa này không bật. Hồi sinh có snapshot và legacy thực thi ngày 01/11; kiểm tra trước/sau hai mốc mở/đóng và năm 2027.
+- Playwright có touch emulation + CDP touchStart/touchMove/touchEnd: cuộn thật ở 360/375/390/768 và landscape 740/844; khôi phục CSS khóa cũ thì không cuộn, gỡ khóa thì cuộn được. Vuốt tới ô chat Thành phố ở ba kích thước phone; CTA landscape không bị nav che, không pageerror/tràn ngang. Popup hiển thị đúng hạn mới. Chưa thử trực tiếp thiết bị iOS/Android vật lý.
+- Deploy: chờ phát hành bản sửa; không coi bản `380282d` đã chứa thay đổi này.
 
 ## Kiểm chứng artwork production
 

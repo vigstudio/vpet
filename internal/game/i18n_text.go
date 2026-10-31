@@ -15,7 +15,7 @@ type textRule struct {
 }
 
 var exactText = map[string][2]string{
-	`hồi sinh Halloween chỉ mở ngày 31/10 theo giờ Việt Nam`:                             {`Halloween revival opens only October 31, Vietnam time`, `ハロウィンの復活はベトナム時間10月31日限定です`},
+	`hồi sinh Halloween mở từ 31/10 đến hết 01/11/2026 theo giờ Việt Nam`:                {`Halloween revival runs October 31 through November 1, 2026, Vietnam time`, `復活イベントはベトナム時間2026年10月31日から11月1日いっぱいまで開催です`},
 	`mộ hoặc thú hiến tế đã thay đổi; hãy tải lại`:                                       {`the grave or sacrifice pet changed; reload first`, `お墓か捧げるペットが変更されました。再読み込みしてください`},
 	`thú hiến tế phải đang sống, không nghỉ phép hoặc dưỡng bệnh`:                        {`the sacrifice must be alive, not on holiday or in care`, `生きていて休暇中・療養中ではないペットが必要です`},
 	`hãy xử lý lời mời tỷ thí trước khi hiến tế`:                                         {`resolve pending duel invitations before sacrificing`, `捧げる前に対戦の招待を処理してください`},

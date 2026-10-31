@@ -22,9 +22,21 @@ def api(page, path, body=None):
     }''', dict(path=path, body=body))
 
 
+def swipe_up(page, session):
+    width, height = page.viewport_size['width'], page.viewport_size['height']
+    x, start, end = width // 2, int(height * .72), int(height * .3)
+    session.send('Input.dispatchTouchEvent', dict(type='touchStart', touchPoints=[dict(x=x, y=start)]))
+    for step in range(1, 13):
+        session.send('Input.dispatchTouchEvent', dict(type='touchMove', touchPoints=[dict(x=x, y=start+(end-start)*step/12)]))
+        page.wait_for_timeout(20)
+    session.send('Input.dispatchTouchEvent', dict(type='touchEnd', touchPoints=[]))
+    page.wait_for_timeout(350)
+
+
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
-    page = browser.new_page(viewport=dict(width=375, height=740), reduced_motion='reduce')
+    page = browser.new_page(viewport=dict(width=375, height=740), reduced_motion='reduce', has_touch=True, is_mobile=True)
+    session = page.context.new_cdp_session(page)
     errors = []
     page.on('pageerror', lambda error: errors.append(str(error)))
     try:
@@ -46,6 +58,7 @@ with sync_playwright() as p:
         popup = page.locator('.vpet-halloween')
         popup.wait_for(state='visible')
         assert popup.evaluate('el => el.open && el.contains(document.activeElement)')
+        assert 'Through November 1, 2026' in popup.inner_text()
         page.keyboard.press('Escape')
         popup.wait_for(state='detached')
         page.reload()
@@ -88,6 +101,20 @@ with sync_playwright() as p:
                     button.click()
                     assert button.bounding_box()['height'] >= 44
                 sections.first.click()
+            if width <= 900:
+                page.evaluate('''() => { window.scrollTo(0,0); document.querySelector('.vpet-panel__body').scrollTop=0; }''')
+                scroll = '''() => scrollY + document.querySelector('.vpet-panel__body').scrollTop'''
+                before = page.evaluate(scroll)
+                if width == 360:
+                    old_lock = page.add_style_tag(content='body { overflow: hidden !important; }')
+                    swipe_up(page, session)
+                    assert page.evaluate(scroll) == before, 'regression must reproduce the old scroll lock'
+                    old_lock.evaluate('el => el.remove()')
+                swipe_up(page, session)
+                after = page.evaluate(scroll)
+                assert after > before + 40, ('touch scrolling blocked', width, height, before, after)
+                print('touch scroll', width, height, before, after, flush=True)
+                page.evaluate('''() => { window.scrollTo(0,0); document.querySelector('.vpet-panel__body').scrollTop=0; }''')
             assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (width, height)
             header = page.locator('.vpet-panel__head').bounding_box()
             if width <= 760:
@@ -113,6 +140,18 @@ with sync_playwright() as p:
                     assert page.locator('.vpet-market__board').is_visible() == (index == 0)
                     assert page.locator('.vpet-market__stall').is_visible() == (index != 0)
             assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), ('market', width)
+            if width <= 390:
+                page.locator('.vpet-tabs > button').first.click()
+                page.evaluate('window.scrollTo(0,0)')
+                form = page.locator('.vpet-chat__form')
+                for _ in range(8):
+                    box = form.bounding_box()
+                    nav = page.locator('.vpet-tabs').bounding_box()
+                    if box['y'] >= 0 and box['y']+box['height'] <= nav['y']:
+                        break
+                    swipe_up(page, session)
+                else:
+                    raise AssertionError(('city chat unreachable by touch', width, box, nav))
             print(width, height, 'OK', flush=True)
         assert not errors, errors
         print('Popup, sacrifice confirmation, pet sections, market sections, layouts: OK', flush=True)

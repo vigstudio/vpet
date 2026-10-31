@@ -18,7 +18,7 @@ export default function Graveyard({state, busy, act}) {
   };
   return <section className='vpet-graveyard'>
     <h3>{tr('Nghĩa trang', 'Graveyard', '墓地')}</h3>
-    <p className='vpet-note'>{state.halloween ? tr('Halloween · Đổi một thú đang sống để hồi sinh một thú đã chôn. Chỉ mở ngày 31/10, giờ Việt Nam.', 'Halloween · Exchange a living pet to revive a buried pet. October 31, Vietnam time only.', 'ハロウィン · 生きているペット1体と引き換えに埋葬済みのペットを復活。ベトナム時間10月31日限定。') : tr('Nghi lễ hồi sinh mở ngày 31/10 theo giờ Việt Nam.', 'Revival opens October 31, Vietnam time.', '復活の儀式はベトナム時間10月31日に開催。')}</p>
+    <p className='vpet-note'>{state.halloween ? tr('Halloween · Đổi một thú đang sống để hồi sinh một thú đã chôn. Đến hết 01/11/2026, giờ Việt Nam.', 'Halloween · Exchange a living pet to revive a buried pet. Through November 1, 2026, Vietnam time.', 'ハロウィン · 生きているペット1体と引き換えに復活。ベトナム時間2026年11月1日いっぱいまで。') : tr('Nghi lễ hồi sinh Halloween hiện đã đóng.', 'The Halloween revival ritual is closed.', 'ハロウィンの復活儀式は終了しました。')}</p>
     {!state.graves?.length && <p className='vpet-empty'>{tr('Nghĩa trang trống. Chăm thú thật tốt nhé!', 'The graveyard is empty. Take good care of your pet!', '墓地は空です。大切に育ててください！')}</p>}
     <div className='vpet-graves'>{(state.graves || []).map((g) => <article key={`${g.born}:${g.died}`} className='vpet-grave'>
       <PetCanvas parts={g.parts} pet={{}} scale={2} still/>
